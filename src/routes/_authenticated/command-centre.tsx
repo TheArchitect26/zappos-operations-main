@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   Bell,
+  BarChart3,
+  BrainCircuit,
   HeartPulse,
   Search,
   ShieldAlert,
@@ -69,6 +71,7 @@ function priorityTone(priority: string): WatchTone {
   if (priority === "medium") return "warning";
   return "neutral";
 }
+const words = (value: string | null | undefined) => (value ?? "unavailable").replaceAll("_", " ");
 function highlight(value: string, query: string) {
   const at = value.toLowerCase().indexOf(query.toLowerCase());
   if (!query || at < 0) return value;
@@ -85,6 +88,8 @@ function CommandCentre() {
   const { activeCompany, hasAnyRole } = useCompany();
   const { user } = useSession();
   const navigate = useNavigate();
+  const activeCompanyId = activeCompany?.id;
+  const userId = user?.id;
   const [data, setData] = useState<any>({
     jobs: [],
     vehicles: [],
@@ -98,6 +103,17 @@ function CommandCentre() {
     devices: [],
     routes: [],
     notifications: [],
+    biAlerts: [],
+    integrationAlerts: [],
+    brainInsights: [],
+    brainRecommendations: [],
+    brainRuns: [],
+    brainConsumptions: [],
+    brainRulePerformance: [],
+    brainQuality: [],
+    brainCorrelations: [],
+    brainOperationalAlerts: [],
+    brainServiceHealth: [],
   });
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -110,18 +126,28 @@ function CommandCentre() {
     "timeline",
     "evidence",
     "analytics",
+    "bi-alerts",
+    "brain",
   ]);
   const [widgetSizes, setWidgetSizes] = useState<Record<string, "compact" | "wide">>({});
   const [watchlists, setWatchlists] = useState<any[]>([]);
   const [notificationFilter, setNotificationFilter] = useState("all");
   const [notificationSearch, setNotificationSearch] = useState("");
   const [selectedSearch, setSelectedSearch] = useState(0);
-  const allowed = hasAnyRole(["admin", "fleet_manager", "dispatcher", "viewer"]);
+  const allowed = hasAnyRole([
+    "admin",
+    "fleet_manager",
+    "dispatcher",
+    "viewer",
+    "executive",
+    "managing_director",
+    "analyst",
+  ]);
   useEffect(() => {
-    if (!activeCompany || !allowed || !user) return;
+    if (!activeCompanyId || !allowed || !userId) return;
     void (async () => {
       setLoading(true);
-      const c = activeCompany.id;
+      const c = activeCompanyId;
       const [
         jobs,
         vehicles,
@@ -137,6 +163,17 @@ function CommandCentre() {
         customers,
         devices,
         routes,
+        biAlerts,
+        integrationAlerts,
+        brainInsights,
+        brainRecommendations,
+        brainRuns,
+        brainConsumptions,
+        brainRulePerformance,
+        brainQuality,
+        brainCorrelations,
+        brainOperationalAlerts,
+        brainServiceHealth,
       ] = await Promise.all([
         supabase
           .from("jobs")
@@ -188,7 +225,7 @@ function CommandCentre() {
           .from("command_centre_notifications")
           .select("*")
           .eq("company_id", c)
-          .eq("user_id", user.id)
+          .eq("user_id", userId)
           .neq("status", "dismissed")
           .order("created_at", { ascending: false })
           .limit(50),
@@ -196,13 +233,13 @@ function CommandCentre() {
           .from("command_centre_layouts")
           .select("collapsed_widgets,widget_order,widget_sizes")
           .eq("company_id", c)
-          .eq("user_id", user.id)
+          .eq("user_id", userId)
           .maybeSingle(),
         (supabase as any)
           .from("command_centre_watchlists")
           .select("id,entity_type,entity_id,position,created_at")
           .eq("company_id", c)
-          .eq("user_id", user.id)
+          .eq("user_id", userId)
           .order("position")
           .limit(100),
         supabase.from("customers").select("id,name,updated_at").eq("company_id", c).limit(100),
@@ -216,6 +253,74 @@ function CommandCentre() {
           .select("id,route_key,updated_at")
           .eq("company_id", c)
           .limit(100),
+        (supabase as any)
+          .from("bi_alerts")
+          .select("id,alert_type,severity,title,acknowledged_at,created_at")
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("integration_alerts")
+          .select("id,alert_type,severity,title,acknowledged_at,created_at")
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("zapp_brain_insights")
+          .select(
+            "id,title,severity,status,confidence,source_module,source_record_type,source_record_id,evidence_coverage,data_freshness,generated_at,created_at",
+          )
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("brain_recommendations")
+          .select("id,brain_insight_id,risk_classification,review_status,confidence,generated_at")
+          .eq("company_id", c)
+          .order("generated_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("zapp_brain_runs")
+          .select("id,status,completed_at,created_at,error_message")
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(20),
+        (supabase as any)
+          .from("brain_event_consumptions")
+          .select("id,status,consumer_code,processing_completed_at,created_at")
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("brain_rule_performance")
+          .select("id,rule_version_id,trigger_count,rejected_count,accuracy_percent,evaluated_at")
+          .eq("company_id", c)
+          .order("evaluated_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("brain_intelligence_quality")
+          .select("id,quality_type,severity,status,observed_at")
+          .eq("company_id", c)
+          .order("observed_at", { ascending: false })
+          .limit(50),
+        (supabase as any)
+          .from("brain_insight_correlations")
+          .select("id,correlation_type,shared_entity,evidence_strength,confidence_score,created_at")
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(25),
+        (supabase as any)
+          .from("brain_operational_alerts")
+          .select("id,alert_type,severity,status,title,detected_at")
+          .eq("company_id", c)
+          .order("detected_at", { ascending: false })
+          .limit(25),
+        (supabase as any)
+          .from("brain_service_health")
+          .select("id,component,health_state,checked_at,lag_seconds,backlog_count")
+          .eq("company_id", c)
+          .order("checked_at", { ascending: false })
+          .limit(25),
       ]);
       setData({
         jobs: jobs.data ?? [],
@@ -230,18 +335,39 @@ function CommandCentre() {
         customers: customers.data ?? [],
         devices: devices.data ?? [],
         routes: routes.data ?? [],
+        biAlerts: biAlerts.data ?? [],
+        integrationAlerts: integrationAlerts.data ?? [],
+        brainInsights: brainInsights.data ?? [],
+        brainRecommendations: brainRecommendations.data ?? [],
+        brainRuns: brainRuns.data ?? [],
+        brainConsumptions: brainConsumptions.data ?? [],
+        brainRulePerformance: brainRulePerformance.data ?? [],
+        brainQuality: brainQuality.data ?? [],
+        brainCorrelations: brainCorrelations.data ?? [],
+        brainOperationalAlerts: brainOperationalAlerts.data ?? [],
+        brainServiceHealth: brainServiceHealth.data ?? [],
       });
       setCollapsed(layout.data?.collapsed_widgets ?? []);
       setWidgetSizes(layout.data?.widget_sizes ?? {});
+      const savedWidgetOrder = layout.data?.widget_order?.length
+        ? layout.data.widget_order
+        : [
+            "health",
+            "notifications",
+            "watchlist",
+            "timeline",
+            "evidence",
+            "analytics",
+            "bi-alerts",
+            "brain",
+          ];
       setWidgetOrder(
-        layout.data?.widget_order?.length
-          ? layout.data.widget_order
-          : ["health", "notifications", "watchlist", "timeline", "evidence", "analytics"],
+        savedWidgetOrder.includes("brain") ? savedWidgetOrder : [...savedWidgetOrder, "brain"],
       );
       setWatchlists(watchlist.data ?? []);
       setLoading(false);
     })();
-  }, [activeCompany?.id, allowed, user?.id]);
+  }, [activeCompanyId, allowed, userId]);
   const health = fleetHealth({
     openIncidents: data.incidents.filter((x: any) => x.status !== "resolved").length,
     criticalIncidents: data.incidents.filter(
@@ -282,6 +408,13 @@ function CommandCentre() {
           title: x.subject,
           timestamp: x.created_at,
           priority: x.priority,
+        })),
+        data.brainInsights.map((x: any) => ({
+          id: x.id,
+          source: "brain",
+          title: x.title,
+          timestamp: x.generated_at ?? x.created_at,
+          priority: x.severity,
         })),
       ),
     [data],
@@ -803,6 +936,7 @@ function CommandCentre() {
                 <SelectItem value="incident">Incidents</SelectItem>
                 <SelectItem value="maintenance">Maintenance</SelectItem>
                 <SelectItem value="customer">Customer</SelectItem>
+                <SelectItem value="brain">Brain</SelectItem>
               </SelectContent>
             </Select>
             <div className="mt-3 max-h-96 space-y-2 overflow-auto">
@@ -832,6 +966,240 @@ function CommandCentre() {
             <p>Jobs today: {data.jobs.filter((x: any) => x.status === "completed").length}</p>
             <p>Incidents: {data.incidents.length}</p>
             <p>Customer requests: {data.requests.length}</p>
+          </div>,
+        )}
+        {widget(
+          "bi-alerts",
+          "BI and integration alerts",
+          <div className="space-y-2">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm text-muted-foreground">
+                Database-authorised BI alerts only. Alerts are not forecasts.
+              </p>
+              <Button
+                size="sm"
+                variant="outline"
+                onClick={() => void navigate({ to: "/business-intelligence" })}
+              >
+                <BarChart3 className="mr-1 h-4 w-4" /> Open BI
+              </Button>
+            </div>
+            {[
+              ...data.biAlerts.map((alert: any) => ({ ...alert, source: "BI" })),
+              ...data.integrationAlerts.map((alert: any) => ({ ...alert, source: "Integration" })),
+            ].map((alert: any) => (
+              <div key={alert.id} className="rounded border p-2 text-sm">
+                <b>{alert.title}</b>
+                <span className="ml-2 text-muted-foreground">
+                  {alert.source} · {alert.alert_type} · {alert.severity} ·{" "}
+                  {alert.acknowledged_at ? "acknowledged" : "open"}
+                </span>
+              </div>
+            ))}
+            {data.biAlerts.length + data.integrationAlerts.length === 0 && (
+              <p className="text-sm text-muted-foreground">
+                No authorised BI or integration alerts.
+              </p>
+            )}
+          </div>,
+        )}
+        {widget(
+          "brain",
+          "Brain intelligence (advisory)",
+          <div className="space-y-3">
+            <div className="flex items-center justify-between gap-2">
+              <p className="text-sm text-muted-foreground">
+                Evidence-linked derived intelligence only. No Brain action controls or raw sensitive
+                payloads are shown here.
+              </p>
+              <Button size="sm" variant="outline" onClick={() => void navigate({ to: "/brain" })}>
+                <BrainCircuit className="mr-1 h-4 w-4" /> Open Brain
+              </Button>
+            </div>
+            {data.brainOperationalAlerts
+              .filter((alert: any) => alert.status !== "resolved")
+              .slice(0, 5)
+              .map((alert: any) => (
+                <p
+                  key={`runtime-alert-${alert.id}`}
+                  className="rounded border border-amber-500/40 p-2 text-sm"
+                >
+                  Brain runtime alert: {alert.title} ({alert.severity} · {alert.status}). It is a
+                  persisted operational alert, not a fleet event or a forecast.
+                </p>
+              ))}
+            {data.brainServiceHealth
+              .filter((health: any) =>
+                ["degraded", "backlogged", "failed", "paused"].includes(health.health_state),
+              )
+              .slice(0, 5)
+              .map((health: any) => (
+                <p
+                  key={`runtime-health-${health.id}`}
+                  className="rounded border border-amber-500/40 p-2 text-sm"
+                >
+                  Brain service {health.component} is {health.health_state}; observed lag{" "}
+                  {health.lag_seconds ?? "unavailable"} seconds and backlog{" "}
+                  {health.backlog_count ?? "unavailable"}. Review the governed Brain operations
+                  workspace.
+                </p>
+              ))}
+            {data.brainInsights
+              .filter(
+                (item: any) =>
+                  ["critical", "high"].includes(item.severity) &&
+                  ["new", "reviewing", "needs_follow_up"].includes(item.status),
+              )
+              .slice(0, 8)
+              .map((insight: any) => {
+                const recommendation = data.brainRecommendations.find(
+                  (item: any) => item.brain_insight_id === insight.id,
+                );
+                return (
+                  <div key={insight.id} className="rounded border p-3 text-sm">
+                    <div className="flex flex-wrap items-center gap-2">
+                      <b>{insight.title}</b>
+                      <StatusBadge tone={priorityTone(insight.severity)}>
+                        {insight.severity}
+                      </StatusBadge>
+                      <span className="text-xs text-muted-foreground">
+                        Brain derived · {insight.status}
+                      </span>
+                    </div>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Source {insight.source_module ?? "unavailable"}/
+                      {insight.source_record_type ?? "unavailable"} · evidence{" "}
+                      {insight.evidence_coverage ?? "unavailable"}% · confidence{" "}
+                      {insight.confidence ?? "unavailable"} · freshness{" "}
+                      {insight.data_freshness ?? "unavailable"}
+                    </p>
+                    <p className="mt-1 text-xs text-muted-foreground">
+                      Generated{" "}
+                      {insight.generated_at
+                        ? new Date(insight.generated_at).toLocaleString()
+                        : "unavailable"}{" "}
+                      · recommendation{" "}
+                      {recommendation ? recommendation.review_status : "unavailable"}
+                    </p>
+                    <Button
+                      className="mt-2"
+                      size="sm"
+                      variant="outline"
+                      onClick={() => void navigate({ to: "/brain" })}
+                    >
+                      Trace authorised source
+                    </Button>
+                  </div>
+                );
+              })}
+            {!data.brainInsights.length && (
+              <p className="text-sm text-muted-foreground">
+                No authorised critical or high Brain insights.
+              </p>
+            )}
+            {data.brainRuns
+              .filter((run: any) => run.status === "failed")
+              .map((run: any) => (
+                <p key={run.id} className="rounded border border-amber-500/40 p-2 text-sm">
+                  Brain analysis failed at{" "}
+                  {run.completed_at ? new Date(run.completed_at).toLocaleString() : "unavailable"}.
+                  Error details remain in the protected Brain workspace.
+                </p>
+              ))}
+            {data.brainRecommendations
+              .filter(
+                (recommendation: any) =>
+                  ["high", "critical"].includes(recommendation.risk_classification) &&
+                  ["proposed", "awaiting_review"].includes(recommendation.review_status),
+              )
+              .map((recommendation: any) => (
+                <p
+                  key={recommendation.id}
+                  className="rounded border border-amber-500/40 p-2 text-sm"
+                >
+                  High-risk Brain recommendation is {recommendation.review_status}; it remains
+                  advisory until the owning domain workflow is opened and approved.
+                </p>
+              ))}
+            {data.brainInsights
+              .filter(
+                (insight: any) =>
+                  insight.evidence_coverage !== null && Number(insight.evidence_coverage) < 50,
+              )
+              .map((insight: any) => (
+                <p
+                  key={`evidence-${insight.id}`}
+                  className="rounded border border-amber-500/40 p-2 text-sm"
+                >
+                  Low-evidence Brain insight: {insight.title} ({insight.evidence_coverage}% linked
+                  evidence). Review the authorised source before relying on it.
+                </p>
+              ))}
+            {data.brainInsights
+              .filter(
+                (insight: any) =>
+                  insight.severity === "critical" && insight.data_freshness === "stale",
+              )
+              .map((insight: any) => (
+                <p
+                  key={`stale-${insight.id}`}
+                  className="rounded border border-amber-500/40 p-2 text-sm"
+                >
+                  Stale critical Brain insight: {insight.title}. Its source freshness is stale, so
+                  it is not a live operational fact.
+                </p>
+              ))}
+            {data.brainRulePerformance
+              .filter(
+                (performance: any) =>
+                  performance.trigger_count > 0 && performance.rejected_count >= 3,
+              )
+              .map((performance: any) => (
+                <p key={performance.id} className="rounded border border-amber-500/40 p-2 text-sm">
+                  Repeated rule-review failures: {performance.rejected_count} rejected outcomes from{" "}
+                  {performance.trigger_count} triggers. Rule changes remain a separate governed
+                  review.
+                </p>
+              ))}
+            {data.brainCorrelations.map((correlation: any) => (
+              <p key={correlation.id} className="rounded border p-2 text-sm">
+                Cross-module correlation ({correlation.correlation_type}):{" "}
+                {correlation.shared_entity ?? "authorised shared entity unavailable"}. Evidence{" "}
+                {correlation.evidence_strength}% - confidence {correlation.confidence_score}%. This
+                is not a causal claim.
+              </p>
+            ))}
+            {data.brainQuality
+              .filter((warning: any) => warning.status !== "resolved")
+              .map((warning: any) => (
+                <p key={warning.id} className="rounded border border-amber-500/40 p-2 text-sm">
+                  Brain data-quality warning: {words(warning.quality_type)} ({warning.severity}) -{" "}
+                  {warning.status}.
+                </p>
+              ))}
+            {data.brainConsumptions.filter((event: any) =>
+              ["received", "validating", "processing", "retry_scheduled"].includes(event.status),
+            ).length > 0 ? (
+              <p className="rounded border border-amber-500/40 p-2 text-sm">
+                Brain consumer backlog:{" "}
+                {
+                  data.brainConsumptions.filter((event: any) =>
+                    ["received", "validating", "processing", "retry_scheduled"].includes(
+                      event.status,
+                    ),
+                  ).length
+                }{" "}
+                persisted event(s) await completion. Phase 22 owns retries and dead letters.
+              </p>
+            ) : null}
+            {data.brainConsumptions
+              .filter((event: any) => ["dead_letter", "retry_scheduled"].includes(event.status))
+              .map((event: any) => (
+                <p key={event.id} className="rounded border border-amber-500/40 p-2 text-sm">
+                  Brain consumer {event.consumer_code} is {words(event.status)}. Phase 22 owns retry
+                  and dead-letter handling.
+                </p>
+              ))}
           </div>,
         )}
       </div>

@@ -27,10 +27,14 @@ import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedTrackingRouteImport } from './routes/_authenticated/tracking'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
 import { Route as AuthenticatedRouteIntelligenceRouteImport } from './routes/_authenticated/route-intelligence'
+import { Route as AuthenticatedProcurementRouteImport } from './routes/_authenticated/procurement'
+import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticated/platform'
 import { Route as AuthenticatedOperationsControlRouteImport } from './routes/_authenticated/operations-control'
 import { Route as AuthenticatedOperationsRouteImport } from './routes/_authenticated/operations'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
 import { Route as AuthenticatedMaintenanceRouteImport } from './routes/_authenticated/maintenance'
+import { Route as AuthenticatedIntelligenceRouteImport } from './routes/_authenticated/intelligence'
+import { Route as AuthenticatedIntegrationsRouteImport } from './routes/_authenticated/integrations'
 import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authenticated/incidents'
 import { Route as AuthenticatedHrRouteImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedHardwareReadinessRouteImport } from './routes/_authenticated/hardware-readiness'
@@ -43,9 +47,13 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedCustomerPortalRouteImport } from './routes/_authenticated/customer-portal'
 import { Route as AuthenticatedCrmRouteImport } from './routes/_authenticated/crm'
+import { Route as AuthenticatedComplianceRouteImport } from './routes/_authenticated/compliance'
 import { Route as AuthenticatedCommandCentreRouteImport } from './routes/_authenticated/command-centre'
+import { Route as AuthenticatedBusinessIntelligenceRouteImport } from './routes/_authenticated/business-intelligence'
 import { Route as AuthenticatedBrainRouteImport } from './routes/_authenticated/brain'
 import { Route as CustomerPortalShipmentsJobIdRouteImport } from './routes/customer-portal/shipments/$jobId'
+import { Route as AuthenticatedBrainOperationsRouteImport } from './routes/_authenticated/brain/operations'
+import { Route as AuthenticatedBrainEvaluationRouteImport } from './routes/_authenticated/brain/evaluation'
 
 const ResetPasswordRoute = ResetPasswordRouteImport.update({
   id: '/reset-password',
@@ -137,6 +145,17 @@ const AuthenticatedRouteIntelligenceRoute =
     path: '/route-intelligence',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedProcurementRoute =
+  AuthenticatedProcurementRouteImport.update({
+    id: '/procurement',
+    path: '/procurement',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedPlatformRoute = AuthenticatedPlatformRouteImport.update({
+  id: '/platform',
+  path: '/platform',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedOperationsControlRoute =
   AuthenticatedOperationsControlRouteImport.update({
     id: '/operations-control',
@@ -158,6 +177,18 @@ const AuthenticatedMaintenanceRoute =
   AuthenticatedMaintenanceRouteImport.update({
     id: '/maintenance',
     path: '/maintenance',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedIntelligenceRoute =
+  AuthenticatedIntelligenceRouteImport.update({
+    id: '/intelligence',
+    path: '/intelligence',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedIntegrationsRoute =
+  AuthenticatedIntegrationsRouteImport.update({
+    id: '/integrations',
+    path: '/integrations',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedIncidentsRoute = AuthenticatedIncidentsRouteImport.update({
@@ -223,10 +254,21 @@ const AuthenticatedCrmRoute = AuthenticatedCrmRouteImport.update({
   path: '/crm',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedComplianceRoute = AuthenticatedComplianceRouteImport.update({
+  id: '/compliance',
+  path: '/compliance',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedCommandCentreRoute =
   AuthenticatedCommandCentreRouteImport.update({
     id: '/command-centre',
     path: '/command-centre',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBusinessIntelligenceRoute =
+  AuthenticatedBusinessIntelligenceRouteImport.update({
+    id: '/business-intelligence',
+    path: '/business-intelligence',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedBrainRoute = AuthenticatedBrainRouteImport.update({
@@ -240,6 +282,18 @@ const CustomerPortalShipmentsJobIdRoute =
     path: '/$jobId',
     getParentRoute: () => CustomerPortalShipmentsRoute,
   } as any)
+const AuthenticatedBrainOperationsRoute =
+  AuthenticatedBrainOperationsRouteImport.update({
+    id: '/operations',
+    path: '/operations',
+    getParentRoute: () => AuthenticatedBrainRoute,
+  } as any)
+const AuthenticatedBrainEvaluationRoute =
+  AuthenticatedBrainEvaluationRouteImport.update({
+    id: '/evaluation',
+    path: '/evaluation',
+    getParentRoute: () => AuthenticatedBrainRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -248,8 +302,10 @@ export interface FileRoutesByFullPath {
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/brain': typeof AuthenticatedBrainRoute
+  '/brain': typeof AuthenticatedBrainRouteWithChildren
+  '/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/command-centre': typeof AuthenticatedCommandCentreRoute
+  '/compliance': typeof AuthenticatedComplianceRoute
   '/crm': typeof AuthenticatedCrmRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -261,10 +317,14 @@ export interface FileRoutesByFullPath {
   '/hardware-readiness': typeof AuthenticatedHardwareReadinessRoute
   '/hr': typeof AuthenticatedHrRoute
   '/incidents': typeof AuthenticatedIncidentsRoute
+  '/integrations': typeof AuthenticatedIntegrationsRoute
+  '/intelligence': typeof AuthenticatedIntelligenceRoute
   '/maintenance': typeof AuthenticatedMaintenanceRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/operations-control': typeof AuthenticatedOperationsControlRoute
+  '/platform': typeof AuthenticatedPlatformRoute
+  '/procurement': typeof AuthenticatedProcurementRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracking': typeof AuthenticatedTrackingRoute
@@ -276,6 +336,8 @@ export interface FileRoutesByFullPath {
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/share/$token': typeof ShareTokenRoute
   '/customer-portal/': typeof CustomerPortalIndexRoute
+  '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
+  '/brain/operations': typeof AuthenticatedBrainOperationsRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
 }
 export interface FileRoutesByTo {
@@ -284,8 +346,10 @@ export interface FileRoutesByTo {
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/brain': typeof AuthenticatedBrainRoute
+  '/brain': typeof AuthenticatedBrainRouteWithChildren
+  '/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/command-centre': typeof AuthenticatedCommandCentreRoute
+  '/compliance': typeof AuthenticatedComplianceRoute
   '/crm': typeof AuthenticatedCrmRoute
   '/customer-portal': typeof CustomerPortalIndexRoute
   '/customers': typeof AuthenticatedCustomersRoute
@@ -298,10 +362,14 @@ export interface FileRoutesByTo {
   '/hardware-readiness': typeof AuthenticatedHardwareReadinessRoute
   '/hr': typeof AuthenticatedHrRoute
   '/incidents': typeof AuthenticatedIncidentsRoute
+  '/integrations': typeof AuthenticatedIntegrationsRoute
+  '/intelligence': typeof AuthenticatedIntelligenceRoute
   '/maintenance': typeof AuthenticatedMaintenanceRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/operations-control': typeof AuthenticatedOperationsControlRoute
+  '/platform': typeof AuthenticatedPlatformRoute
+  '/procurement': typeof AuthenticatedProcurementRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracking': typeof AuthenticatedTrackingRoute
@@ -312,6 +380,8 @@ export interface FileRoutesByTo {
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/share/$token': typeof ShareTokenRoute
+  '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
+  '/brain/operations': typeof AuthenticatedBrainOperationsRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
 }
 export interface FileRoutesById {
@@ -323,8 +393,10 @@ export interface FileRoutesById {
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/reset-password': typeof ResetPasswordRoute
-  '/_authenticated/brain': typeof AuthenticatedBrainRoute
+  '/_authenticated/brain': typeof AuthenticatedBrainRouteWithChildren
+  '/_authenticated/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/_authenticated/command-centre': typeof AuthenticatedCommandCentreRoute
+  '/_authenticated/compliance': typeof AuthenticatedComplianceRoute
   '/_authenticated/crm': typeof AuthenticatedCrmRoute
   '/_authenticated/customer-portal': typeof AuthenticatedCustomerPortalRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
@@ -337,10 +409,14 @@ export interface FileRoutesById {
   '/_authenticated/hardware-readiness': typeof AuthenticatedHardwareReadinessRoute
   '/_authenticated/hr': typeof AuthenticatedHrRoute
   '/_authenticated/incidents': typeof AuthenticatedIncidentsRoute
+  '/_authenticated/integrations': typeof AuthenticatedIntegrationsRoute
+  '/_authenticated/intelligence': typeof AuthenticatedIntelligenceRoute
   '/_authenticated/maintenance': typeof AuthenticatedMaintenanceRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/operations': typeof AuthenticatedOperationsRoute
   '/_authenticated/operations-control': typeof AuthenticatedOperationsControlRoute
+  '/_authenticated/platform': typeof AuthenticatedPlatformRoute
+  '/_authenticated/procurement': typeof AuthenticatedProcurementRoute
   '/_authenticated/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tracking': typeof AuthenticatedTrackingRoute
@@ -352,6 +428,8 @@ export interface FileRoutesById {
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/share/$token': typeof ShareTokenRoute
   '/customer-portal/': typeof CustomerPortalIndexRoute
+  '/_authenticated/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
+  '/_authenticated/brain/operations': typeof AuthenticatedBrainOperationsRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
 }
 export interface FileRouteTypes {
@@ -364,7 +442,9 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/brain'
+    | '/business-intelligence'
     | '/command-centre'
+    | '/compliance'
     | '/crm'
     | '/customers'
     | '/dashboard'
@@ -376,10 +456,14 @@ export interface FileRouteTypes {
     | '/hardware-readiness'
     | '/hr'
     | '/incidents'
+    | '/integrations'
+    | '/intelligence'
     | '/maintenance'
     | '/notifications'
     | '/operations'
     | '/operations-control'
+    | '/platform'
+    | '/procurement'
     | '/route-intelligence'
     | '/settings'
     | '/tracking'
@@ -391,6 +475,8 @@ export interface FileRouteTypes {
     | '/customer-portal/shipments'
     | '/share/$token'
     | '/customer-portal/'
+    | '/brain/evaluation'
+    | '/brain/operations'
     | '/customer-portal/shipments/$jobId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -400,7 +486,9 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/brain'
+    | '/business-intelligence'
     | '/command-centre'
+    | '/compliance'
     | '/crm'
     | '/customer-portal'
     | '/customers'
@@ -413,10 +501,14 @@ export interface FileRouteTypes {
     | '/hardware-readiness'
     | '/hr'
     | '/incidents'
+    | '/integrations'
+    | '/intelligence'
     | '/maintenance'
     | '/notifications'
     | '/operations'
     | '/operations-control'
+    | '/platform'
+    | '/procurement'
     | '/route-intelligence'
     | '/settings'
     | '/tracking'
@@ -427,6 +519,8 @@ export interface FileRouteTypes {
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
     | '/share/$token'
+    | '/brain/evaluation'
+    | '/brain/operations'
     | '/customer-portal/shipments/$jobId'
   id:
     | '__root__'
@@ -438,7 +532,9 @@ export interface FileRouteTypes {
     | '/onboarding'
     | '/reset-password'
     | '/_authenticated/brain'
+    | '/_authenticated/business-intelligence'
     | '/_authenticated/command-centre'
+    | '/_authenticated/compliance'
     | '/_authenticated/crm'
     | '/_authenticated/customer-portal'
     | '/_authenticated/customers'
@@ -451,10 +547,14 @@ export interface FileRouteTypes {
     | '/_authenticated/hardware-readiness'
     | '/_authenticated/hr'
     | '/_authenticated/incidents'
+    | '/_authenticated/integrations'
+    | '/_authenticated/intelligence'
     | '/_authenticated/maintenance'
     | '/_authenticated/notifications'
     | '/_authenticated/operations'
     | '/_authenticated/operations-control'
+    | '/_authenticated/platform'
+    | '/_authenticated/procurement'
     | '/_authenticated/route-intelligence'
     | '/_authenticated/settings'
     | '/_authenticated/tracking'
@@ -466,6 +566,8 @@ export interface FileRouteTypes {
     | '/customer-portal/shipments'
     | '/share/$token'
     | '/customer-portal/'
+    | '/_authenticated/brain/evaluation'
+    | '/_authenticated/brain/operations'
     | '/customer-portal/shipments/$jobId'
   fileRoutesById: FileRoutesById
 }
@@ -608,6 +710,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteIntelligenceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/procurement': {
+      id: '/_authenticated/procurement'
+      path: '/procurement'
+      fullPath: '/procurement'
+      preLoaderRoute: typeof AuthenticatedProcurementRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/platform': {
+      id: '/_authenticated/platform'
+      path: '/platform'
+      fullPath: '/platform'
+      preLoaderRoute: typeof AuthenticatedPlatformRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/operations-control': {
       id: '/_authenticated/operations-control'
       path: '/operations-control'
@@ -634,6 +750,20 @@ declare module '@tanstack/react-router' {
       path: '/maintenance'
       fullPath: '/maintenance'
       preLoaderRoute: typeof AuthenticatedMaintenanceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/intelligence': {
+      id: '/_authenticated/intelligence'
+      path: '/intelligence'
+      fullPath: '/intelligence'
+      preLoaderRoute: typeof AuthenticatedIntelligenceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integrations': {
+      id: '/_authenticated/integrations'
+      path: '/integrations'
+      fullPath: '/integrations'
+      preLoaderRoute: typeof AuthenticatedIntegrationsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/incidents': {
@@ -720,11 +850,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCrmRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/compliance': {
+      id: '/_authenticated/compliance'
+      path: '/compliance'
+      fullPath: '/compliance'
+      preLoaderRoute: typeof AuthenticatedComplianceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/command-centre': {
       id: '/_authenticated/command-centre'
       path: '/command-centre'
       fullPath: '/command-centre'
       preLoaderRoute: typeof AuthenticatedCommandCentreRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/business-intelligence': {
+      id: '/_authenticated/business-intelligence'
+      path: '/business-intelligence'
+      fullPath: '/business-intelligence'
+      preLoaderRoute: typeof AuthenticatedBusinessIntelligenceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/brain': {
@@ -741,12 +885,41 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalShipmentsJobIdRouteImport
       parentRoute: typeof CustomerPortalShipmentsRoute
     }
+    '/_authenticated/brain/operations': {
+      id: '/_authenticated/brain/operations'
+      path: '/operations'
+      fullPath: '/brain/operations'
+      preLoaderRoute: typeof AuthenticatedBrainOperationsRouteImport
+      parentRoute: typeof AuthenticatedBrainRoute
+    }
+    '/_authenticated/brain/evaluation': {
+      id: '/_authenticated/brain/evaluation'
+      path: '/evaluation'
+      fullPath: '/brain/evaluation'
+      preLoaderRoute: typeof AuthenticatedBrainEvaluationRouteImport
+      parentRoute: typeof AuthenticatedBrainRoute
+    }
   }
 }
 
+interface AuthenticatedBrainRouteChildren {
+  AuthenticatedBrainEvaluationRoute: typeof AuthenticatedBrainEvaluationRoute
+  AuthenticatedBrainOperationsRoute: typeof AuthenticatedBrainOperationsRoute
+}
+
+const AuthenticatedBrainRouteChildren: AuthenticatedBrainRouteChildren = {
+  AuthenticatedBrainEvaluationRoute: AuthenticatedBrainEvaluationRoute,
+  AuthenticatedBrainOperationsRoute: AuthenticatedBrainOperationsRoute,
+}
+
+const AuthenticatedBrainRouteWithChildren =
+  AuthenticatedBrainRoute._addFileChildren(AuthenticatedBrainRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
-  AuthenticatedBrainRoute: typeof AuthenticatedBrainRoute
+  AuthenticatedBrainRoute: typeof AuthenticatedBrainRouteWithChildren
+  AuthenticatedBusinessIntelligenceRoute: typeof AuthenticatedBusinessIntelligenceRoute
   AuthenticatedCommandCentreRoute: typeof AuthenticatedCommandCentreRoute
+  AuthenticatedComplianceRoute: typeof AuthenticatedComplianceRoute
   AuthenticatedCrmRoute: typeof AuthenticatedCrmRoute
   AuthenticatedCustomerPortalRoute: typeof AuthenticatedCustomerPortalRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
@@ -759,10 +932,14 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedHardwareReadinessRoute: typeof AuthenticatedHardwareReadinessRoute
   AuthenticatedHrRoute: typeof AuthenticatedHrRoute
   AuthenticatedIncidentsRoute: typeof AuthenticatedIncidentsRoute
+  AuthenticatedIntegrationsRoute: typeof AuthenticatedIntegrationsRoute
+  AuthenticatedIntelligenceRoute: typeof AuthenticatedIntelligenceRoute
   AuthenticatedMaintenanceRoute: typeof AuthenticatedMaintenanceRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedOperationsRoute: typeof AuthenticatedOperationsRoute
   AuthenticatedOperationsControlRoute: typeof AuthenticatedOperationsControlRoute
+  AuthenticatedPlatformRoute: typeof AuthenticatedPlatformRoute
+  AuthenticatedProcurementRoute: typeof AuthenticatedProcurementRoute
   AuthenticatedRouteIntelligenceRoute: typeof AuthenticatedRouteIntelligenceRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackingRoute: typeof AuthenticatedTrackingRoute
@@ -771,8 +948,11 @@ interface AuthenticatedRouteRouteChildren {
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
-  AuthenticatedBrainRoute: AuthenticatedBrainRoute,
+  AuthenticatedBrainRoute: AuthenticatedBrainRouteWithChildren,
+  AuthenticatedBusinessIntelligenceRoute:
+    AuthenticatedBusinessIntelligenceRoute,
   AuthenticatedCommandCentreRoute: AuthenticatedCommandCentreRoute,
+  AuthenticatedComplianceRoute: AuthenticatedComplianceRoute,
   AuthenticatedCrmRoute: AuthenticatedCrmRoute,
   AuthenticatedCustomerPortalRoute: AuthenticatedCustomerPortalRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
@@ -785,10 +965,14 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedHardwareReadinessRoute: AuthenticatedHardwareReadinessRoute,
   AuthenticatedHrRoute: AuthenticatedHrRoute,
   AuthenticatedIncidentsRoute: AuthenticatedIncidentsRoute,
+  AuthenticatedIntegrationsRoute: AuthenticatedIntegrationsRoute,
+  AuthenticatedIntelligenceRoute: AuthenticatedIntelligenceRoute,
   AuthenticatedMaintenanceRoute: AuthenticatedMaintenanceRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedOperationsRoute: AuthenticatedOperationsRoute,
   AuthenticatedOperationsControlRoute: AuthenticatedOperationsControlRoute,
+  AuthenticatedPlatformRoute: AuthenticatedPlatformRoute,
+  AuthenticatedProcurementRoute: AuthenticatedProcurementRoute,
   AuthenticatedRouteIntelligenceRoute: AuthenticatedRouteIntelligenceRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackingRoute: AuthenticatedTrackingRoute,
@@ -846,13 +1030,3 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}

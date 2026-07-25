@@ -15,6 +15,8 @@ export default tseslint.config(
       ".playwright-browsers",
       "playwright-report",
       "test-results",
+      // The preserved standalone repository is a Phase 23A parity/reference input, not ZappOS code.
+      "ZappBrain-main/**",
     ],
   },
   {

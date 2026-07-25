@@ -22,6 +22,10 @@ const protectedRoutes = [
   "/warehouse",
   "/crm",
   "/hr",
+  "/compliance",
+  "/procurement",
+  "/business-intelligence",
+  "/integrations",
 ];
 
 async function expectNoHorizontalOverflow(page: import("@playwright/test").Page) {

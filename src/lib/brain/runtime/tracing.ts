@@ -1,0 +1,1 @@
+export { redactRuntimeDiagnostics } from "./core";

@@ -24,6 +24,10 @@ import {
   Warehouse,
   Handshake,
   UserRoundCog,
+  ShieldCheck,
+  ShoppingCart,
+  BarChart3,
+  Plug,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -77,7 +81,59 @@ const ALL: NavItem[] = [
     label: "Zapp Brain",
     to: "/brain",
     icon: BrainCircuit,
-    roles: ["admin", "fleet_manager", "dispatcher", "viewer"],
+    roles: [
+      "admin",
+      "fleet_manager",
+      "dispatcher",
+      "viewer",
+      "analyst",
+      "brain_administrator",
+      "brain_analyst",
+      "brain_reviewer",
+    ],
+  },
+  {
+    label: "ZIP Intelligence",
+    to: "/intelligence",
+    icon: BrainCircuit,
+    roles: [
+      "admin",
+      "fleet_manager",
+      "dispatcher",
+      "viewer",
+      "analyst",
+      "executive",
+      "managing_director",
+      "brain_administrator",
+      "brain_analyst",
+      "brain_reviewer",
+    ],
+  },
+  {
+    label: "Zapp Platform",
+    to: "/platform",
+    icon: Cpu,
+    roles: [
+      "admin",
+      "system_administrator",
+      "technical_administrator",
+      "integration_manager",
+      "brain_administrator",
+      "fleet_manager",
+      "warehouse_manager",
+      "warehouse_supervisor",
+      "operations_manager",
+      "supervisor",
+      "quality_manager",
+      "finance_manager",
+      "finance_officer",
+      "executive",
+      "managing_director",
+      "analyst",
+      "viewer",
+      "procurement_manager",
+      "compliance_manager",
+    ],
   },
   {
     label: "Hardware readiness",
@@ -141,6 +197,81 @@ const ALL: NavItem[] = [
       "supervisor",
       "employee",
       "driver",
+      "viewer",
+    ],
+  },
+  {
+    label: "Compliance",
+    to: "/compliance",
+    icon: ShieldCheck,
+    roles: [
+      "admin",
+      "compliance_manager",
+      "safety_officer",
+      "quality_manager",
+      "fleet_manager",
+      "warehouse_manager",
+      "hr_manager",
+      "operations_manager",
+      "supervisor",
+      "viewer",
+      "driver",
+    ],
+  },
+  {
+    label: "Procurement",
+    to: "/procurement",
+    icon: ShoppingCart,
+    roles: [
+      "admin",
+      "procurement_manager",
+      "procurement_officer",
+      "finance_manager",
+      "finance_officer",
+      "warehouse_manager",
+      "fleet_manager",
+      "department_manager",
+      "operations_manager",
+      "viewer",
+    ],
+  },
+  {
+    label: "BI & Reports",
+    to: "/business-intelligence",
+    icon: BarChart3,
+    roles: [
+      "admin",
+      "executive",
+      "managing_director",
+      "operations_manager",
+      "finance_manager",
+      "commercial_manager",
+      "sales_manager",
+      "sales_representative",
+      "customer_success_manager",
+      "customer_care",
+      "fleet_manager",
+      "warehouse_manager",
+      "hr_manager",
+      "compliance_manager",
+      "procurement_manager",
+      "crm_manager",
+      "department_manager",
+      "analyst",
+      "viewer",
+    ],
+  },
+  {
+    label: "Integrations",
+    to: "/integrations",
+    icon: Plug,
+    roles: [
+      "admin",
+      "integration_manager",
+      "system_administrator",
+      "technical_administrator",
+      "api_developer",
+      "support_engineer",
       "viewer",
     ],
   },
@@ -230,15 +361,67 @@ export function AppShell({ children }: { children: ReactNode }) {
     ].includes(role),
   );
   const hrRestricted = hasHrRole && !hasElevatedAccess && !hasWarehouseRole && !hasCrmRole;
+  const hasComplianceRole = roles.some((role) =>
+    ["compliance_manager", "safety_officer", "quality_manager"].includes(role),
+  );
+  const complianceRestricted =
+    hasComplianceRole && !hasElevatedAccess && !hasWarehouseRole && !hasCrmRole;
+  const hasBiRole = roles.some((role) =>
+    [
+      "admin",
+      "executive",
+      "managing_director",
+      "analyst",
+      "viewer",
+      "operations_manager",
+      "finance_manager",
+      "finance_officer",
+      "commercial_manager",
+      "sales_manager",
+      "sales_representative",
+      "customer_success_manager",
+      "customer_care",
+      "fleet_manager",
+      "warehouse_manager",
+      "hr_manager",
+      "hr_officer",
+      "compliance_manager",
+      "procurement_manager",
+      "crm_manager",
+      "department_manager",
+    ].includes(role),
+  );
 
   // Rename Operations label based on terminology
   const navItems = filterFor(ALL, roles)
-    .filter((item) => !driverRestricted || ["/driver", "/hr", "/notifications"].includes(item.to))
     .filter(
-      (item) => !warehouseRestricted || ["/warehouse", "/hr", "/notifications"].includes(item.to),
+      (item) =>
+        !driverRestricted || ["/driver", "/hr", "/compliance", "/notifications"].includes(item.to),
     )
-    .filter((item) => !crmRestricted || ["/crm", "/notifications"].includes(item.to))
-    .filter((item) => !hrRestricted || ["/hr", "/notifications"].includes(item.to))
+    .filter(
+      (item) =>
+        !warehouseRestricted ||
+        ["/warehouse", "/hr", "/compliance", "/notifications"].includes(item.to) ||
+        (hasBiRole && item.to === "/business-intelligence"),
+    )
+    .filter(
+      (item) =>
+        !crmRestricted ||
+        ["/crm", "/notifications"].includes(item.to) ||
+        (hasBiRole && item.to === "/business-intelligence"),
+    )
+    .filter(
+      (item) =>
+        !hrRestricted ||
+        ["/hr", "/notifications"].includes(item.to) ||
+        (hasBiRole && item.to === "/business-intelligence"),
+    )
+    .filter(
+      (item) =>
+        !complianceRestricted ||
+        ["/compliance", "/notifications"].includes(item.to) ||
+        (hasBiRole && item.to === "/business-intelligence"),
+    )
     .map((i) => (i.to === "/operations" ? { ...i, label: terminology.Plural } : i));
   const mobileNav = navItems.filter((i) => i.mobile).slice(0, 5);
 

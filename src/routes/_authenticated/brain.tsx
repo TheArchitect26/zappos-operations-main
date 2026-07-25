@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useRouterState } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
@@ -14,6 +14,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { EmptyState, ErrorState, LoadingState } from "@/components/operational-state";
 import { StatusBadge } from "@/components/ui/status-badge-detailed";
+import { BrainFoundationWorkspace } from "@/components/brain/brain-foundation-workspace";
 import {
   ZAPP_BRAIN_CATEGORIES,
   ZAPP_BRAIN_CONFIDENCE_LEVELS,
@@ -108,9 +109,24 @@ function formatDate(value: string) {
   }).format(new Date(value));
 }
 
+function redactSensitive(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(redactSensitive);
+  if (!value || typeof value !== "object") return value;
+  return Object.fromEntries(
+    Object.entries(value as Record<string, unknown>).map(([key, item]) => [
+      key,
+      /password|secret|token|api[_-]?key|bank|medical|payroll|identity.*number|id[_-]?number/i.test(
+        key,
+      )
+        ? "[redacted]"
+        : redactSensitive(item),
+    ]),
+  );
+}
+
 function safeJsonText(value: unknown) {
   try {
-    return JSON.stringify(value ?? {}, null, 2) ?? "{}";
+    return JSON.stringify(redactSensitive(value ?? {}), null, 2) ?? "{}";
   } catch {
     return "{}";
   }
@@ -129,7 +145,9 @@ function JsonViewer({ value }: { value: unknown }) {
 }
 
 function BrainPage() {
-  const { activeCompany, hasAnyRole } = useCompany();
+  const pathname = useRouterState({ select: (state) => state.location.pathname });
+  const isChildWorkspaceRoute = ["/brain/evaluation", "/brain/operations"].includes(pathname);
+  const { activeCompany, hasAnyRole, roles } = useCompany();
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [runningAnalysis, setRunningAnalysis] = useState(false);
@@ -147,8 +165,23 @@ function BrainPage() {
   const [reasonLabel, setReasonLabel] = useState<ZappBrainReasonLabel>("unknown");
 
   const activeCompanyId = activeCompany?.id;
-  const canRead = hasAnyRole(["admin", "fleet_manager", "dispatcher", "viewer"]);
-  const canReview = hasAnyRole(["admin", "fleet_manager", "dispatcher"]);
+  const canRead = hasAnyRole([
+    "admin",
+    "fleet_manager",
+    "dispatcher",
+    "viewer",
+    "analyst",
+    "brain_administrator",
+    "brain_analyst",
+    "brain_reviewer",
+  ]);
+  const canReview = hasAnyRole([
+    "admin",
+    "fleet_manager",
+    "dispatcher",
+    "brain_administrator",
+    "brain_reviewer",
+  ]);
 
   const load = useCallback(async () => {
     if (!activeCompanyId) {
@@ -412,6 +445,8 @@ function BrainPage() {
     }
   };
 
+  if (isChildWorkspaceRoute) return <Outlet />;
+
   if (!canRead) {
     return (
       <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
@@ -488,6 +523,8 @@ function BrainPage() {
       </Card>
 
       {error ? <ErrorState title="Zapp Brain unavailable" description={error} /> : null}
+
+      <BrainFoundationWorkspace companyId={activeCompanyId ?? ""} roles={roles} />
 
       <Card className="p-4">
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

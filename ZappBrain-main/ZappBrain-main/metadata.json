@@ -1,0 +1,6 @@
+{
+  "name": "Zapp Brain",
+  "description": "Zapp Brain Elite Causal AI Engineering Platform & Simulation Sandbox. Built for Zapp's internal AI research teams to develop, validate, benchmark, and simulate the intelligence powering ZappOS.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

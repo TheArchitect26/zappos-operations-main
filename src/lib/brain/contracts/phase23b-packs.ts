@@ -1,0 +1,81 @@
+export const PHASE23B_RULE_PACKS = {
+  fleet: [
+    "repeated_critical_fault",
+    "maintenance_frequency_increase",
+    "vehicle_downtime_deterioration",
+    "repeated_post_maintenance_defect",
+    "utilisation_imbalance",
+  ],
+  tracking: [
+    "repeated_route_deviation",
+    "telemetry_freshness_failure",
+    "connectivity_gap_pattern",
+    "excessive_stop_duration",
+    "route_performance_deterioration",
+  ],
+  operations: [
+    "repeated_shipment_delay",
+    "exception_concentration",
+    "capacity_imbalance",
+    "incident_backlog",
+    "customer_impact_pattern",
+  ],
+  warehouse: [
+    "repeated_stock_shortage",
+    "receiving_delay_pattern",
+    "picking_delay_pattern",
+    "cycle_count_variance_pattern",
+    "replenishment_review",
+  ],
+  crm: [
+    "repeated_complaint",
+    "sla_breach_pattern",
+    "account_health_deterioration",
+    "onboarding_delay",
+    "customer_follow_up_gap",
+  ],
+  hr: [
+    "training_gap",
+    "certification_expiry",
+    "shift_coverage_risk",
+    "attendance_exception_pattern",
+    "onboarding_bottleneck",
+  ],
+  compliance: [
+    "repeated_incident_category",
+    "capa_overdue",
+    "audit_finding_recurrence",
+    "permit_expiry_concentration",
+    "corrective_control_concern",
+  ],
+  procurement: [
+    "supplier_delay_pattern",
+    "supplier_compliance_deterioration",
+    "receipt_exception_pattern",
+    "emergency_purchasing_frequency",
+    "purchase_order_cycle_time_deterioration",
+  ],
+  bi: [
+    "kpi_freshness_warning",
+    "repeated_target_miss",
+    "data_quality_deterioration",
+    "reporting_period_incomplete",
+    "scorecard_status_deterioration",
+  ],
+  integration: [
+    "repeated_sync_failure",
+    "dlq_growth",
+    "mapping_failure_pattern",
+    "authentication_expiry_risk",
+    "connector_health_deterioration",
+  ],
+} as const;
+
+export const PHASE23B_FEATURE_TEMPLATES = [
+  { code: "record.count.v1", type: "count", status: "draft" },
+  { code: "event.frequency.v1", type: "frequency", status: "draft" },
+  { code: "record.freshness.v1", type: "data_freshness", status: "draft" },
+  { code: "pattern.repetition.v1", type: "repetition_score", status: "draft" },
+  { code: "metric.trend.v1", type: "trend", status: "draft" },
+  { code: "data.missing-rate.v1", type: "missing_data_rate", status: "draft" },
+] as const;

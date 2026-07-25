@@ -1198,7 +1198,27 @@ export type Database = {
         | "department_manager"
         | "payroll_officer"
         | "supervisor"
-        | "employee";
+        | "employee"
+        | "compliance_manager"
+        | "safety_officer"
+        | "quality_manager"
+        | "procurement_manager"
+        | "procurement_officer"
+        | "finance_officer"
+        | "executive"
+        | "managing_director"
+        | "commercial_manager"
+        | "crm_manager"
+        | "analyst"
+        | "integration_manager"
+        | "system_administrator"
+        | "technical_administrator"
+        | "api_developer"
+        | "support_engineer"
+        | "brain_administrator"
+        | "brain_analyst"
+        | "brain_reviewer"
+        | "brain_service";
       business_type:
         | "logistics"
         | "trucking"
@@ -1404,6 +1424,26 @@ export const Constants = {
         "payroll_officer",
         "supervisor",
         "employee",
+        "compliance_manager",
+        "safety_officer",
+        "quality_manager",
+        "procurement_manager",
+        "procurement_officer",
+        "finance_officer",
+        "executive",
+        "managing_director",
+        "commercial_manager",
+        "crm_manager",
+        "analyst",
+        "integration_manager",
+        "system_administrator",
+        "technical_administrator",
+        "api_developer",
+        "support_engineer",
+        "brain_administrator",
+        "brain_analyst",
+        "brain_reviewer",
+        "brain_service",
       ],
       business_type: [
         "logistics",

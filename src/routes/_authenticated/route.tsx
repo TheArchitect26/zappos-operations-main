@@ -80,6 +80,36 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
     ].includes(role),
   );
   const hrRestricted = hasHrRole && !hasElevatedAccess && !hasWarehouseRole && !hasCrmRole;
+  const hasComplianceRole = roles.some((role) =>
+    ["compliance_manager", "safety_officer", "quality_manager"].includes(role),
+  );
+  const complianceRestricted =
+    hasComplianceRole && !hasElevatedAccess && !hasWarehouseRole && !hasCrmRole;
+  const hasBiRole = roles.some((role) =>
+    [
+      "admin",
+      "executive",
+      "managing_director",
+      "analyst",
+      "viewer",
+      "operations_manager",
+      "finance_manager",
+      "finance_officer",
+      "commercial_manager",
+      "sales_manager",
+      "sales_representative",
+      "customer_success_manager",
+      "customer_care",
+      "fleet_manager",
+      "warehouse_manager",
+      "hr_manager",
+      "hr_officer",
+      "compliance_manager",
+      "procurement_manager",
+      "crm_manager",
+      "department_manager",
+    ].includes(role),
+  );
 
   useEffect(() => {
     if (!loading && companies.length === 0) navigate({ to: "/onboarding", replace: true });
@@ -87,7 +117,7 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!loading && driverRestricted) {
-      const allowed = ["/driver", "/hr", "/notifications"].some((prefix) =>
+      const allowed = ["/driver", "/hr", "/compliance", "/notifications"].some((prefix) =>
         location.pathname.startsWith(prefix),
       );
       if (!allowed) {
@@ -98,36 +128,47 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!loading && warehouseRestricted) {
-      const allowed = ["/warehouse", "/hr", "/notifications"].some((prefix) =>
-        location.pathname.startsWith(prefix),
-      );
+      const allowed =
+        ["/warehouse", "/hr", "/compliance", "/notifications"].some((prefix) =>
+          location.pathname.startsWith(prefix),
+        ) ||
+        (hasBiRole && location.pathname.startsWith("/business-intelligence"));
       if (!allowed) {
         navigate({ to: "/warehouse", replace: true });
       }
     }
-  }, [warehouseRestricted, loading, location.pathname, navigate]);
+  }, [warehouseRestricted, hasBiRole, loading, location.pathname, navigate]);
 
   useEffect(() => {
     if (!loading && crmRestricted) {
-      const allowed = ["/crm", "/notifications"].some((prefix) =>
-        location.pathname.startsWith(prefix),
-      );
+      const allowed =
+        ["/crm", "/notifications"].some((prefix) => location.pathname.startsWith(prefix)) ||
+        (hasBiRole && location.pathname.startsWith("/business-intelligence"));
       if (!allowed) {
         navigate({ to: "/crm", replace: true });
       }
     }
-  }, [crmRestricted, loading, location.pathname, navigate]);
+  }, [crmRestricted, hasBiRole, loading, location.pathname, navigate]);
 
   useEffect(() => {
     if (!loading && hrRestricted) {
-      const allowed = ["/hr", "/notifications"].some((prefix) =>
-        location.pathname.startsWith(prefix),
-      );
+      const allowed =
+        ["/hr", "/notifications"].some((prefix) => location.pathname.startsWith(prefix)) ||
+        (hasBiRole && location.pathname.startsWith("/business-intelligence"));
       if (!allowed) {
         navigate({ to: "/hr", replace: true });
       }
     }
-  }, [hrRestricted, loading, location.pathname, navigate]);
+  }, [hrRestricted, hasBiRole, loading, location.pathname, navigate]);
+
+  useEffect(() => {
+    if (!loading && complianceRestricted) {
+      const allowed =
+        ["/compliance", "/notifications"].some((prefix) => location.pathname.startsWith(prefix)) ||
+        (hasBiRole && location.pathname.startsWith("/business-intelligence"));
+      if (!allowed) navigate({ to: "/compliance", replace: true });
+    }
+  }, [complianceRestricted, hasBiRole, loading, location.pathname, navigate]);
 
   if (loading) {
     return (
