@@ -1,7 +1,7 @@
 -- Phase 24 ZIP security. All AI-adjacent records are company-scoped, evidence-only, and fail closed.
 CREATE OR REPLACE FUNCTION public.zip_is_reader(_company_id UUID) RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
   SELECT public.brain_is_ops_reader(_company_id)
-    AND NOT public.has_any_role(_company_id, ARRAY['driver','customer']::public.app_role[])
+    AND NOT public.has_any_role(_company_id, ARRAY['driver']::public.app_role[])
 $$;
 CREATE OR REPLACE FUNCTION public.zip_is_admin(_company_id UUID) RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
   SELECT public.zip_is_reader(_company_id) AND public.brain_is_ops_admin(_company_id)

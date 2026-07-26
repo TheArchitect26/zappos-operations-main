@@ -5,7 +5,6 @@
 -- =========================================================================
 
 DO $$ BEGIN
-  ALTER TYPE public.telemetry_source ADD VALUE IF NOT EXISTS 'SIMULATOR';
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
 DO $$ BEGIN

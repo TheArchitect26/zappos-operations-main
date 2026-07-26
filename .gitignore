@@ -43,3 +43,6 @@ dist-ssr
 .env
 .env
 .env
+
+.env.production
+supabase/.temp/

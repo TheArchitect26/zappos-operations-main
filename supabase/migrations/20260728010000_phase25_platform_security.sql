@@ -19,7 +19,7 @@ CREATE OR REPLACE FUNCTION public.platform_is_global_reader() RETURNS BOOLEAN LA
   SELECT EXISTS(SELECT 1 FROM public.user_roles WHERE user_id=auth.uid() AND role IN ('admin','system_administrator','technical_administrator','integration_manager','brain_administrator','brain_analyst','brain_reviewer','fleet_manager','dispatcher','warehouse_manager','warehouse_supervisor','operations_manager','quality_manager','procurement_manager','compliance_manager','finance_manager','finance_officer','executive','managing_director','analyst','viewer'))
 $$;
 CREATE OR REPLACE FUNCTION public.platform_is_mobile_user(_company_id UUID) RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
-  SELECT public.is_company_member(_company_id) AND NOT public.has_any_role(_company_id, ARRAY['customer']::public.app_role[])
+  SELECT public.is_company_member(_company_id) AND NOT public.has_any_role(_company_id, ARRAY[]::public.app_role[])
 $$;
 REVOKE ALL ON FUNCTION public.platform_is_reader(UUID),public.platform_is_admin(UUID),public.platform_is_device_manager(UUID),public.platform_is_finance_manager(UUID),public.platform_is_service(UUID),public.platform_is_global_admin(),public.platform_is_global_reader(),public.platform_is_mobile_user(UUID) FROM PUBLIC, anon;
 GRANT EXECUTE ON FUNCTION public.platform_is_reader(UUID),public.platform_is_admin(UUID),public.platform_is_device_manager(UUID),public.platform_is_finance_manager(UUID),public.platform_is_service(UUID),public.platform_is_global_admin(),public.platform_is_global_reader(),public.platform_is_mobile_user(UUID) TO authenticated;

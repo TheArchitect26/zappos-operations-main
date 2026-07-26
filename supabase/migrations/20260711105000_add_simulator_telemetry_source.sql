@@ -1,0 +1,2 @@
+ALTER TYPE public.telemetry_source
+ADD VALUE IF NOT EXISTS 'SIMULATOR';

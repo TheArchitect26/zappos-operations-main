@@ -387,6 +387,10 @@ ALTER TABLE public.customer_shipment_locations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.customer_document_links ENABLE ROW LEVEL SECURITY;
 GRANT SELECT, INSERT, UPDATE ON public.customer_shipment_settings, public.customer_shipment_locations, public.customer_document_links TO authenticated;
 GRANT ALL ON public.customer_shipment_settings, public.customer_shipment_locations, public.customer_document_links TO service_role;
+ALTER TABLE public.documents
+ADD COLUMN IF NOT EXISTS visibility TEXT NOT NULL DEFAULT 'internal'
+CHECK (visibility IN ('internal','customer_visible'));
+
 
 CREATE POLICY "portal shipment settings read" ON public.customer_shipment_settings FOR SELECT TO authenticated USING (
   EXISTS (SELECT 1 FROM public.customer_portal_memberships m WHERE m.user_id = auth.uid() AND m.status = 'active' AND m.company_id = customer_shipment_settings.company_id AND m.customer_id = customer_shipment_settings.customer_id)

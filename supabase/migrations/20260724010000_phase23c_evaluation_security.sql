@@ -1,7 +1,7 @@
 -- Phase 23C security: evaluation artefacts are isolated, advisory, and audited.
 CREATE OR REPLACE FUNCTION public.brain_is_evaluation_reader(_company_id UUID) RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
   SELECT public.brain_is_internal_reader(_company_id)
-    AND NOT public.has_any_role(_company_id, ARRAY['driver','customer']::public.app_role[])
+    AND NOT public.has_any_role(_company_id, ARRAY['driver']::public.app_role[])
     AND (NOT public.has_role(_company_id,'employee'::public.app_role) OR public.brain_is_administrator(_company_id) OR public.brain_is_analyst(_company_id) OR public.brain_is_reviewer(_company_id))
 $$;
 CREATE OR REPLACE FUNCTION public.brain_is_evaluation_analyst(_company_id UUID) RETURNS BOOLEAN LANGUAGE sql STABLE SECURITY DEFINER SET search_path=public AS $$
