@@ -2,44 +2,32 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Card } from "@/components/ui/card";
-import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { customerStatusLabel, mapJobStatusToCustomerStatus } from "@/lib/customer-portal";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal/")({ component: CustomerDashboard });
 
 function CustomerDashboard() {
   const { session } = useSession();
-  const [jobs, setJobs] = useState<any[]>([]);
+  const [dashboard, setDashboard] = useState<any>(null);
   useEffect(() => {
     if (!session?.user.id) return;
-    void (async () => {
-      const { data: member } = await supabase
-        .from("customer_portal_memberships")
-        .select("company_id,customer_id")
-        .eq("user_id", session.user.id)
-        .eq("status", "active")
-        .limit(1)
-        .maybeSingle();
-      if (!member) return setJobs([]);
-      const { data } = await supabase
-        .from("jobs")
-        .select("id,reference,status,scheduled_at,completed_at,updated_at")
-        .eq("company_id", member.company_id)
-        .eq("customer_id", member.customer_id)
-        .order("updated_at", { ascending: false })
-        .range(0, 19);
-      setJobs(data ?? []);
-    })();
+    void portalApi.dashboard().then(setDashboard);
   }, [session?.user.id]);
-  const count = (statuses: string[]) => jobs.filter((job) => statuses.includes(job.status)).length;
   const cards = [
-    ["Active shipments", count(["assigned", "accepted", "in_progress", "arrived"])],
-    ["Scheduled shipments", count(["unassigned"])],
-    ["Delivered shipments", count(["completed"])],
-    ["Delayed shipments", count(["failed"])],
-    ["Awaiting proof", jobs.filter((job) => job.status === "completed").length],
+    ["Active shipments", dashboard?.active_shipments ?? 0],
+    ["Deliveries today", dashboard?.deliveries_today ?? 0],
+    ["Vehicles en route", dashboard?.en_route ?? 0],
+    ["Delayed shipments", dashboard?.delayed ?? 0],
+    ["Completed deliveries", dashboard?.completed ?? 0],
+    ["Outstanding invoices", dashboard?.outstanding_invoices ?? 0],
+    ["POD awaiting review", dashboard?.pod_awaiting_review ?? 0],
+    ["Active quotes", dashboard?.active_quotes ?? 0],
+    ["Support tickets", dashboard?.support_tickets ?? 0],
+    ["Notifications", dashboard?.notifications ?? 0],
   ];
+  const jobs = dashboard?.recent_shipments ?? [];
   return (
     <div className="space-y-5">
       <div>
@@ -62,7 +50,7 @@ function CustomerDashboard() {
           </Link>
         </div>
         <div className="mt-4 space-y-3">
-          {jobs.slice(0, 5).map((job) => (
+          {jobs.slice(0, 5).map((job: any) => (
             <Link
               key={job.id}
               to="/customer-portal/shipments/$jobId"

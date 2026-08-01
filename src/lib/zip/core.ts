@@ -32,6 +32,8 @@ export interface ZipCitation {
   documentVersionId: string;
   chunkId: string;
   title: string;
+  /** Stable compatibility name used by ZIP consumers. */
+  sourceTitle: string;
   excerpt: string;
   sourceType: "knowledge_document" | "zappos_record" | "brain_evidence";
   sourceRecordId?: string | null;
@@ -49,8 +51,12 @@ export interface ZipRelatedRecord {
 export interface ZipIntelligenceResponse {
   requestId: string;
   state: "available" | "unavailable" | "blocked" | "pending";
+  /** Stable compatibility name for the response state. */
+  availability: "available" | "unavailable" | "blocked" | "pending";
   insight: string | null;
   evidence: ZipCitation[];
+  /** Stable compatibility name for supporting evidence. */
+  citations: ZipCitation[];
   confidence: number | null;
   priority: ZipPriority;
   explanation: string | null;
@@ -69,8 +75,10 @@ export function unavailableZipResponse(
   return {
     requestId,
     state: "unavailable",
+    availability: "unavailable",
     insight: null,
     evidence: [],
+    citations: [],
     confidence: null,
     priority: "unavailable",
     explanation: reason,

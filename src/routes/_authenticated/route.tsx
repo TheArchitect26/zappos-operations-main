@@ -117,8 +117,8 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     if (!loading && driverRestricted) {
-      const allowed = ["/driver", "/hr", "/compliance", "/notifications"].some((prefix) =>
-        location.pathname.startsWith(prefix),
+      const allowed = ["/mobile", "/driver", "/hr", "/compliance", "/notifications"].some(
+        (prefix) => location.pathname.startsWith(prefix),
       );
       if (!allowed) {
         navigate({ to: "/driver", replace: true });
@@ -129,7 +129,7 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && warehouseRestricted) {
       const allowed =
-        ["/warehouse", "/hr", "/compliance", "/notifications"].some((prefix) =>
+        ["/mobile", "/warehouse", "/hr", "/compliance", "/notifications"].some((prefix) =>
           location.pathname.startsWith(prefix),
         ) ||
         (hasBiRole && location.pathname.startsWith("/business-intelligence"));
@@ -142,7 +142,9 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && crmRestricted) {
       const allowed =
-        ["/crm", "/notifications"].some((prefix) => location.pathname.startsWith(prefix)) ||
+        ["/mobile", "/crm", "/notifications"].some((prefix) =>
+          location.pathname.startsWith(prefix),
+        ) ||
         (hasBiRole && location.pathname.startsWith("/business-intelligence"));
       if (!allowed) {
         navigate({ to: "/crm", replace: true });
@@ -153,7 +155,9 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && hrRestricted) {
       const allowed =
-        ["/hr", "/notifications"].some((prefix) => location.pathname.startsWith(prefix)) ||
+        ["/mobile", "/hr", "/notifications"].some((prefix) =>
+          location.pathname.startsWith(prefix),
+        ) ||
         (hasBiRole && location.pathname.startsWith("/business-intelligence"));
       if (!allowed) {
         navigate({ to: "/hr", replace: true });
@@ -164,7 +168,9 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && complianceRestricted) {
       const allowed =
-        ["/compliance", "/notifications"].some((prefix) => location.pathname.startsWith(prefix)) ||
+        ["/mobile", "/compliance", "/notifications"].some((prefix) =>
+          location.pathname.startsWith(prefix),
+        ) ||
         (hasBiRole && location.pathname.startsWith("/business-intelligence"));
       if (!allowed) navigate({ to: "/compliance", replace: true });
     }

@@ -15,8 +15,8 @@ export async function detectJobAssignmentConflicts(
   const { data, error } = await supabase.rpc("job_assignment_conflicts", {
     _company_id: companyId,
     _job_id: excludeJobId ?? "00000000-0000-0000-0000-000000000000",
-    _driver_id: driverId,
-    _vehicle_id: vehicleId,
+    _driver_id: driverId ?? undefined,
+    _vehicle_id: vehicleId ?? undefined,
   });
   if (error) throw error;
   return Array.isArray(data) ? (data as unknown as ConflictWarning[]) : [];

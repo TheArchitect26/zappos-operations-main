@@ -129,6 +129,15 @@ BEGIN
   IF TG_OP='DELETE' THEN RETURN OLD; END IF; RETURN NEW;
 END $$;
 
+CREATE OR REPLACE FUNCTION public.zip_audit_no_mutation() RETURNS TRIGGER LANGUAGE plpgsql SET search_path=public AS $$
+BEGIN
+  RAISE EXCEPTION 'ZIP audit logs are append-only';
+  RETURN NULL;
+END $$;
+
+CREATE TRIGGER zip_audit_no_mutation BEFORE UPDATE OR DELETE ON public.zip_audit_logs
+FOR EACH ROW EXECUTE FUNCTION public.zip_audit_no_mutation();
+
 DO $$ DECLARE table_name TEXT; BEGIN
   FOREACH table_name IN ARRAY ARRAY['zip_prompt_templates','zip_prompt_versions','zip_provider_configurations','zip_knowledge_sources','zip_knowledge_documents','zip_knowledge_document_versions','zip_knowledge_chunks','zip_retrieval_requests','zip_retrieval_citations','zip_intelligence_api_requests','zip_intelligence_api_responses','zip_intelligence_response_citations','zip_provider_gateway_requests','zip_provider_gateway_calls','zip_chat_sessions','zip_chat_messages','zip_memory_records','zip_copilot_profiles','zip_agent_registry','zip_agent_runs','zip_executive_briefings','zip_safety_assessments','zip_ai_evaluations','zip_user_feedback','zip_model_deployment_metadata','zip_audit_logs'] LOOP
     EXECUTE format('ALTER TABLE public.%I ENABLE ROW LEVEL SECURITY',table_name);

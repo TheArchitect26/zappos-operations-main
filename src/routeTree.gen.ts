@@ -20,8 +20,17 @@ import { Route as CustomerPortalIndexRouteImport } from './routes/customer-porta
 import { Route as ShareTokenRouteImport } from './routes/share/$token'
 import { Route as CustomerPortalShipmentsRouteImport } from './routes/customer-portal/shipments'
 import { Route as CustomerPortalSettingsRouteImport } from './routes/customer-portal/settings'
+import { Route as CustomerPortalSecurityRouteImport } from './routes/customer-portal/security'
 import { Route as CustomerPortalRequestsRouteImport } from './routes/customer-portal/requests'
+import { Route as CustomerPortalQuotesRouteImport } from './routes/customer-portal/quotes'
+import { Route as CustomerPortalProfileRouteImport } from './routes/customer-portal/profile'
+import { Route as CustomerPortalNotificationsRouteImport } from './routes/customer-portal/notifications'
+import { Route as CustomerPortalMessagesRouteImport } from './routes/customer-portal/messages'
+import { Route as CustomerPortalInvoicesRouteImport } from './routes/customer-portal/invoices'
 import { Route as CustomerPortalDocumentsRouteImport } from './routes/customer-portal/documents'
+import { Route as CustomerPortalAssistantRouteImport } from './routes/customer-portal/assistant'
+import { Route as CustomerPortalApiRouteImport } from './routes/customer-portal/api'
+import { Route as CustomerPortalAnalyticsRouteImport } from './routes/customer-portal/analytics'
 import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authenticated/warehouse'
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
 import { Route as AuthenticatedTrackingRouteImport } from './routes/_authenticated/tracking'
@@ -32,6 +41,7 @@ import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedOperationsControlRouteImport } from './routes/_authenticated/operations-control'
 import { Route as AuthenticatedOperationsRouteImport } from './routes/_authenticated/operations'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
+import { Route as AuthenticatedMobileRouteImport } from './routes/_authenticated/mobile'
 import { Route as AuthenticatedMaintenanceRouteImport } from './routes/_authenticated/maintenance'
 import { Route as AuthenticatedIntelligenceRouteImport } from './routes/_authenticated/intelligence'
 import { Route as AuthenticatedIntegrationsRouteImport } from './routes/_authenticated/integrations'
@@ -109,14 +119,60 @@ const CustomerPortalSettingsRoute = CustomerPortalSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalSecurityRoute = CustomerPortalSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
 const CustomerPortalRequestsRoute = CustomerPortalRequestsRouteImport.update({
   id: '/requests',
   path: '/requests',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalQuotesRoute = CustomerPortalQuotesRouteImport.update({
+  id: '/quotes',
+  path: '/quotes',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
+const CustomerPortalProfileRoute = CustomerPortalProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
+const CustomerPortalNotificationsRoute =
+  CustomerPortalNotificationsRouteImport.update({
+    id: '/notifications',
+    path: '/notifications',
+    getParentRoute: () => CustomerPortalRoute,
+  } as any)
+const CustomerPortalMessagesRoute = CustomerPortalMessagesRouteImport.update({
+  id: '/messages',
+  path: '/messages',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
+const CustomerPortalInvoicesRoute = CustomerPortalInvoicesRouteImport.update({
+  id: '/invoices',
+  path: '/invoices',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
 const CustomerPortalDocumentsRoute = CustomerPortalDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
+const CustomerPortalAssistantRoute = CustomerPortalAssistantRouteImport.update({
+  id: '/assistant',
+  path: '/assistant',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
+const CustomerPortalApiRoute = CustomerPortalApiRouteImport.update({
+  id: '/api',
+  path: '/api',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
+const CustomerPortalAnalyticsRoute = CustomerPortalAnalyticsRouteImport.update({
+  id: '/analytics',
+  path: '/analytics',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
 const AuthenticatedWarehouseRoute = AuthenticatedWarehouseRouteImport.update({
@@ -173,6 +229,11 @@ const AuthenticatedNotificationsRoute =
     path: '/notifications',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedMobileRoute = AuthenticatedMobileRouteImport.update({
+  id: '/mobile',
+  path: '/mobile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedMaintenanceRoute =
   AuthenticatedMaintenanceRouteImport.update({
     id: '/maintenance',
@@ -320,6 +381,7 @@ export interface FileRoutesByFullPath {
   '/integrations': typeof AuthenticatedIntegrationsRoute
   '/intelligence': typeof AuthenticatedIntelligenceRoute
   '/maintenance': typeof AuthenticatedMaintenanceRoute
+  '/mobile': typeof AuthenticatedMobileRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/operations-control': typeof AuthenticatedOperationsControlRoute
@@ -330,8 +392,17 @@ export interface FileRoutesByFullPath {
   '/tracking': typeof AuthenticatedTrackingRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
+  '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
+  '/customer-portal/api': typeof CustomerPortalApiRoute
+  '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
   '/customer-portal/documents': typeof CustomerPortalDocumentsRoute
+  '/customer-portal/invoices': typeof CustomerPortalInvoicesRoute
+  '/customer-portal/messages': typeof CustomerPortalMessagesRoute
+  '/customer-portal/notifications': typeof CustomerPortalNotificationsRoute
+  '/customer-portal/profile': typeof CustomerPortalProfileRoute
+  '/customer-portal/quotes': typeof CustomerPortalQuotesRoute
   '/customer-portal/requests': typeof CustomerPortalRequestsRoute
+  '/customer-portal/security': typeof CustomerPortalSecurityRoute
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/share/$token': typeof ShareTokenRoute
@@ -365,6 +436,7 @@ export interface FileRoutesByTo {
   '/integrations': typeof AuthenticatedIntegrationsRoute
   '/intelligence': typeof AuthenticatedIntelligenceRoute
   '/maintenance': typeof AuthenticatedMaintenanceRoute
+  '/mobile': typeof AuthenticatedMobileRoute
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/operations-control': typeof AuthenticatedOperationsControlRoute
@@ -375,8 +447,17 @@ export interface FileRoutesByTo {
   '/tracking': typeof AuthenticatedTrackingRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
+  '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
+  '/customer-portal/api': typeof CustomerPortalApiRoute
+  '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
   '/customer-portal/documents': typeof CustomerPortalDocumentsRoute
+  '/customer-portal/invoices': typeof CustomerPortalInvoicesRoute
+  '/customer-portal/messages': typeof CustomerPortalMessagesRoute
+  '/customer-portal/notifications': typeof CustomerPortalNotificationsRoute
+  '/customer-portal/profile': typeof CustomerPortalProfileRoute
+  '/customer-portal/quotes': typeof CustomerPortalQuotesRoute
   '/customer-portal/requests': typeof CustomerPortalRequestsRoute
+  '/customer-portal/security': typeof CustomerPortalSecurityRoute
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/share/$token': typeof ShareTokenRoute
@@ -412,6 +493,7 @@ export interface FileRoutesById {
   '/_authenticated/integrations': typeof AuthenticatedIntegrationsRoute
   '/_authenticated/intelligence': typeof AuthenticatedIntelligenceRoute
   '/_authenticated/maintenance': typeof AuthenticatedMaintenanceRoute
+  '/_authenticated/mobile': typeof AuthenticatedMobileRoute
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/operations': typeof AuthenticatedOperationsRoute
   '/_authenticated/operations-control': typeof AuthenticatedOperationsControlRoute
@@ -422,8 +504,17 @@ export interface FileRoutesById {
   '/_authenticated/tracking': typeof AuthenticatedTrackingRoute
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
   '/_authenticated/warehouse': typeof AuthenticatedWarehouseRoute
+  '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
+  '/customer-portal/api': typeof CustomerPortalApiRoute
+  '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
   '/customer-portal/documents': typeof CustomerPortalDocumentsRoute
+  '/customer-portal/invoices': typeof CustomerPortalInvoicesRoute
+  '/customer-portal/messages': typeof CustomerPortalMessagesRoute
+  '/customer-portal/notifications': typeof CustomerPortalNotificationsRoute
+  '/customer-portal/profile': typeof CustomerPortalProfileRoute
+  '/customer-portal/quotes': typeof CustomerPortalQuotesRoute
   '/customer-portal/requests': typeof CustomerPortalRequestsRoute
+  '/customer-portal/security': typeof CustomerPortalSecurityRoute
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/share/$token': typeof ShareTokenRoute
@@ -459,6 +550,7 @@ export interface FileRouteTypes {
     | '/integrations'
     | '/intelligence'
     | '/maintenance'
+    | '/mobile'
     | '/notifications'
     | '/operations'
     | '/operations-control'
@@ -469,8 +561,17 @@ export interface FileRouteTypes {
     | '/tracking'
     | '/vehicles'
     | '/warehouse'
+    | '/customer-portal/analytics'
+    | '/customer-portal/api'
+    | '/customer-portal/assistant'
     | '/customer-portal/documents'
+    | '/customer-portal/invoices'
+    | '/customer-portal/messages'
+    | '/customer-portal/notifications'
+    | '/customer-portal/profile'
+    | '/customer-portal/quotes'
     | '/customer-portal/requests'
+    | '/customer-portal/security'
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
     | '/share/$token'
@@ -504,6 +605,7 @@ export interface FileRouteTypes {
     | '/integrations'
     | '/intelligence'
     | '/maintenance'
+    | '/mobile'
     | '/notifications'
     | '/operations'
     | '/operations-control'
@@ -514,8 +616,17 @@ export interface FileRouteTypes {
     | '/tracking'
     | '/vehicles'
     | '/warehouse'
+    | '/customer-portal/analytics'
+    | '/customer-portal/api'
+    | '/customer-portal/assistant'
     | '/customer-portal/documents'
+    | '/customer-portal/invoices'
+    | '/customer-portal/messages'
+    | '/customer-portal/notifications'
+    | '/customer-portal/profile'
+    | '/customer-portal/quotes'
     | '/customer-portal/requests'
+    | '/customer-portal/security'
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
     | '/share/$token'
@@ -550,6 +661,7 @@ export interface FileRouteTypes {
     | '/_authenticated/integrations'
     | '/_authenticated/intelligence'
     | '/_authenticated/maintenance'
+    | '/_authenticated/mobile'
     | '/_authenticated/notifications'
     | '/_authenticated/operations'
     | '/_authenticated/operations-control'
@@ -560,8 +672,17 @@ export interface FileRouteTypes {
     | '/_authenticated/tracking'
     | '/_authenticated/vehicles'
     | '/_authenticated/warehouse'
+    | '/customer-portal/analytics'
+    | '/customer-portal/api'
+    | '/customer-portal/assistant'
     | '/customer-portal/documents'
+    | '/customer-portal/invoices'
+    | '/customer-portal/messages'
+    | '/customer-portal/notifications'
+    | '/customer-portal/profile'
+    | '/customer-portal/quotes'
     | '/customer-portal/requests'
+    | '/customer-portal/security'
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
     | '/share/$token'
@@ -661,6 +782,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalSettingsRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
+    '/customer-portal/security': {
+      id: '/customer-portal/security'
+      path: '/security'
+      fullPath: '/customer-portal/security'
+      preLoaderRoute: typeof CustomerPortalSecurityRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
     '/customer-portal/requests': {
       id: '/customer-portal/requests'
       path: '/requests'
@@ -668,11 +796,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalRequestsRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
+    '/customer-portal/quotes': {
+      id: '/customer-portal/quotes'
+      path: '/quotes'
+      fullPath: '/customer-portal/quotes'
+      preLoaderRoute: typeof CustomerPortalQuotesRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/profile': {
+      id: '/customer-portal/profile'
+      path: '/profile'
+      fullPath: '/customer-portal/profile'
+      preLoaderRoute: typeof CustomerPortalProfileRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/notifications': {
+      id: '/customer-portal/notifications'
+      path: '/notifications'
+      fullPath: '/customer-portal/notifications'
+      preLoaderRoute: typeof CustomerPortalNotificationsRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/messages': {
+      id: '/customer-portal/messages'
+      path: '/messages'
+      fullPath: '/customer-portal/messages'
+      preLoaderRoute: typeof CustomerPortalMessagesRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/invoices': {
+      id: '/customer-portal/invoices'
+      path: '/invoices'
+      fullPath: '/customer-portal/invoices'
+      preLoaderRoute: typeof CustomerPortalInvoicesRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
     '/customer-portal/documents': {
       id: '/customer-portal/documents'
       path: '/documents'
       fullPath: '/customer-portal/documents'
       preLoaderRoute: typeof CustomerPortalDocumentsRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/assistant': {
+      id: '/customer-portal/assistant'
+      path: '/assistant'
+      fullPath: '/customer-portal/assistant'
+      preLoaderRoute: typeof CustomerPortalAssistantRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/api': {
+      id: '/customer-portal/api'
+      path: '/api'
+      fullPath: '/customer-portal/api'
+      preLoaderRoute: typeof CustomerPortalApiRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/analytics': {
+      id: '/customer-portal/analytics'
+      path: '/analytics'
+      fullPath: '/customer-portal/analytics'
+      preLoaderRoute: typeof CustomerPortalAnalyticsRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
     '/_authenticated/warehouse': {
@@ -743,6 +927,13 @@ declare module '@tanstack/react-router' {
       path: '/notifications'
       fullPath: '/notifications'
       preLoaderRoute: typeof AuthenticatedNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/mobile': {
+      id: '/_authenticated/mobile'
+      path: '/mobile'
+      fullPath: '/mobile'
+      preLoaderRoute: typeof AuthenticatedMobileRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/maintenance': {
@@ -935,6 +1126,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedIntegrationsRoute: typeof AuthenticatedIntegrationsRoute
   AuthenticatedIntelligenceRoute: typeof AuthenticatedIntelligenceRoute
   AuthenticatedMaintenanceRoute: typeof AuthenticatedMaintenanceRoute
+  AuthenticatedMobileRoute: typeof AuthenticatedMobileRoute
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedOperationsRoute: typeof AuthenticatedOperationsRoute
   AuthenticatedOperationsControlRoute: typeof AuthenticatedOperationsControlRoute
@@ -968,6 +1160,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIntegrationsRoute: AuthenticatedIntegrationsRoute,
   AuthenticatedIntelligenceRoute: AuthenticatedIntelligenceRoute,
   AuthenticatedMaintenanceRoute: AuthenticatedMaintenanceRoute,
+  AuthenticatedMobileRoute: AuthenticatedMobileRoute,
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedOperationsRoute: AuthenticatedOperationsRoute,
   AuthenticatedOperationsControlRoute: AuthenticatedOperationsControlRoute,
@@ -998,16 +1191,34 @@ const CustomerPortalShipmentsRouteWithChildren =
   )
 
 interface CustomerPortalRouteChildren {
+  CustomerPortalAnalyticsRoute: typeof CustomerPortalAnalyticsRoute
+  CustomerPortalApiRoute: typeof CustomerPortalApiRoute
+  CustomerPortalAssistantRoute: typeof CustomerPortalAssistantRoute
   CustomerPortalDocumentsRoute: typeof CustomerPortalDocumentsRoute
+  CustomerPortalInvoicesRoute: typeof CustomerPortalInvoicesRoute
+  CustomerPortalMessagesRoute: typeof CustomerPortalMessagesRoute
+  CustomerPortalNotificationsRoute: typeof CustomerPortalNotificationsRoute
+  CustomerPortalProfileRoute: typeof CustomerPortalProfileRoute
+  CustomerPortalQuotesRoute: typeof CustomerPortalQuotesRoute
   CustomerPortalRequestsRoute: typeof CustomerPortalRequestsRoute
+  CustomerPortalSecurityRoute: typeof CustomerPortalSecurityRoute
   CustomerPortalSettingsRoute: typeof CustomerPortalSettingsRoute
   CustomerPortalShipmentsRoute: typeof CustomerPortalShipmentsRouteWithChildren
   CustomerPortalIndexRoute: typeof CustomerPortalIndexRoute
 }
 
 const CustomerPortalRouteChildren: CustomerPortalRouteChildren = {
+  CustomerPortalAnalyticsRoute: CustomerPortalAnalyticsRoute,
+  CustomerPortalApiRoute: CustomerPortalApiRoute,
+  CustomerPortalAssistantRoute: CustomerPortalAssistantRoute,
   CustomerPortalDocumentsRoute: CustomerPortalDocumentsRoute,
+  CustomerPortalInvoicesRoute: CustomerPortalInvoicesRoute,
+  CustomerPortalMessagesRoute: CustomerPortalMessagesRoute,
+  CustomerPortalNotificationsRoute: CustomerPortalNotificationsRoute,
+  CustomerPortalProfileRoute: CustomerPortalProfileRoute,
+  CustomerPortalQuotesRoute: CustomerPortalQuotesRoute,
   CustomerPortalRequestsRoute: CustomerPortalRequestsRoute,
+  CustomerPortalSecurityRoute: CustomerPortalSecurityRoute,
   CustomerPortalSettingsRoute: CustomerPortalSettingsRoute,
   CustomerPortalShipmentsRoute: CustomerPortalShipmentsRouteWithChildren,
   CustomerPortalIndexRoute: CustomerPortalIndexRoute,
@@ -1030,3 +1241,13 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}

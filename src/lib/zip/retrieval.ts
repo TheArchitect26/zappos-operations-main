@@ -44,6 +44,7 @@ export function retrieveAuthorisedKnowledge(input: {
       documentVersionId: chunk.documentVersionId,
       chunkId: chunk.id,
       title: chunk.title,
+      sourceTitle: chunk.title,
       excerpt: excerptForCitation(chunk.text, terms),
       sourceType: "knowledge_document" as const,
       sourceRecordId: chunk.sourceRecordId ?? null,

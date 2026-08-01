@@ -2,7 +2,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Package2, Search } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
@@ -15,6 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal/shipments")({
   head: () => ({ meta: [{ title: "Shipments — Customer portal" }] }),
@@ -34,30 +34,8 @@ function CustomerShipmentsPage() {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      const { data: membership } = await supabase
-        .from("customer_portal_memberships")
-        .select("company_id, customer_id")
-        .eq("user_id", session.user.id)
-        .eq("status", "active")
-        .maybeSingle();
-      if (!membership) {
-        setJobs([]);
-        setLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("jobs")
-        .select(
-          "id, reference, pickup_location, dropoff_location, scheduled_at, status, completed_at, customer_id, company_id",
-        )
-        .eq("company_id", membership.company_id)
-        .eq("customer_id", membership.customer_id)
-        .order("updated_at", { ascending: false })
-        .range(page * pageSize, page * pageSize + pageSize - 1);
-      if (!error) {
-        setJobs(data ?? []);
-      }
+      const data = await portalApi.shipments(250);
+      setJobs(data.slice(page * pageSize, page * pageSize + pageSize));
       setLoading(false);
     };
     void load();

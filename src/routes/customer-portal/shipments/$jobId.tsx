@@ -15,12 +15,11 @@ import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { CustomerShipmentMap } from "@/lib/maps/CustomerShipmentMap";
 import {
-  buildCustomerTimeline,
-  getCustomerVisibleDocuments,
   isProofAccessible,
   isTrackingVisible,
   mapJobStatusToCustomerStatus,
 } from "@/lib/customer-portal";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal/shipments/$jobId")({
   head: () => ({ meta: [{ title: "Shipment details — Customer portal" }] }),
@@ -44,94 +43,19 @@ function ShipmentDetailPage() {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      const { data: membership } = await supabase
-        .from("customer_portal_memberships")
-        .select("company_id, customer_id")
-        .eq("user_id", session.user.id)
-        .eq("status", "active")
-        .maybeSingle();
-      if (!membership) {
-        setLoading(false);
-        return;
-      }
-
-      const [
-        { data: jobData },
-        { data: setting },
-        { data: location },
-        { data: acks },
-        { data: eventsData },
-        { data: docsData },
-        { data: proofData },
-        { data: warehouseData },
-      ] = await Promise.all([
-        supabase
-          .from("jobs")
-          .select(
-            "id, reference, pickup_location, dropoff_location, scheduled_at, started_at, arrived_at, status, completed_at, company_id, customer_id",
-          )
-          .eq("company_id", membership.company_id)
-          .eq("customer_id", membership.customer_id)
-          .eq("id", jobId)
-          .maybeSingle(),
-        (supabase as any)
-          .from("customer_shipment_settings")
-          .select("tracking_visibility")
-          .eq("job_id", jobId)
-          .maybeSingle(),
-        (supabase as any)
-          .from("customer_shipment_locations")
-          .select("latitude,longitude,recorded_at")
-          .eq("job_id", jobId)
-          .maybeSingle(),
-        supabase
-          .from("customer_acknowledgements")
-          .select("id,acknowledgement_type,created_at")
-          .eq("job_id", jobId)
-          .eq("user_id", session.user.id)
-          .order("created_at", { ascending: false })
-          .limit(20),
-        supabase
-          .from("job_events")
-          .select("event_type, created_at")
-          .eq("job_id", jobId)
-          .order("created_at", { ascending: true })
-          .limit(50),
-        supabase
-          .from("documents")
-          .select("id, name, document_type, visibility, file_url")
-          .eq("company_id", membership.company_id)
-          .order("created_at", { ascending: false })
-          .limit(50),
-        (supabase as any)
-          .from("job_proofs")
-          .select(
-            "id, recipient_name, completed_at, notes, photo_url, signature_url, customer_visible, finalized_at",
-          )
-          .eq("job_id", jobId)
-          .eq("company_id", membership.company_id)
-          .maybeSingle(),
-        (supabase as any).rpc("customer_warehouse_order_status", { _job_id: jobId }),
-      ]);
-
-      setJob(jobData);
-      const safeTimeline = buildCustomerTimeline({
-        jobStatus: jobData?.status ?? "scheduled",
-        proofAvailable: Boolean(proofData),
-        scheduledAt: jobData?.scheduled_at,
-        startedAt: jobData?.started_at,
-        arrivedAt: jobData?.arrived_at,
-        completedAt: jobData?.completed_at,
-        events: eventsData ?? [],
-      });
-      setTimeline(safeTimeline);
-      setDocuments(getCustomerVisibleDocuments(docsData ?? []));
-      setProof(proofData);
-      setTracking({ visibility: setting?.tracking_visibility ?? "disabled", location });
-      setAcknowledgements(acks ?? []);
-      setWarehouseOrder(
-        Array.isArray(warehouseData) ? (warehouseData[0] ?? null) : (warehouseData ?? null),
+      const data = await portalApi.shipment(jobId);
+      setJob(data?.job ?? null);
+      setTimeline(
+        (data?.timeline ?? []).map((entry: any) => ({
+          ...entry,
+          title: entry.event_type,
+        })),
       );
+      setDocuments(data?.documents ?? []);
+      setProof(data?.proof ?? null);
+      setTracking(data?.tracking ?? { visibility: "disabled", location: null });
+      setAcknowledgements(data?.acknowledgements ?? []);
+      setWarehouseOrder(null);
       setLoading(false);
     };
 
@@ -155,21 +79,21 @@ function ShipmentDetailPage() {
     });
   }, [job, proof]);
 
-  const openSignedFile = async (path: string | null, label: string) => {
+  const openSignedFile = async (
+    path: string | null,
+    recordId: string,
+    kind: "document" | "proof" = "document",
+  ) => {
     if (!path) return;
-    setFileAction(label);
+    setFileAction(recordId);
     try {
-      const { data, error } = await supabase.storage.from("documents").createSignedUrl(path, 60);
+      const bucket = kind === "proof" ? "proof-of-completion" : "documents";
+      const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, 60);
       if (error || !data?.signedUrl) throw error ?? new Error("Could not prepare secure file");
       window.open(data.signedUrl, "_blank", "noopener,noreferrer");
       if (session?.user.id && job)
-        await supabase.from("customer_portal_audit_logs").insert({
-          company_id: job.company_id,
-          customer_id: job.customer_id,
-          user_id: session.user.id,
-          entity_type: "document",
-          entity_id: label,
-          event_type: "document_viewed",
+        await portalApi.action(kind === "proof" ? "proof_viewed" : "document_viewed", {
+          [`${kind}_id`]: recordId,
         });
     } finally {
       setFileAction(null);
@@ -179,29 +103,14 @@ function ShipmentDetailPage() {
   const acknowledge = async (type: string) => {
     if (!session?.user.id || acknowledgements.some((ack) => ack.acknowledgement_type === type))
       return;
-    const { data, error } = await supabase
-      .from("customer_acknowledgements")
-      .insert({
-        company_id: job.company_id,
-        customer_id: job.customer_id,
-        user_id: session.user.id,
-        job_id: job.id,
-        acknowledgement_type: type,
-      })
-      .select("id,acknowledgement_type,created_at")
-      .single();
-    if (!error && data) {
-      setAcknowledgements((current) => [data, ...current]);
-      await supabase.from("customer_portal_audit_logs").insert({
-        company_id: job.company_id,
-        customer_id: job.customer_id,
-        user_id: session.user.id,
-        entity_type: "job",
-        entity_id: job.id,
-        event_type: "acknowledgement_created",
-        detail: type,
-      });
-    }
+    const data = await portalApi.action("acknowledge_shipment", {
+      job_id: job.id,
+      acknowledgement_type: type,
+    });
+    setAcknowledgements((current) => [
+      { id: data.id, acknowledgement_type: type, created_at: new Date().toISOString() },
+      ...current,
+    ]);
   };
 
   if (loading) {
@@ -375,7 +284,7 @@ function ShipmentDetailPage() {
               className="mt-3"
               size="sm"
               disabled={fileAction === "proof"}
-              onClick={() => void openSignedFile(proof.photo_url, "proof")}
+              onClick={() => void openSignedFile(proof.photo_url, proof.id, "proof")}
             >
               Download proof
             </Button>

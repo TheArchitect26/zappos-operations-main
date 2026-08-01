@@ -70,7 +70,12 @@ describe("30-day 50-vehicle deterministic operational simulation", () => {
     ).toBe(true);
   });
   it("blocks unsafe dispatch, stock and invoicing", () => {
-    expect(canAssign(vehicles[0], employees.find((e) => e.role === "driver")!)).toBe(true);
+    expect(
+      canAssign(
+        vehicles[0],
+        employees.find((e) => e.role === "driver")!,
+      ),
+    ).toBe(true);
     expect(
       canAssign(
         vehicles.find((v) => v.maintenanceState === "blocked")!,

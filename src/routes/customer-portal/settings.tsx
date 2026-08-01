@@ -2,11 +2,11 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Settings as SettingsIcon } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Switch } from "@/components/ui/switch";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal/settings")({
   head: () => ({ meta: [{ title: "Settings — Customer portal" }] }),
@@ -22,39 +22,7 @@ function CustomerSettingsPage() {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      const { data: membership } = await supabase
-        .from("customer_portal_memberships")
-        .select("company_id, customer_id")
-        .eq("user_id", session.user.id)
-        .eq("status", "active")
-        .maybeSingle();
-      if (!membership) {
-        setPreferences(null);
-        setLoading(false);
-        return;
-      }
-
-      const { data } = await supabase
-        .from("customer_portal_preferences")
-        .select(
-          "id, email_notifications, shipment_updates, delivery_updates, delay_updates, proof_updates",
-        )
-        .eq("company_id", membership.company_id)
-        .eq("customer_id", membership.customer_id)
-        .eq("user_id", session.user.id)
-        .maybeSingle();
-      setPreferences(
-        data ?? {
-          company_id: membership.company_id,
-          customer_id: membership.customer_id,
-          user_id: session.user.id,
-          email_notifications: true,
-          shipment_updates: true,
-          delivery_updates: true,
-          delay_updates: true,
-          proof_updates: true,
-        },
-      );
+      setPreferences(await portalApi.module("preferences"));
       setLoading(false);
     };
     void load();
@@ -62,9 +30,7 @@ function CustomerSettingsPage() {
 
   const save = async () => {
     if (!session?.user?.id || !preferences) return;
-    const { id, ...values } = preferences;
-    if (id) await (supabase as any).from("customer_portal_preferences").update(values).eq("id", id);
-    else await (supabase as any).from("customer_portal_preferences").insert(values);
+    await portalApi.action("update_preferences", preferences);
   };
 
   return (

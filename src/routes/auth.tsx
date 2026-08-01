@@ -11,6 +11,7 @@ import { Wordmark } from "@/components/brand/wordmark";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { isEmailConfirmationPending, normalizeAuthError } from "@/lib/auth-errors";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Sign in — ZappOS" }, { name: "robots", content: "noindex" }] }),
@@ -31,7 +32,21 @@ function AuthPage() {
   const normalizedEmail = useMemo(() => email.trim().toLowerCase(), [email]);
 
   useEffect(() => {
-    if (!loading && session) navigate({ to: "/dashboard", replace: true });
+    if (loading || !session) return;
+
+    let active = true;
+    void portalApi
+      .context()
+      .then(() => {
+        if (active) navigate({ to: "/customer-portal", replace: true });
+      })
+      .catch(() => {
+        if (active) navigate({ to: "/dashboard", replace: true });
+      });
+
+    return () => {
+      active = false;
+    };
   }, [session, loading, navigate]);
 
   useEffect(() => {

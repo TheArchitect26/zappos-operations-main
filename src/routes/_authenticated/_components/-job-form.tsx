@@ -40,6 +40,7 @@ export function JobForm({
   vehicles,
 }: JobFormProps) {
   const [data, setData] = useState({
+    reference: initialData?.reference || `JOB-${Date.now()}`,
     customer_id: initialData?.customer_id || null,
     pickup_location: initialData?.pickup_location || "",
     dropoff_location: initialData?.dropoff_location || "",
@@ -101,6 +102,15 @@ export function JobForm({
       )}
 
       <div className="grid grid-cols-2 gap-4">
+        <div className="space-y-2">
+          <Label htmlFor="reference">Reference</Label>
+          <Input
+            id="reference"
+            required
+            value={data.reference}
+            onChange={(event) => setData({ ...data, reference: event.target.value })}
+          />
+        </div>
         <div className="space-y-2">
           <Label htmlFor="customer_id">Customer</Label>
           <Select

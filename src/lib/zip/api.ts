@@ -75,11 +75,13 @@ export function evidenceOnlyResponse(input: {
   const response: ZipIntelligenceResponse = {
     requestId: input.requestId,
     state: confidence === null ? "unavailable" : "available",
+    availability: confidence === null ? "unavailable" : "available",
     insight:
       confidence === null
         ? null
         : `${input.citations.length} authorised ${input.module} knowledge source${input.citations.length === 1 ? "" : "s"} matched the request.`,
     evidence: input.citations,
+    citations: input.citations,
     confidence,
     priority: priorityFromEvidence({
       sourcePriority: input.sourcePriority,

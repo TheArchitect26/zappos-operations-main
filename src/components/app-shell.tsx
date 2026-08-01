@@ -28,6 +28,7 @@ import {
   ShoppingCart,
   BarChart3,
   Plug,
+  TabletSmartphone,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -48,6 +49,39 @@ interface NavItem {
 }
 
 const ALL: NavItem[] = [
+  {
+    label: "Zapp Mobile",
+    to: "/mobile",
+    icon: TabletSmartphone,
+    roles: [
+      "admin",
+      "driver",
+      "fleet_manager",
+      "dispatcher",
+      "warehouse_manager",
+      "warehouse_supervisor",
+      "warehouse_operator",
+      "inventory_controller",
+      "forklift_operator",
+      "receiving_clerk",
+      "packing_clerk",
+      "quality_inspector",
+      "operations_manager",
+      "supervisor",
+      "hr_manager",
+      "hr_officer",
+      "compliance_manager",
+      "safety_officer",
+      "customer_care",
+      "customer_success_manager",
+      "executive",
+      "managing_director",
+      "viewer",
+      "support_engineer",
+      "technical_administrator",
+    ],
+    mobile: true,
+  },
   { label: "Dashboard", to: "/dashboard", icon: LayoutDashboard, mobile: true },
   {
     label: "Command centre",
@@ -396,30 +430,31 @@ export function AppShell({ children }: { children: ReactNode }) {
   const navItems = filterFor(ALL, roles)
     .filter(
       (item) =>
-        !driverRestricted || ["/driver", "/hr", "/compliance", "/notifications"].includes(item.to),
+        !driverRestricted ||
+        ["/mobile", "/driver", "/hr", "/compliance", "/notifications"].includes(item.to),
     )
     .filter(
       (item) =>
         !warehouseRestricted ||
-        ["/warehouse", "/hr", "/compliance", "/notifications"].includes(item.to) ||
+        ["/mobile", "/warehouse", "/hr", "/compliance", "/notifications"].includes(item.to) ||
         (hasBiRole && item.to === "/business-intelligence"),
     )
     .filter(
       (item) =>
         !crmRestricted ||
-        ["/crm", "/notifications"].includes(item.to) ||
+        ["/mobile", "/crm", "/notifications"].includes(item.to) ||
         (hasBiRole && item.to === "/business-intelligence"),
     )
     .filter(
       (item) =>
         !hrRestricted ||
-        ["/hr", "/notifications"].includes(item.to) ||
+        ["/mobile", "/hr", "/notifications"].includes(item.to) ||
         (hasBiRole && item.to === "/business-intelligence"),
     )
     .filter(
       (item) =>
         !complianceRestricted ||
-        ["/compliance", "/notifications"].includes(item.to) ||
+        ["/mobile", "/compliance", "/notifications"].includes(item.to) ||
         (hasBiRole && item.to === "/business-intelligence"),
     )
     .map((i) => (i.to === "/operations" ? { ...i, label: terminology.Plural } : i));

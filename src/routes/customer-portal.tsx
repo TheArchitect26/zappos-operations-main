@@ -9,12 +9,20 @@ import {
   MessageSquare,
   Settings,
   ArrowLeft,
+  Bell,
+  Bot,
+  BarChart3,
+  BadgeDollarSign,
+  KeyRound,
+  ReceiptText,
+  ShieldCheck,
+  Building2,
 } from "lucide-react";
 import { useSession } from "@/lib/session";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal")({
   head: () => ({ meta: [{ title: "Customer portal — ZappOS" }] }),
@@ -37,15 +45,10 @@ function CustomerPortalLayout() {
 
     const load = async () => {
       setLoadingMembership(true);
-      const { data, error } = await supabase
-        .from("customer_portal_memberships")
-        .select("*, customers:customer_id(id, name), companies:company_id(id, name)")
-        .eq("user_id", session.user.id)
-        .eq("status", "active")
-        .limit(1)
-        .maybeSingle();
-      if (!error) {
-        setMembership(data);
+      try {
+        setMembership(await portalApi.context());
+      } catch {
+        setMembership(null);
       }
       setLoadingMembership(false);
     };
@@ -90,7 +93,7 @@ function CustomerPortalLayout() {
           <div>
             <p className="text-xs uppercase tracking-[0.24em] text-slate-400">Customer portal</p>
             <h1 className="text-lg font-semibold">
-              {membership.customers?.name ?? "Customer portal"}
+              {membership.customer_name ?? "Customer portal"}
             </h1>
           </div>
           <Button
@@ -105,11 +108,20 @@ function CustomerPortalLayout() {
       </div>
 
       <div className="mx-auto grid max-w-6xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-[220px_minmax(0,1fr)]">
-        <aside className="space-y-3 rounded-2xl border border-white/10 bg-slate-900/80 p-3">
-          <NavLink to="/customer-portal" label="Dashboard" icon={LayoutDashboard} />
+        <aside className="max-h-[calc(100vh-8rem)] space-y-1 overflow-y-auto rounded-2xl border border-white/10 bg-slate-900/80 p-3">
+          <NavLink to="/customer-portal" label="Dashboard" icon={LayoutDashboard} exact />
           <NavLink to="/customer-portal/shipments" label="Shipments" icon={Package2} />
           <NavLink to="/customer-portal/documents" label="Documents" icon={FileText} />
+          <NavLink to="/customer-portal/quotes" label="Quotes & booking" icon={BadgeDollarSign} />
+          <NavLink to="/customer-portal/invoices" label="Invoices" icon={ReceiptText} />
+          <NavLink to="/customer-portal/messages" label="Messages" icon={MessageSquare} />
           <NavLink to="/customer-portal/requests" label="Requests" icon={MessageSquare} />
+          <NavLink to="/customer-portal/notifications" label="Notifications" icon={Bell} />
+          <NavLink to="/customer-portal/analytics" label="Analytics" icon={BarChart3} />
+          <NavLink to="/customer-portal/assistant" label="Ask ZIP" icon={Bot} />
+          <NavLink to="/customer-portal/profile" label="Company profile" icon={Building2} />
+          <NavLink to="/customer-portal/api" label="API keys" icon={KeyRound} />
+          <NavLink to="/customer-portal/security" label="Security" icon={ShieldCheck} />
           <NavLink to="/customer-portal/settings" label="Settings" icon={Settings} />
         </aside>
         <main className="min-w-0">
@@ -120,9 +132,21 @@ function CustomerPortalLayout() {
   );
 }
 
-function NavLink({ to, label, icon: Icon }: { to: string; label: string; icon: any }) {
+function NavLink({
+  to,
+  label,
+  icon: Icon,
+  exact = false,
+}: {
+  to: string;
+  label: string;
+  icon: any;
+  exact?: boolean;
+}) {
   const location = useLocation();
-  const active = location.pathname.startsWith(to);
+  const active = exact
+    ? location.pathname === to || location.pathname === `${to}/`
+    : location.pathname.startsWith(to);
 
   return (
     <Link

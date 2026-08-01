@@ -8,6 +8,7 @@ export * from "./intelligence";
 export * from "./legacy";
 export * from "./quality";
 export * from "./query";
+export * from "./reasoning";
 export * from "./rules";
 export * from "./security";
 export * from "./types";

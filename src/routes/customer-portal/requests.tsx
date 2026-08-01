@@ -2,12 +2,12 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { FormEvent, useEffect, useState } from "react";
 import { MessageSquare } from "lucide-react";
-import { supabase } from "@/integrations/supabase/client";
 import { useSession } from "@/lib/session";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
+import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal/requests")({
   head: () => ({ meta: [{ title: "Requests — Customer portal" }] }),
@@ -18,7 +18,6 @@ function CustomerRequestsPage() {
   const { session } = useSession();
   const [requests, setRequests] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
-  const [membership, setMembership] = useState<any>(null);
   const [subject, setSubject] = useState("");
   const [message, setMessage] = useState("");
 
@@ -26,26 +25,7 @@ function CustomerRequestsPage() {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      const { data: membership } = await supabase
-        .from("customer_portal_memberships")
-        .select("company_id, customer_id")
-        .eq("user_id", session.user.id)
-        .eq("status", "active")
-        .maybeSingle();
-      if (!membership) {
-        setRequests([]);
-        setLoading(false);
-        return;
-      }
-      setMembership(membership);
-
-      const { data } = await supabase
-        .from("customer_service_requests")
-        .select("id, subject, category, status, created_at, customer_visible_response")
-        .eq("company_id", membership.company_id)
-        .eq("customer_id", membership.customer_id)
-        .order("created_at", { ascending: false });
-      setRequests(data ?? []);
+      setRequests(await portalApi.module("requests"));
       setLoading(false);
     };
     void load();
@@ -53,24 +33,11 @@ function CustomerRequestsPage() {
 
   const createRequest = async (event: FormEvent) => {
     event.preventDefault();
-    if (!membership || !session?.user.id || !subject.trim()) return;
-    const { data, error } = await supabase
-      .from("customer_service_requests")
-      .insert({
-        company_id: membership.company_id,
-        customer_id: membership.customer_id,
-        created_by_user_id: session.user.id,
-        subject: subject.trim(),
-        category: "support",
-        message: message.trim() || null,
-      })
-      .select("id, subject, category, status, created_at, customer_visible_response")
-      .single();
-    if (!error && data) {
-      setRequests((current) => [data, ...current]);
-      setSubject("");
-      setMessage("");
-    }
+    if (!session?.user.id || !subject.trim()) return;
+    await portalApi.action("create_request", { subject, message, category: "support" });
+    setRequests(await portalApi.module("requests"));
+    setSubject("");
+    setMessage("");
   };
 
   return (

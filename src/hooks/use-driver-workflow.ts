@@ -92,8 +92,8 @@ export function useDriverWorkflow() {
       _job_id: jobId,
       _action: action,
       _device_installation_id: action === "start" ? getInstallationId() : null,
-      _app_version: action === "start" ? "phase4-web" : null,
-      _device_platform: action === "start" ? getDevicePlatform() : null,
+      _app_version: action === "start" ? "phase4-web" : undefined,
+      _device_platform: action === "start" ? getDevicePlatform() : undefined,
       _location_permission_state: permission,
     });
     if (err) throw err;
@@ -113,7 +113,7 @@ export function useDriverWorkflow() {
     const { error: err } = await supabase.rpc("driver_fail_job", {
       _job_id: jobId,
       _reason: reason,
-      _notes: notes || null,
+      _notes: notes || undefined,
     });
     if (err) throw err;
     await fetch();
@@ -158,9 +158,9 @@ export function useDriverWorkflow() {
       const { error: err } = await supabase.rpc("submit_job_proof", {
         _job_id: jobId,
         _recipient_name: proof.recipientName,
-        _notes: proof.notes || null,
-        _photo_url: photoUrl,
-        _signature_url: signatureUrl,
+        _notes: proof.notes || undefined,
+        _photo_url: photoUrl ?? undefined,
+        _signature_url: signatureUrl ?? undefined,
       });
       if (err) throw err;
       await fetch();
