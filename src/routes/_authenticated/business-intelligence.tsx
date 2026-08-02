@@ -565,6 +565,7 @@ function BI() {
           }}
           onDrill={drillDown}
           onCommandCentre={() => navigate({ to: "/command-centre" })}
+          onFleetIntelligence={() => navigate({ to: "/fleet-intelligence" })}
         />
       )}
       {tab === "departments" && (
@@ -683,6 +684,7 @@ function ExecutivePanel({
   brain,
   onDrill,
   onCommandCentre,
+  onFleetIntelligence,
 }: {
   kpis: Row[];
   snapshots: Row[];
@@ -705,6 +707,7 @@ function ExecutivePanel({
   };
   onDrill: (kpi: Row) => void;
   onCommandCentre: () => void;
+  onFleetIntelligence: () => void;
 }) {
   const counts = ["critical", "warning", "on_target", "unavailable"].map((status) => [
     status,
@@ -712,6 +715,18 @@ function ExecutivePanel({
   ]);
   return (
     <div className="space-y-4">
+      <Card className="flex flex-wrap items-center justify-between gap-3 p-4">
+        <div>
+          <p className="font-semibold">Fleet Intelligence & Predictive Operations</p>
+          <p className="text-sm text-muted-foreground">
+            Fleet health, maintenance risk, fuel efficiency, driver safety, utilisation, predicted
+            costs and operational bottlenecks.
+          </p>
+        </div>
+        <Button variant="outline" onClick={onFleetIntelligence}>
+          Open fleet intelligence
+        </Button>
+      </Card>
       <div className="grid gap-3 sm:grid-cols-4">
         {counts.map(([status, count]) => (
           <Card key={String(status)} className="p-4">

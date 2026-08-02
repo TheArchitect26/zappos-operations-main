@@ -10,6 +10,7 @@ import { customers } from "./customers";
 import { suppliers, subcontractors } from "./suppliers";
 import { records, telemetryPoints, volumes } from "./operations";
 import { canAssign, receive, transitionInvoice } from "./scenarios";
+import { fleetIntelligenceSimulation } from "./intelligence";
 describe("30-day 50-vehicle deterministic operational simulation", () => {
   it("requires an explicit non-production seed guard", () => {
     expect(() =>
@@ -87,5 +88,19 @@ describe("30-day 50-vehicle deterministic operational simulation", () => {
     expect(transitionInvoice({ pod: "accepted", existing: false })).toBe("draft");
     expect(() => transitionInvoice({ pod: "missing", existing: false })).toThrow();
     expect(() => transitionInvoice({ pod: "accepted", existing: true })).toThrow(/duplicate/);
+  });
+  it("extends simulation with marked non-production fleet intelligence inputs", () => {
+    expect(fleetIntelligenceSimulation).toHaveLength(50);
+    expect(
+      fleetIntelligenceSimulation.every(
+        (item) => item.marker === "simulation" && !item.productionEligible,
+      ),
+    ).toBe(true);
+    expect(fleetIntelligenceSimulation.some((item) => item.weatherEffect === "heavy_rain")).toBe(
+      true,
+    );
+    expect(fleetIntelligenceSimulation.some((item) => item.trafficCondition === "congested")).toBe(
+      true,
+    );
   });
 });
