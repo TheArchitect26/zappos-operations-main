@@ -29,6 +29,7 @@ import {
   BarChart3,
   Plug,
   TabletSmartphone,
+  Sparkles,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -110,6 +111,21 @@ const ALL: NavItem[] = [
     to: "/route-intelligence",
     icon: Route,
     roles: ["admin", "fleet_manager", "dispatcher", "viewer"],
+  },
+  {
+    label: "Fleet intelligence",
+    to: "/fleet-intelligence",
+    icon: Sparkles,
+    roles: [
+      "admin",
+      "fleet_manager",
+      "dispatcher",
+      "operations_manager",
+      "executive",
+      "managing_director",
+      "analyst",
+      "viewer",
+    ],
   },
   {
     label: "Zapp Brain",
