@@ -75,3 +75,17 @@ export const OPERATIONS_INTELLIGENCE_COMMAND_CENTRE_SIGNALS = [
   "forecast_warning",
   "executive_priority",
 ] as const;
+
+export const LIVE_TRACKING_COMMAND_CENTRE_SIGNALS = [
+  "sos",
+  "breakdown",
+  "severe_delay",
+  "prolonged_route_deviation",
+  "missed_customer_arrival",
+  "vehicle_offline",
+  "telemetry_stale",
+  "device_fault",
+  "eta_confidence_low",
+  "geofence_breach",
+  "customer_follow_up_required",
+] as const;

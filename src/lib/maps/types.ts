@@ -18,8 +18,13 @@ export interface ObservedTraceLine {
 
 export interface ZappMapProviderCapabilities {
   markers: boolean;
+  clustering: boolean;
+  routeLines: boolean;
+  geofences: boolean;
+  replay: boolean;
   observedTrace: boolean;
   fitBounds: boolean;
+  offlineRegions: "configured" | "not_configured";
 }
 
 export interface ZappMapProvider {

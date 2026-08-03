@@ -67,6 +67,10 @@ import { Route as AuthenticatedCommandCentreRouteImport } from './routes/_authen
 import { Route as AuthenticatedBusinessIntelligenceRouteImport } from './routes/_authenticated/business-intelligence'
 import { Route as AuthenticatedBrainRouteImport } from './routes/_authenticated/brain'
 import { Route as CustomerPortalShipmentsJobIdRouteImport } from './routes/customer-portal/shipments/$jobId'
+import { Route as AuthenticatedTrackingWallRouteImport } from './routes/_authenticated/tracking/wall'
+import { Route as AuthenticatedTrackingReplayRouteImport } from './routes/_authenticated/tracking/replay'
+import { Route as AuthenticatedTrackingCustomerCareRouteImport } from './routes/_authenticated/tracking/customer-care'
+import { Route as AuthenticatedTrackingControlRouteImport } from './routes/_authenticated/tracking/control'
 import { Route as AuthenticatedBrainOperationsRouteImport } from './routes/_authenticated/brain/operations'
 import { Route as AuthenticatedBrainEvaluationRouteImport } from './routes/_authenticated/brain/evaluation'
 
@@ -376,6 +380,30 @@ const CustomerPortalShipmentsJobIdRoute =
     path: '/$jobId',
     getParentRoute: () => CustomerPortalShipmentsRoute,
   } as any)
+const AuthenticatedTrackingWallRoute =
+  AuthenticatedTrackingWallRouteImport.update({
+    id: '/wall',
+    path: '/wall',
+    getParentRoute: () => AuthenticatedTrackingRoute,
+  } as any)
+const AuthenticatedTrackingReplayRoute =
+  AuthenticatedTrackingReplayRouteImport.update({
+    id: '/replay',
+    path: '/replay',
+    getParentRoute: () => AuthenticatedTrackingRoute,
+  } as any)
+const AuthenticatedTrackingCustomerCareRoute =
+  AuthenticatedTrackingCustomerCareRouteImport.update({
+    id: '/customer-care',
+    path: '/customer-care',
+    getParentRoute: () => AuthenticatedTrackingRoute,
+  } as any)
+const AuthenticatedTrackingControlRoute =
+  AuthenticatedTrackingControlRouteImport.update({
+    id: '/control',
+    path: '/control',
+    getParentRoute: () => AuthenticatedTrackingRoute,
+  } as any)
 const AuthenticatedBrainOperationsRoute =
   AuthenticatedBrainOperationsRouteImport.update({
     id: '/operations',
@@ -427,7 +455,7 @@ export interface FileRoutesByFullPath {
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
   '/security': typeof AuthenticatedSecurityRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/tracking': typeof AuthenticatedTrackingRoute
+  '/tracking': typeof AuthenticatedTrackingRouteWithChildren
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
@@ -447,6 +475,10 @@ export interface FileRoutesByFullPath {
   '/customer-portal/': typeof CustomerPortalIndexRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/brain/operations': typeof AuthenticatedBrainOperationsRoute
+  '/tracking/control': typeof AuthenticatedTrackingControlRoute
+  '/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
+  '/tracking/replay': typeof AuthenticatedTrackingReplayRoute
+  '/tracking/wall': typeof AuthenticatedTrackingWallRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
 }
 export interface FileRoutesByTo {
@@ -487,7 +519,7 @@ export interface FileRoutesByTo {
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
   '/security': typeof AuthenticatedSecurityRoute
   '/settings': typeof AuthenticatedSettingsRoute
-  '/tracking': typeof AuthenticatedTrackingRoute
+  '/tracking': typeof AuthenticatedTrackingRouteWithChildren
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
@@ -506,6 +538,10 @@ export interface FileRoutesByTo {
   '/share/$token': typeof ShareTokenRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/brain/operations': typeof AuthenticatedBrainOperationsRoute
+  '/tracking/control': typeof AuthenticatedTrackingControlRoute
+  '/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
+  '/tracking/replay': typeof AuthenticatedTrackingReplayRoute
+  '/tracking/wall': typeof AuthenticatedTrackingWallRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
 }
 export interface FileRoutesById {
@@ -549,7 +585,7 @@ export interface FileRoutesById {
   '/_authenticated/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
   '/_authenticated/security': typeof AuthenticatedSecurityRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
-  '/_authenticated/tracking': typeof AuthenticatedTrackingRoute
+  '/_authenticated/tracking': typeof AuthenticatedTrackingRouteWithChildren
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
   '/_authenticated/warehouse': typeof AuthenticatedWarehouseRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
@@ -569,6 +605,10 @@ export interface FileRoutesById {
   '/customer-portal/': typeof CustomerPortalIndexRoute
   '/_authenticated/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/_authenticated/brain/operations': typeof AuthenticatedBrainOperationsRoute
+  '/_authenticated/tracking/control': typeof AuthenticatedTrackingControlRoute
+  '/_authenticated/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
+  '/_authenticated/tracking/replay': typeof AuthenticatedTrackingReplayRoute
+  '/_authenticated/tracking/wall': typeof AuthenticatedTrackingWallRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
 }
 export interface FileRouteTypes {
@@ -631,6 +671,10 @@ export interface FileRouteTypes {
     | '/customer-portal/'
     | '/brain/evaluation'
     | '/brain/operations'
+    | '/tracking/control'
+    | '/tracking/customer-care'
+    | '/tracking/replay'
+    | '/tracking/wall'
     | '/customer-portal/shipments/$jobId'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -690,6 +734,10 @@ export interface FileRouteTypes {
     | '/share/$token'
     | '/brain/evaluation'
     | '/brain/operations'
+    | '/tracking/control'
+    | '/tracking/customer-care'
+    | '/tracking/replay'
+    | '/tracking/wall'
     | '/customer-portal/shipments/$jobId'
   id:
     | '__root__'
@@ -752,6 +800,10 @@ export interface FileRouteTypes {
     | '/customer-portal/'
     | '/_authenticated/brain/evaluation'
     | '/_authenticated/brain/operations'
+    | '/_authenticated/tracking/control'
+    | '/_authenticated/tracking/customer-care'
+    | '/_authenticated/tracking/replay'
+    | '/_authenticated/tracking/wall'
     | '/customer-portal/shipments/$jobId'
   fileRoutesById: FileRoutesById
 }
@@ -1174,6 +1226,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalShipmentsJobIdRouteImport
       parentRoute: typeof CustomerPortalShipmentsRoute
     }
+    '/_authenticated/tracking/wall': {
+      id: '/_authenticated/tracking/wall'
+      path: '/wall'
+      fullPath: '/tracking/wall'
+      preLoaderRoute: typeof AuthenticatedTrackingWallRouteImport
+      parentRoute: typeof AuthenticatedTrackingRoute
+    }
+    '/_authenticated/tracking/replay': {
+      id: '/_authenticated/tracking/replay'
+      path: '/replay'
+      fullPath: '/tracking/replay'
+      preLoaderRoute: typeof AuthenticatedTrackingReplayRouteImport
+      parentRoute: typeof AuthenticatedTrackingRoute
+    }
+    '/_authenticated/tracking/customer-care': {
+      id: '/_authenticated/tracking/customer-care'
+      path: '/customer-care'
+      fullPath: '/tracking/customer-care'
+      preLoaderRoute: typeof AuthenticatedTrackingCustomerCareRouteImport
+      parentRoute: typeof AuthenticatedTrackingRoute
+    }
+    '/_authenticated/tracking/control': {
+      id: '/_authenticated/tracking/control'
+      path: '/control'
+      fullPath: '/tracking/control'
+      preLoaderRoute: typeof AuthenticatedTrackingControlRouteImport
+      parentRoute: typeof AuthenticatedTrackingRoute
+    }
     '/_authenticated/brain/operations': {
       id: '/_authenticated/brain/operations'
       path: '/operations'
@@ -1203,6 +1283,26 @@ const AuthenticatedBrainRouteChildren: AuthenticatedBrainRouteChildren = {
 
 const AuthenticatedBrainRouteWithChildren =
   AuthenticatedBrainRoute._addFileChildren(AuthenticatedBrainRouteChildren)
+
+interface AuthenticatedTrackingRouteChildren {
+  AuthenticatedTrackingControlRoute: typeof AuthenticatedTrackingControlRoute
+  AuthenticatedTrackingCustomerCareRoute: typeof AuthenticatedTrackingCustomerCareRoute
+  AuthenticatedTrackingReplayRoute: typeof AuthenticatedTrackingReplayRoute
+  AuthenticatedTrackingWallRoute: typeof AuthenticatedTrackingWallRoute
+}
+
+const AuthenticatedTrackingRouteChildren: AuthenticatedTrackingRouteChildren = {
+  AuthenticatedTrackingControlRoute: AuthenticatedTrackingControlRoute,
+  AuthenticatedTrackingCustomerCareRoute:
+    AuthenticatedTrackingCustomerCareRoute,
+  AuthenticatedTrackingReplayRoute: AuthenticatedTrackingReplayRoute,
+  AuthenticatedTrackingWallRoute: AuthenticatedTrackingWallRoute,
+}
+
+const AuthenticatedTrackingRouteWithChildren =
+  AuthenticatedTrackingRoute._addFileChildren(
+    AuthenticatedTrackingRouteChildren,
+  )
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBrainRoute: typeof AuthenticatedBrainRouteWithChildren
@@ -1237,7 +1337,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedRouteIntelligenceRoute: typeof AuthenticatedRouteIntelligenceRoute
   AuthenticatedSecurityRoute: typeof AuthenticatedSecurityRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
-  AuthenticatedTrackingRoute: typeof AuthenticatedTrackingRoute
+  AuthenticatedTrackingRoute: typeof AuthenticatedTrackingRouteWithChildren
   AuthenticatedVehiclesRoute: typeof AuthenticatedVehiclesRoute
   AuthenticatedWarehouseRoute: typeof AuthenticatedWarehouseRoute
 }
@@ -1277,7 +1377,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedRouteIntelligenceRoute: AuthenticatedRouteIntelligenceRoute,
   AuthenticatedSecurityRoute: AuthenticatedSecurityRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
-  AuthenticatedTrackingRoute: AuthenticatedTrackingRoute,
+  AuthenticatedTrackingRoute: AuthenticatedTrackingRouteWithChildren,
   AuthenticatedVehiclesRoute: AuthenticatedVehiclesRoute,
   AuthenticatedWarehouseRoute: AuthenticatedWarehouseRoute,
 }
