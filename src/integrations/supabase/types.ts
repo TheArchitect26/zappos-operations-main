@@ -5029,6 +5029,494 @@ export type Database = {
           },
         ];
       };
+      communication_audit_logs: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          metadata: Json;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      communication_delivery_attempts: {
+        Row: {
+          attempt_number: number;
+          company_id: string;
+          created_at: string;
+          failure_code: string | null;
+          failure_detail_metadata: Json;
+          id: string;
+          message_id: string;
+          phase22_dlq_id: string | null;
+          phase22_retry_id: string | null;
+          provider: string | null;
+          provider_confirmed_at: string | null;
+          provider_reference: string | null;
+          state: string;
+        };
+        Insert: {
+          attempt_number: number;
+          company_id: string;
+          created_at?: string;
+          failure_code?: string | null;
+          failure_detail_metadata?: Json;
+          id?: string;
+          message_id: string;
+          phase22_dlq_id?: string | null;
+          phase22_retry_id?: string | null;
+          provider?: string | null;
+          provider_confirmed_at?: string | null;
+          provider_reference?: string | null;
+          state: string;
+        };
+        Update: {
+          attempt_number?: number;
+          company_id?: string;
+          created_at?: string;
+          failure_code?: string | null;
+          failure_detail_metadata?: Json;
+          id?: string;
+          message_id?: string;
+          phase22_dlq_id?: string | null;
+          phase22_retry_id?: string | null;
+          provider?: string | null;
+          provider_confirmed_at?: string | null;
+          provider_reference?: string | null;
+          state?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_delivery_attempts_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "communication_delivery_attempts_message_company_fk";
+            columns: ["message_id", "company_id"];
+            isOneToOne: false;
+            referencedRelation: "communication_messages";
+            referencedColumns: ["id", "company_id"];
+          },
+          {
+            foreignKeyName: "communication_delivery_attempts_phase22_dlq_id_fkey";
+            columns: ["phase22_dlq_id"];
+            isOneToOne: false;
+            referencedRelation: "integration_dead_letter_queue";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "communication_delivery_attempts_phase22_retry_id_fkey";
+            columns: ["phase22_retry_id"];
+            isOneToOne: false;
+            referencedRelation: "integration_retry_queue";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      communication_messages: {
+        Row: {
+          attachments: Json;
+          body: string;
+          channel: string;
+          company_id: string;
+          created_at: string;
+          delivery_state: string;
+          direction: string;
+          edited_at: string | null;
+          id: string;
+          mentions: Json;
+          parent_id: string | null;
+          provider_reference: string | null;
+          sender_id: string | null;
+          template_version_id: string | null;
+          thread_id: string;
+          visibility: string;
+        };
+        Insert: {
+          attachments?: Json;
+          body: string;
+          channel: string;
+          company_id: string;
+          created_at?: string;
+          delivery_state?: string;
+          direction?: string;
+          edited_at?: string | null;
+          id?: string;
+          mentions?: Json;
+          parent_id?: string | null;
+          provider_reference?: string | null;
+          sender_id?: string | null;
+          template_version_id?: string | null;
+          thread_id: string;
+          visibility: string;
+        };
+        Update: {
+          attachments?: Json;
+          body?: string;
+          channel?: string;
+          company_id?: string;
+          created_at?: string;
+          delivery_state?: string;
+          direction?: string;
+          edited_at?: string | null;
+          id?: string;
+          mentions?: Json;
+          parent_id?: string | null;
+          provider_reference?: string | null;
+          sender_id?: string | null;
+          template_version_id?: string | null;
+          thread_id?: string;
+          visibility?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_messages_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "communication_messages_parent_id_fkey";
+            columns: ["parent_id"];
+            isOneToOne: false;
+            referencedRelation: "communication_messages";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "communication_messages_thread_company_fk";
+            columns: ["thread_id", "company_id"];
+            isOneToOne: false;
+            referencedRelation: "communication_threads";
+            referencedColumns: ["id", "company_id"];
+          },
+        ];
+      };
+      communication_participants: {
+        Row: {
+          added_by: string;
+          branch_id: string | null;
+          can_reply: boolean;
+          company_id: string;
+          created_at: string;
+          external_entity_id: string | null;
+          id: string;
+          last_read_at: string | null;
+          participant_type: string;
+          role_name: string | null;
+          team_key: string | null;
+          thread_id: string;
+          user_id: string | null;
+        };
+        Insert: {
+          added_by: string;
+          branch_id?: string | null;
+          can_reply?: boolean;
+          company_id: string;
+          created_at?: string;
+          external_entity_id?: string | null;
+          id?: string;
+          last_read_at?: string | null;
+          participant_type: string;
+          role_name?: string | null;
+          team_key?: string | null;
+          thread_id: string;
+          user_id?: string | null;
+        };
+        Update: {
+          added_by?: string;
+          branch_id?: string | null;
+          can_reply?: boolean;
+          company_id?: string;
+          created_at?: string;
+          external_entity_id?: string | null;
+          id?: string;
+          last_read_at?: string | null;
+          participant_type?: string;
+          role_name?: string | null;
+          team_key?: string | null;
+          thread_id?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_participants_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "communication_participants_thread_company_fk";
+            columns: ["thread_id", "company_id"];
+            isOneToOne: false;
+            referencedRelation: "communication_threads";
+            referencedColumns: ["id", "company_id"];
+          },
+        ];
+      };
+      communication_preferences: {
+        Row: {
+          channel: string;
+          company_id: string;
+          created_at: string;
+          emergency_override_allowed: boolean;
+          enabled: boolean;
+          id: string;
+          language: string;
+          marketing_consent: boolean;
+          opted_out_at: string | null;
+          quiet_hours: Json;
+          subject_id: string;
+          subject_type: string;
+          timezone: string;
+          transactional_allowed: boolean;
+          updated_at: string;
+        };
+        Insert: {
+          channel: string;
+          company_id: string;
+          created_at?: string;
+          emergency_override_allowed?: boolean;
+          enabled?: boolean;
+          id?: string;
+          language?: string;
+          marketing_consent?: boolean;
+          opted_out_at?: string | null;
+          quiet_hours?: Json;
+          subject_id: string;
+          subject_type: string;
+          timezone?: string;
+          transactional_allowed?: boolean;
+          updated_at?: string;
+        };
+        Update: {
+          channel?: string;
+          company_id?: string;
+          created_at?: string;
+          emergency_override_allowed?: boolean;
+          enabled?: boolean;
+          id?: string;
+          language?: string;
+          marketing_consent?: boolean;
+          opted_out_at?: string | null;
+          quiet_hours?: Json;
+          subject_id?: string;
+          subject_type?: string;
+          timezone?: string;
+          transactional_allowed?: boolean;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_preferences_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      communication_template_versions: {
+        Row: {
+          approved_at: string | null;
+          body: string;
+          company_id: string;
+          created_at: string;
+          id: string;
+          language: string;
+          reviewer_id: string | null;
+          status: string;
+          subject: string | null;
+          template_id: string;
+          variables: Json;
+          version: number;
+        };
+        Insert: {
+          approved_at?: string | null;
+          body: string;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          language?: string;
+          reviewer_id?: string | null;
+          status?: string;
+          subject?: string | null;
+          template_id: string;
+          variables?: Json;
+          version: number;
+        };
+        Update: {
+          approved_at?: string | null;
+          body?: string;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          language?: string;
+          reviewer_id?: string | null;
+          status?: string;
+          subject?: string | null;
+          template_id?: string;
+          variables?: Json;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_template_versions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "communication_template_versions_template_id_fkey";
+            columns: ["template_id"];
+            isOneToOne: false;
+            referencedRelation: "communication_templates";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      communication_templates: {
+        Row: {
+          approved_use_cases: Json;
+          audience: string;
+          channel: string;
+          company_id: string;
+          created_at: string;
+          id: string;
+          name: string;
+          owner_id: string;
+          status: string;
+        };
+        Insert: {
+          approved_use_cases?: Json;
+          audience: string;
+          channel: string;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          name: string;
+          owner_id: string;
+          status?: string;
+        };
+        Update: {
+          approved_use_cases?: Json;
+          audience?: string;
+          channel?: string;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          name?: string;
+          owner_id?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_templates_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      communication_threads: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          created_by: string;
+          id: string;
+          last_activity_at: string;
+          owner_id: string | null;
+          priority: string;
+          related_entity_id: string | null;
+          related_entity_type: string;
+          source_id: string | null;
+          source_type: string | null;
+          status: string;
+          subject: string;
+          updated_at: string;
+          visibility: string;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          created_by: string;
+          id?: string;
+          last_activity_at?: string;
+          owner_id?: string | null;
+          priority?: string;
+          related_entity_id?: string | null;
+          related_entity_type: string;
+          source_id?: string | null;
+          source_type?: string | null;
+          status?: string;
+          subject: string;
+          updated_at?: string;
+          visibility: string;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          last_activity_at?: string;
+          owner_id?: string | null;
+          priority?: string;
+          related_entity_id?: string | null;
+          related_entity_type?: string;
+          source_id?: string | null;
+          source_type?: string | null;
+          status?: string;
+          subject?: string;
+          updated_at?: string;
+          visibility?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "communication_threads_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       companies: {
         Row: {
           business_type: Database["public"]["Enums"]["business_type"];
@@ -18035,6 +18523,92 @@ export type Database = {
           },
         ];
       };
+      team_channel_members: {
+        Row: {
+          channel_id: string;
+          company_id: string;
+          created_at: string;
+          id: string;
+          last_read_at: string | null;
+          membership_role: string;
+          user_id: string;
+        };
+        Insert: {
+          channel_id: string;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          last_read_at?: string | null;
+          membership_role?: string;
+          user_id: string;
+        };
+        Update: {
+          channel_id?: string;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          last_read_at?: string | null;
+          membership_role?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "team_channel_members_channel_company_fk";
+            columns: ["channel_id", "company_id"];
+            isOneToOne: false;
+            referencedRelation: "team_channels";
+            referencedColumns: ["id", "company_id"];
+          },
+          {
+            foreignKeyName: "team_channel_members_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      team_channels: {
+        Row: {
+          archived_at: string | null;
+          branch_id: string | null;
+          channel_type: string;
+          company_id: string;
+          created_at: string;
+          created_by: string;
+          id: string;
+          name: string;
+        };
+        Insert: {
+          archived_at?: string | null;
+          branch_id?: string | null;
+          channel_type?: string;
+          company_id: string;
+          created_at?: string;
+          created_by: string;
+          id?: string;
+          name: string;
+        };
+        Update: {
+          archived_at?: string | null;
+          branch_id?: string | null;
+          channel_type?: string;
+          company_id?: string;
+          created_at?: string;
+          created_by?: string;
+          id?: string;
+          name?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "team_channels_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tracking_sessions: {
         Row: {
           app_version: string | null;
@@ -20374,6 +20948,497 @@ export type Database = {
           },
         ];
       };
+      work_approvals: {
+        Row: {
+          amount: number | null;
+          assigned_role: string | null;
+          company_id: string;
+          conflict_warnings: Json;
+          created_at: string;
+          domain: string;
+          due_at: string | null;
+          evidence: Json;
+          id: string;
+          impact: string | null;
+          owning_rpc: string;
+          policy_reference: string | null;
+          prior_approvals: Json;
+          requester_id: string;
+          source_id: string;
+          source_type: string;
+          stage: string;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          amount?: number | null;
+          assigned_role?: string | null;
+          company_id: string;
+          conflict_warnings?: Json;
+          created_at?: string;
+          domain: string;
+          due_at?: string | null;
+          evidence?: Json;
+          id?: string;
+          impact?: string | null;
+          owning_rpc: string;
+          policy_reference?: string | null;
+          prior_approvals?: Json;
+          requester_id: string;
+          source_id: string;
+          source_type: string;
+          stage: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          amount?: number | null;
+          assigned_role?: string | null;
+          company_id?: string;
+          conflict_warnings?: Json;
+          created_at?: string;
+          domain?: string;
+          due_at?: string | null;
+          evidence?: Json;
+          id?: string;
+          impact?: string | null;
+          owning_rpc?: string;
+          policy_reference?: string | null;
+          prior_approvals?: Json;
+          requester_id?: string;
+          source_id?: string;
+          source_type?: string;
+          stage?: string;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "work_approvals_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      work_escalations: {
+        Row: {
+          category: string;
+          closure_verified_by: string | null;
+          company_id: string;
+          created_at: string;
+          created_by: string;
+          escalation_level: string;
+          id: string;
+          owner_id: string | null;
+          reason: string;
+          related_records: Json;
+          required_response: string | null;
+          resolution: string | null;
+          severity: string;
+          sla_due_at: string | null;
+          status: string;
+          updated_at: string;
+        };
+        Insert: {
+          category: string;
+          closure_verified_by?: string | null;
+          company_id: string;
+          created_at?: string;
+          created_by: string;
+          escalation_level: string;
+          id?: string;
+          owner_id?: string | null;
+          reason: string;
+          related_records?: Json;
+          required_response?: string | null;
+          resolution?: string | null;
+          severity: string;
+          sla_due_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Update: {
+          category?: string;
+          closure_verified_by?: string | null;
+          company_id?: string;
+          created_at?: string;
+          created_by?: string;
+          escalation_level?: string;
+          id?: string;
+          owner_id?: string | null;
+          reason?: string;
+          related_records?: Json;
+          required_response?: string | null;
+          resolution?: string | null;
+          severity?: string;
+          sla_due_at?: string | null;
+          status?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "work_escalations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      work_task_dependencies: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          depends_on_task_id: string;
+          id: string;
+          task_id: string;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          depends_on_task_id: string;
+          id?: string;
+          task_id: string;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          depends_on_task_id?: string;
+          id?: string;
+          task_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "work_task_dependencies_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "work_task_dependencies_depends_on_task_id_fkey";
+            columns: ["depends_on_task_id"];
+            isOneToOne: false;
+            referencedRelation: "work_tasks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "work_task_dependencies_task_company_fk";
+            columns: ["task_id", "company_id"];
+            isOneToOne: false;
+            referencedRelation: "work_tasks";
+            referencedColumns: ["id", "company_id"];
+          },
+        ];
+      };
+      work_tasks: {
+        Row: {
+          checklist: Json;
+          company_id: string;
+          completion_reason: string | null;
+          created_at: string;
+          created_by: string;
+          description: string | null;
+          due_at: string | null;
+          escalation_state: string | null;
+          evidence: Json;
+          id: string;
+          owner_id: string | null;
+          priority: string;
+          related_entity_id: string | null;
+          related_entity_type: string;
+          source_id: string | null;
+          source_type: string | null;
+          status: string;
+          team_key: string | null;
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          checklist?: Json;
+          company_id: string;
+          completion_reason?: string | null;
+          created_at?: string;
+          created_by: string;
+          description?: string | null;
+          due_at?: string | null;
+          escalation_state?: string | null;
+          evidence?: Json;
+          id?: string;
+          owner_id?: string | null;
+          priority?: string;
+          related_entity_id?: string | null;
+          related_entity_type: string;
+          source_id?: string | null;
+          source_type?: string | null;
+          status?: string;
+          team_key?: string | null;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          checklist?: Json;
+          company_id?: string;
+          completion_reason?: string | null;
+          created_at?: string;
+          created_by?: string;
+          description?: string | null;
+          due_at?: string | null;
+          escalation_state?: string | null;
+          evidence?: Json;
+          id?: string;
+          owner_id?: string | null;
+          priority?: string;
+          related_entity_id?: string | null;
+          related_entity_type?: string;
+          source_id?: string | null;
+          source_type?: string | null;
+          status?: string;
+          team_key?: string | null;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "work_tasks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      workflow_automation_actions: {
+        Row: {
+          action_type: string;
+          company_id: string;
+          created_at: string;
+          human_approved_by: string | null;
+          id: string;
+          run_id: string;
+          status: string;
+          target_reference: Json;
+        };
+        Insert: {
+          action_type: string;
+          company_id: string;
+          created_at?: string;
+          human_approved_by?: string | null;
+          id?: string;
+          run_id: string;
+          status: string;
+          target_reference?: Json;
+        };
+        Update: {
+          action_type?: string;
+          company_id?: string;
+          created_at?: string;
+          human_approved_by?: string | null;
+          id?: string;
+          run_id?: string;
+          status?: string;
+          target_reference?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workflow_actions_run_company_fk";
+            columns: ["run_id", "company_id"];
+            isOneToOne: false;
+            referencedRelation: "workflow_automation_runs";
+            referencedColumns: ["id", "company_id"];
+          },
+          {
+            foreignKeyName: "workflow_automation_actions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      workflow_automation_definitions: {
+        Row: {
+          active_version_id: string | null;
+          company_id: string;
+          created_at: string;
+          id: string;
+          lifecycle: string;
+          name: string;
+          owner_id: string;
+          updated_at: string;
+        };
+        Insert: {
+          active_version_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          name: string;
+          owner_id: string;
+          updated_at?: string;
+        };
+        Update: {
+          active_version_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          name?: string;
+          owner_id?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workflow_active_version_fk";
+            columns: ["active_version_id"];
+            isOneToOne: false;
+            referencedRelation: "workflow_automation_versions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflow_automation_definitions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      workflow_automation_runs: {
+        Row: {
+          automation_version_id: string;
+          company_id: string;
+          completed_at: string | null;
+          condition_result: Json;
+          id: string;
+          loop_path: Json;
+          mode: string;
+          phase22_event_id: string | null;
+          started_at: string;
+          status: string;
+          trigger_result: Json;
+        };
+        Insert: {
+          automation_version_id: string;
+          company_id: string;
+          completed_at?: string | null;
+          condition_result?: Json;
+          id?: string;
+          loop_path?: Json;
+          mode: string;
+          phase22_event_id?: string | null;
+          started_at?: string;
+          status: string;
+          trigger_result?: Json;
+        };
+        Update: {
+          automation_version_id?: string;
+          company_id?: string;
+          completed_at?: string | null;
+          condition_result?: Json;
+          id?: string;
+          loop_path?: Json;
+          mode?: string;
+          phase22_event_id?: string | null;
+          started_at?: string;
+          status?: string;
+          trigger_result?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workflow_automation_runs_automation_version_id_fkey";
+            columns: ["automation_version_id"];
+            isOneToOne: false;
+            referencedRelation: "workflow_automation_versions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflow_automation_runs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflow_automation_runs_phase22_event_id_fkey";
+            columns: ["phase22_event_id"];
+            isOneToOne: false;
+            referencedRelation: "integration_event_bus";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      workflow_automation_versions: {
+        Row: {
+          actions: Json;
+          allowed_domains: Json;
+          approved_at: string | null;
+          company_id: string;
+          conditions: Json;
+          created_at: string;
+          definition_id: string;
+          execution_limit: number;
+          failure_policy: string;
+          id: string;
+          immutable: boolean;
+          reviewer_id: string | null;
+          simulation_result: Json;
+          trigger_config: Json;
+          version: number;
+        };
+        Insert: {
+          actions?: Json;
+          allowed_domains?: Json;
+          approved_at?: string | null;
+          company_id: string;
+          conditions?: Json;
+          created_at?: string;
+          definition_id: string;
+          execution_limit?: number;
+          failure_policy?: string;
+          id?: string;
+          immutable?: boolean;
+          reviewer_id?: string | null;
+          simulation_result?: Json;
+          trigger_config: Json;
+          version: number;
+        };
+        Update: {
+          actions?: Json;
+          allowed_domains?: Json;
+          approved_at?: string | null;
+          company_id?: string;
+          conditions?: Json;
+          created_at?: string;
+          definition_id?: string;
+          execution_limit?: number;
+          failure_policy?: string;
+          id?: string;
+          immutable?: boolean;
+          reviewer_id?: string | null;
+          simulation_result?: Json;
+          trigger_config?: Json;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "workflow_automation_versions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "workflow_automation_versions_definition_id_fkey";
+            columns: ["definition_id"];
+            isOneToOne: false;
+            referencedRelation: "workflow_automation_definitions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       zapp_brain_feedback: {
         Row: {
           company_id: string;
@@ -22365,6 +23430,12 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      connect_can_write: { Args: { _company_id: string }; Returns: boolean };
+      connect_provider_ready: {
+        Args: { _channel: string; _company_id: string };
+        Returns: boolean;
+      };
+      connect_thread_access: { Args: { _thread_id: string }; Returns: boolean };
       create_customer_portal_invitation: {
         Args: {
           p_customer_id: string;

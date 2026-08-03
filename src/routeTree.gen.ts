@@ -58,6 +58,7 @@ import { Route as AuthenticatedDashboardRouteImport } from './routes/_authentica
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
 import { Route as AuthenticatedCustomerPortalRouteImport } from './routes/_authenticated/customer-portal'
 import { Route as AuthenticatedCrmRouteImport } from './routes/_authenticated/crm'
+import { Route as AuthenticatedConnectRouteImport } from './routes/_authenticated/connect'
 import { Route as AuthenticatedComplianceRouteImport } from './routes/_authenticated/compliance'
 import { Route as AuthenticatedCommandCentreRouteImport } from './routes/_authenticated/command-centre'
 import { Route as AuthenticatedBusinessIntelligenceRouteImport } from './routes/_authenticated/business-intelligence'
@@ -322,6 +323,11 @@ const AuthenticatedCrmRoute = AuthenticatedCrmRouteImport.update({
   path: '/crm',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedConnectRoute = AuthenticatedConnectRouteImport.update({
+  id: '/connect',
+  path: '/connect',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedComplianceRoute = AuthenticatedComplianceRouteImport.update({
   id: '/compliance',
   path: '/compliance',
@@ -374,6 +380,7 @@ export interface FileRoutesByFullPath {
   '/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/command-centre': typeof AuthenticatedCommandCentreRoute
   '/compliance': typeof AuthenticatedComplianceRoute
+  '/connect': typeof AuthenticatedConnectRoute
   '/crm': typeof AuthenticatedCrmRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
@@ -429,6 +436,7 @@ export interface FileRoutesByTo {
   '/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/command-centre': typeof AuthenticatedCommandCentreRoute
   '/compliance': typeof AuthenticatedComplianceRoute
+  '/connect': typeof AuthenticatedConnectRoute
   '/crm': typeof AuthenticatedCrmRoute
   '/customer-portal': typeof CustomerPortalIndexRoute
   '/customers': typeof AuthenticatedCustomersRoute
@@ -487,6 +495,7 @@ export interface FileRoutesById {
   '/_authenticated/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/_authenticated/command-centre': typeof AuthenticatedCommandCentreRoute
   '/_authenticated/compliance': typeof AuthenticatedComplianceRoute
+  '/_authenticated/connect': typeof AuthenticatedConnectRoute
   '/_authenticated/crm': typeof AuthenticatedCrmRoute
   '/_authenticated/customer-portal': typeof AuthenticatedCustomerPortalRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
@@ -546,6 +555,7 @@ export interface FileRouteTypes {
     | '/business-intelligence'
     | '/command-centre'
     | '/compliance'
+    | '/connect'
     | '/crm'
     | '/customers'
     | '/dashboard'
@@ -601,6 +611,7 @@ export interface FileRouteTypes {
     | '/business-intelligence'
     | '/command-centre'
     | '/compliance'
+    | '/connect'
     | '/crm'
     | '/customer-portal'
     | '/customers'
@@ -658,6 +669,7 @@ export interface FileRouteTypes {
     | '/_authenticated/business-intelligence'
     | '/_authenticated/command-centre'
     | '/_authenticated/compliance'
+    | '/_authenticated/connect'
     | '/_authenticated/crm'
     | '/_authenticated/customer-portal'
     | '/_authenticated/customers'
@@ -1061,6 +1073,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCrmRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/connect': {
+      id: '/_authenticated/connect'
+      path: '/connect'
+      fullPath: '/connect'
+      preLoaderRoute: typeof AuthenticatedConnectRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/compliance': {
       id: '/_authenticated/compliance'
       path: '/compliance'
@@ -1131,6 +1150,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedBusinessIntelligenceRoute: typeof AuthenticatedBusinessIntelligenceRoute
   AuthenticatedCommandCentreRoute: typeof AuthenticatedCommandCentreRoute
   AuthenticatedComplianceRoute: typeof AuthenticatedComplianceRoute
+  AuthenticatedConnectRoute: typeof AuthenticatedConnectRoute
   AuthenticatedCrmRoute: typeof AuthenticatedCrmRoute
   AuthenticatedCustomerPortalRoute: typeof AuthenticatedCustomerPortalRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
@@ -1166,6 +1186,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
     AuthenticatedBusinessIntelligenceRoute,
   AuthenticatedCommandCentreRoute: AuthenticatedCommandCentreRoute,
   AuthenticatedComplianceRoute: AuthenticatedComplianceRoute,
+  AuthenticatedConnectRoute: AuthenticatedConnectRoute,
   AuthenticatedCrmRoute: AuthenticatedCrmRoute,
   AuthenticatedCustomerPortalRoute: AuthenticatedCustomerPortalRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,

@@ -183,7 +183,16 @@ export function quickActions(type: string) {
       "Ask ZIP",
       "Timeline",
     ],
+    Shipment: ["Message customer", "Create task", "Escalate for review", "Timeline", "Ask ZIP"],
+    Approval: ["Open approvals", "Explain approval", "Show evidence", "Timeline"],
     Driver: ["Assignments", "Coaching", "Compliance", "Incidents", "Documents", "Timeline"],
   };
   return actions[type] ?? ["Open", "Timeline", "Related records", "Ask ZIP", "Show evidence"];
 }
+
+export const CONNECT_COMMANDS = [
+  { label: "Message customer", path: "/connect", permission: "thread_participant" },
+  { label: "Create task", path: "/connect", permission: "task_create" },
+  { label: "Start handover", path: "/connect", permission: "handover_submit" },
+  { label: "Open approvals", path: "/connect", permission: "approval_read" },
+] as const;
