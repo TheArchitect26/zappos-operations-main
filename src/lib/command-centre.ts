@@ -46,3 +46,14 @@ export function filterCommandTimeline(
       (!needle || `${item.title} ${item.source}`.toLowerCase().includes(needle)),
   );
 }
+
+export const RELIABILITY_COMMAND_CENTRE_SIGNALS = [
+  "active_sev_1_or_2",
+  "critical_service_failure",
+  "slo_exhaustion",
+  "backup_or_restore_failure",
+  "queue_or_worker_unavailable",
+  "database_or_telemetry_degraded",
+  "failed_deployment_or_required_rollback",
+  "capacity_threshold",
+] as const;

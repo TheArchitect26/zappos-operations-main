@@ -196,3 +196,11 @@ export const CONNECT_COMMANDS = [
   { label: "Start handover", path: "/connect", permission: "handover_submit" },
   { label: "Open approvals", path: "/connect", permission: "approval_read" },
 ] as const;
+
+export const RELIABILITY_COMMANDS = [
+  { label: "Declare incident", path: "/reliability", permission: "reliability_write" },
+  { label: "Open service health", path: "/reliability", permission: "reliability_read" },
+  { label: "Start release review", path: "/reliability", permission: "reliability_write" },
+  { label: "View backup status", path: "/reliability", permission: "reliability_read" },
+  { label: "Open runbook", path: "/reliability", permission: "reliability_read" },
+] as const;

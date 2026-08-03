@@ -31,6 +31,7 @@ import {
   TabletSmartphone,
   Sparkles,
   MessagesSquare,
+  HeartPulse,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -335,6 +336,12 @@ const ALL: NavItem[] = [
       "support_engineer",
       "viewer",
     ],
+  },
+  {
+    label: "Reliability",
+    to: "/reliability",
+    icon: HeartPulse,
+    roles: ["admin", "operations_manager", "executive", "managing_director", "viewer"],
   },
   {
     label: "Zapp Connect",

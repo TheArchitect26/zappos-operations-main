@@ -176,3 +176,22 @@ export function valueKind(
   if (snapshot.data_freshness === "live") return "live" as const;
   return snapshot.period_end ? ("historical_snapshot" as const) : ("live" as const);
 }
+
+/** Persisted Phase 31 metric codes consumed by the existing BI builder. */
+export const RELIABILITY_METRIC_CODES = [
+  "availability_trend",
+  "incident_count",
+  "mtta",
+  "mttr",
+  "error_rate",
+  "slo_compliance",
+  "error_budget_burn",
+  "deployment_success_rate",
+  "rollback_rate",
+  "backup_success",
+  "restore_success",
+  "queue_lag",
+  "worker_uptime",
+  "telemetry_availability",
+  "capacity_trend",
+] as const;
