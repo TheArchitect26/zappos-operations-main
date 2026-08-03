@@ -4,7 +4,8 @@ const port = Number(process.env.PLAYWRIGHT_PORT || 4173);
 const baseURL = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${port}`;
 const stagingE2E =
   process.env.ZAPPOS_RUN_STAGING_E2E === "true" ||
-  process.env.ZAPPOS_RUN_PHASE29_STAGING_E2E === "true";
+  process.env.ZAPPOS_RUN_PHASE29_STAGING_E2E === "true" ||
+  process.env.ZAPPOS_RUN_PHASE30_STAGING_E2E === "true";
 
 const publicUse = {
   storageState: { cookies: [], origins: [] },
@@ -15,6 +16,7 @@ const stagingTests = [
   /authenticated-staging\.spec\.ts/,
   /phase26-customer-portal-staging\.spec\.ts/,
   /phase29-authenticated-staging\.spec\.ts/,
+  /phase30-authenticated-staging\.spec\.ts/,
 ];
 
 export default defineConfig({
@@ -65,7 +67,7 @@ export default defineConfig({
     },
   ],
   webServer: {
-    command: `npm run build && node .output/server/index.mjs`,
+    command: "node scripts/playwright-server.mjs",
     env: {
       VITE_DEV_BYPASS_AUTH: "false",
       NITRO_PRESET: "node-server",
@@ -76,8 +78,10 @@ export default defineConfig({
         ? process.env.SUPABASE_PUBLISHABLE_KEY || ""
         : "sb_publishable_test",
     },
-    url: baseURL,
-    reuseExistingServer: !process.env.CI,
+    url: `${baseURL}/auth`,
+    reuseExistingServer: false,
     timeout: 120_000,
+    stdout: "pipe",
+    stderr: "pipe",
   },
 });

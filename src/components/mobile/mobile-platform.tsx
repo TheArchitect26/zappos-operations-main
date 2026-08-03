@@ -203,6 +203,20 @@ export function MobilePlatform({
       )}
       <div className="grid gap-3 sm:grid-cols-2">
         <Card className="p-4">
+          <h3 className="font-semibold">Zapp Connect mobile</h3>
+          <p className="mt-2 text-sm text-muted-foreground">
+            Assigned conversations, mentions, tasks, authorised approvals, handovers, call notes and
+            photo evidence use the existing offline sync boundary.
+          </p>
+          <div className="mt-3 flex flex-wrap gap-1" aria-label="Offline communication states">
+            {(["Draft", "Queued", "Syncing", "Failed", "Sent"] as const).map((state) => (
+              <Badge key={state} variant="outline">
+                {state}
+              </Badge>
+            ))}
+          </div>
+        </Card>
+        <Card className="p-4">
           <div className="flex items-center gap-2">
             <Bot className="h-5 w-5 text-primary" />
             <h3 className="font-semibold">ZIP Mobile</h3>
