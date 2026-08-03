@@ -67,3 +67,11 @@ export const SECURITY_COMMAND_CENTRE_SIGNALS = [
   "high_risk_session",
   "access_review_due",
 ] as const;
+
+export const OPERATIONS_INTELLIGENCE_COMMAND_CENTRE_SIGNALS = [
+  "enterprise_risk",
+  "operational_bottleneck",
+  "deteriorating_kpi",
+  "forecast_warning",
+  "executive_priority",
+] as const;

@@ -211,3 +211,26 @@ export const SECURITY_COMMANDS = [
   { label: "Start access review", path: "/security", permission: "security_write" },
   { label: "Review threat finding", path: "/security", permission: "security_write" },
 ] as const;
+
+export const OPERATIONS_INTELLIGENCE_COMMANDS = [
+  {
+    label: "Open executive dashboard",
+    path: "/operations-intelligence",
+    permission: "operations_intelligence_read",
+  },
+  {
+    label: "Explore digital twin",
+    path: "/operations-intelligence",
+    permission: "operations_intelligence_read",
+  },
+  {
+    label: "Review bottlenecks",
+    path: "/operations-intelligence",
+    permission: "operations_intelligence_read",
+  },
+  {
+    label: "Run advisory simulation",
+    path: "/operations-intelligence",
+    permission: "operations_intelligence_analyse",
+  },
+] as const;

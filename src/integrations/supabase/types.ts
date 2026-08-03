@@ -15611,6 +15611,345 @@ export type Database = {
           },
         ];
       };
+      operations_intelligence_benchmarks: {
+        Row: {
+          benchmark_type: string;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          evidence_references: Json;
+          id: string;
+          metric_code: string;
+          percentile: number | null;
+          period_end: string;
+          period_start: string;
+          rank: number | null;
+          scope_id: string;
+          value: number | null;
+        };
+        Insert: {
+          benchmark_type: string;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          metric_code: string;
+          percentile?: number | null;
+          period_end: string;
+          period_start: string;
+          rank?: number | null;
+          scope_id: string;
+          value?: number | null;
+        };
+        Update: {
+          benchmark_type?: string;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          metric_code?: string;
+          percentile?: number | null;
+          period_end?: string;
+          period_start?: string;
+          rank?: number | null;
+          scope_id?: string;
+          value?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_benchmarks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_bottlenecks: {
+        Row: {
+          bottleneck_type: string;
+          company_id: string;
+          detected_at: string;
+          evidence_references: Json;
+          explanation: string;
+          id: string;
+          owner_id: string | null;
+          recommended_review: string | null;
+          resolved_at: string | null;
+          scope_id: string | null;
+          scope_type: string;
+          severity: string;
+          status: string;
+        };
+        Insert: {
+          bottleneck_type: string;
+          company_id: string;
+          detected_at?: string;
+          evidence_references?: Json;
+          explanation: string;
+          id?: string;
+          owner_id?: string | null;
+          recommended_review?: string | null;
+          resolved_at?: string | null;
+          scope_id?: string | null;
+          scope_type: string;
+          severity: string;
+          status?: string;
+        };
+        Update: {
+          bottleneck_type?: string;
+          company_id?: string;
+          detected_at?: string;
+          evidence_references?: Json;
+          explanation?: string;
+          id?: string;
+          owner_id?: string | null;
+          recommended_review?: string | null;
+          resolved_at?: string | null;
+          scope_id?: string | null;
+          scope_type?: string;
+          severity?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_bottlenecks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_briefings: {
+        Row: {
+          briefing_type: string;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          evidence_references: Json;
+          id: string;
+          period_end: string;
+          period_start: string;
+          prepared_by: string | null;
+          published_at: string | null;
+          reviewed_by: string | null;
+          sections: Json;
+          status: string;
+        };
+        Insert: {
+          briefing_type: string;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          period_end: string;
+          period_start: string;
+          prepared_by?: string | null;
+          published_at?: string | null;
+          reviewed_by?: string | null;
+          sections?: Json;
+          status?: string;
+        };
+        Update: {
+          briefing_type?: string;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          period_end?: string;
+          period_start?: string;
+          prepared_by?: string | null;
+          published_at?: string | null;
+          reviewed_by?: string | null;
+          sections?: Json;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_briefings_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_forecasts: {
+        Row: {
+          assumptions: Json;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          evidence_references: Json;
+          explanation: string;
+          forecast_type: string;
+          id: string;
+          missing_data: Json;
+          period_end: string;
+          period_start: string;
+          predicted_value: number | null;
+          scope_id: string | null;
+          scope_type: string;
+        };
+        Insert: {
+          assumptions?: Json;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          evidence_references?: Json;
+          explanation: string;
+          forecast_type: string;
+          id?: string;
+          missing_data?: Json;
+          period_end: string;
+          period_start: string;
+          predicted_value?: number | null;
+          scope_id?: string | null;
+          scope_type: string;
+        };
+        Update: {
+          assumptions?: Json;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          explanation?: string;
+          forecast_type?: string;
+          id?: string;
+          missing_data?: Json;
+          period_end?: string;
+          period_start?: string;
+          predicted_value?: number | null;
+          scope_id?: string | null;
+          scope_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_forecasts_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_observations: {
+        Row: {
+          bi_snapshot_ids: string[];
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          explanation: string;
+          id: string;
+          metric_code: string;
+          non_causal: boolean;
+          observation_type: string;
+          observed_at: string;
+          observed_value: number | null;
+          scope_id: string | null;
+          scope_type: string;
+          source_references: Json;
+        };
+        Insert: {
+          bi_snapshot_ids?: string[];
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          explanation: string;
+          id?: string;
+          metric_code: string;
+          non_causal?: boolean;
+          observation_type: string;
+          observed_at: string;
+          observed_value?: number | null;
+          scope_id?: string | null;
+          scope_type: string;
+          source_references?: Json;
+        };
+        Update: {
+          bi_snapshot_ids?: string[];
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          explanation?: string;
+          id?: string;
+          metric_code?: string;
+          non_causal?: boolean;
+          observation_type?: string;
+          observed_at?: string;
+          observed_value?: number | null;
+          scope_id?: string | null;
+          scope_type?: string;
+          source_references?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_observations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_simulations: {
+        Row: {
+          advisory_only: boolean;
+          affected_kpi_codes: string[];
+          assumptions: Json;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          estimated_impact: Json;
+          evidence_references: Json;
+          id: string;
+          input_metadata: Json;
+          requested_by: string | null;
+          scenario_type: string;
+        };
+        Insert: {
+          advisory_only?: boolean;
+          affected_kpi_codes?: string[];
+          assumptions?: Json;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          estimated_impact?: Json;
+          evidence_references?: Json;
+          id?: string;
+          input_metadata: Json;
+          requested_by?: string | null;
+          scenario_type: string;
+        };
+        Update: {
+          advisory_only?: boolean;
+          affected_kpi_codes?: string[];
+          assumptions?: Json;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          estimated_impact?: Json;
+          evidence_references?: Json;
+          id?: string;
+          input_metadata?: Json;
+          requested_by?: string | null;
+          scenario_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_simulations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       platform_audit_logs: {
         Row: {
           actor_id: string | null;
@@ -27135,6 +27474,14 @@ export type Database = {
         Returns: number;
       };
       open_shipment_share_link: { Args: { p_token: string }; Returns: Json };
+      operations_intelligence_can_read: {
+        Args: { c: string };
+        Returns: boolean;
+      };
+      operations_intelligence_can_write: {
+        Args: { c: string };
+        Returns: boolean;
+      };
       phase11_provisioning_rank: { Args: { _state: string }; Returns: number };
       platform_ingest_device_telemetry: {
         Args: {

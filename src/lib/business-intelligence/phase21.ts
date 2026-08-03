@@ -207,3 +207,14 @@ export const SECURITY_METRIC_CODES = [
   "certificate_expiry",
   "secret_rotation",
 ] as const;
+
+/** Phase 33 consumes these through Phase 21 snapshots; it does not create a second KPI engine. */
+export const OPERATIONS_INTELLIGENCE_METRIC_CODES = [
+  "enterprise_scorecard",
+  "branch_benchmark",
+  "warehouse_benchmark",
+  "fleet_benchmark",
+  "forecast_warning",
+  "bottleneck_count",
+  "executive_priority",
+] as const;
