@@ -31,6 +31,9 @@ import {
   TabletSmartphone,
   Sparkles,
   MessagesSquare,
+  HeartPulse,
+  LockKeyhole,
+  ChartNoAxesCombined,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -334,6 +337,46 @@ const ALL: NavItem[] = [
       "api_developer",
       "support_engineer",
       "viewer",
+    ],
+  },
+  {
+    label: "Reliability",
+    to: "/reliability",
+    icon: HeartPulse,
+    roles: ["admin", "operations_manager", "executive", "managing_director", "viewer"],
+  },
+  {
+    label: "Security",
+    to: "/security",
+    icon: LockKeyhole,
+    roles: [
+      "admin",
+      "system_administrator",
+      "technical_administrator",
+      "compliance_manager",
+      "executive",
+      "managing_director",
+      "viewer",
+    ],
+  },
+  {
+    label: "Operations Intelligence",
+    to: "/operations-intelligence",
+    icon: ChartNoAxesCombined,
+    roles: [
+      "admin",
+      "executive",
+      "managing_director",
+      "operations_manager",
+      "analyst",
+      "viewer",
+      "fleet_manager",
+      "warehouse_manager",
+      "finance_manager",
+      "commercial_manager",
+      "procurement_manager",
+      "crm_manager",
+      "hr_manager",
     ],
   },
   {

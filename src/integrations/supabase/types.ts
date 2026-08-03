@@ -15611,6 +15611,345 @@ export type Database = {
           },
         ];
       };
+      operations_intelligence_benchmarks: {
+        Row: {
+          benchmark_type: string;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          evidence_references: Json;
+          id: string;
+          metric_code: string;
+          percentile: number | null;
+          period_end: string;
+          period_start: string;
+          rank: number | null;
+          scope_id: string;
+          value: number | null;
+        };
+        Insert: {
+          benchmark_type: string;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          metric_code: string;
+          percentile?: number | null;
+          period_end: string;
+          period_start: string;
+          rank?: number | null;
+          scope_id: string;
+          value?: number | null;
+        };
+        Update: {
+          benchmark_type?: string;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          metric_code?: string;
+          percentile?: number | null;
+          period_end?: string;
+          period_start?: string;
+          rank?: number | null;
+          scope_id?: string;
+          value?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_benchmarks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_bottlenecks: {
+        Row: {
+          bottleneck_type: string;
+          company_id: string;
+          detected_at: string;
+          evidence_references: Json;
+          explanation: string;
+          id: string;
+          owner_id: string | null;
+          recommended_review: string | null;
+          resolved_at: string | null;
+          scope_id: string | null;
+          scope_type: string;
+          severity: string;
+          status: string;
+        };
+        Insert: {
+          bottleneck_type: string;
+          company_id: string;
+          detected_at?: string;
+          evidence_references?: Json;
+          explanation: string;
+          id?: string;
+          owner_id?: string | null;
+          recommended_review?: string | null;
+          resolved_at?: string | null;
+          scope_id?: string | null;
+          scope_type: string;
+          severity: string;
+          status?: string;
+        };
+        Update: {
+          bottleneck_type?: string;
+          company_id?: string;
+          detected_at?: string;
+          evidence_references?: Json;
+          explanation?: string;
+          id?: string;
+          owner_id?: string | null;
+          recommended_review?: string | null;
+          resolved_at?: string | null;
+          scope_id?: string | null;
+          scope_type?: string;
+          severity?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_bottlenecks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_briefings: {
+        Row: {
+          briefing_type: string;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          evidence_references: Json;
+          id: string;
+          period_end: string;
+          period_start: string;
+          prepared_by: string | null;
+          published_at: string | null;
+          reviewed_by: string | null;
+          sections: Json;
+          status: string;
+        };
+        Insert: {
+          briefing_type: string;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          period_end: string;
+          period_start: string;
+          prepared_by?: string | null;
+          published_at?: string | null;
+          reviewed_by?: string | null;
+          sections?: Json;
+          status?: string;
+        };
+        Update: {
+          briefing_type?: string;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          id?: string;
+          period_end?: string;
+          period_start?: string;
+          prepared_by?: string | null;
+          published_at?: string | null;
+          reviewed_by?: string | null;
+          sections?: Json;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_briefings_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_forecasts: {
+        Row: {
+          assumptions: Json;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          evidence_references: Json;
+          explanation: string;
+          forecast_type: string;
+          id: string;
+          missing_data: Json;
+          period_end: string;
+          period_start: string;
+          predicted_value: number | null;
+          scope_id: string | null;
+          scope_type: string;
+        };
+        Insert: {
+          assumptions?: Json;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          evidence_references?: Json;
+          explanation: string;
+          forecast_type: string;
+          id?: string;
+          missing_data?: Json;
+          period_end: string;
+          period_start: string;
+          predicted_value?: number | null;
+          scope_id?: string | null;
+          scope_type: string;
+        };
+        Update: {
+          assumptions?: Json;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          explanation?: string;
+          forecast_type?: string;
+          id?: string;
+          missing_data?: Json;
+          period_end?: string;
+          period_start?: string;
+          predicted_value?: number | null;
+          scope_id?: string | null;
+          scope_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_forecasts_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_observations: {
+        Row: {
+          bi_snapshot_ids: string[];
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          explanation: string;
+          id: string;
+          metric_code: string;
+          non_causal: boolean;
+          observation_type: string;
+          observed_at: string;
+          observed_value: number | null;
+          scope_id: string | null;
+          scope_type: string;
+          source_references: Json;
+        };
+        Insert: {
+          bi_snapshot_ids?: string[];
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          explanation: string;
+          id?: string;
+          metric_code: string;
+          non_causal?: boolean;
+          observation_type: string;
+          observed_at: string;
+          observed_value?: number | null;
+          scope_id?: string | null;
+          scope_type: string;
+          source_references?: Json;
+        };
+        Update: {
+          bi_snapshot_ids?: string[];
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          explanation?: string;
+          id?: string;
+          metric_code?: string;
+          non_causal?: boolean;
+          observation_type?: string;
+          observed_at?: string;
+          observed_value?: number | null;
+          scope_id?: string | null;
+          scope_type?: string;
+          source_references?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_observations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      operations_intelligence_simulations: {
+        Row: {
+          advisory_only: boolean;
+          affected_kpi_codes: string[];
+          assumptions: Json;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          estimated_impact: Json;
+          evidence_references: Json;
+          id: string;
+          input_metadata: Json;
+          requested_by: string | null;
+          scenario_type: string;
+        };
+        Insert: {
+          advisory_only?: boolean;
+          affected_kpi_codes?: string[];
+          assumptions?: Json;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          estimated_impact?: Json;
+          evidence_references?: Json;
+          id?: string;
+          input_metadata: Json;
+          requested_by?: string | null;
+          scenario_type: string;
+        };
+        Update: {
+          advisory_only?: boolean;
+          affected_kpi_codes?: string[];
+          assumptions?: Json;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          estimated_impact?: Json;
+          evidence_references?: Json;
+          id?: string;
+          input_metadata?: Json;
+          requested_by?: string | null;
+          scenario_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "operations_intelligence_simulations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       platform_audit_logs: {
         Row: {
           actor_id: string | null;
@@ -17952,6 +18291,1560 @@ export type Database = {
           },
         ];
       };
+      reliability_audit_logs: {
+        Row: {
+          actor_id: string;
+          company_id: string;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          safe_metadata: Json;
+        };
+        Insert: {
+          actor_id?: string;
+          company_id: string;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          safe_metadata?: Json;
+        };
+        Update: {
+          actor_id?: string;
+          company_id?: string;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          safe_metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_backup_policies: {
+        Row: {
+          asset_type: string;
+          company_id: string;
+          encryption_expectation: string;
+          environment: string;
+          failure_reason_redacted: string | null;
+          frequency_seconds: number;
+          id: string;
+          last_successful_backup_at: string | null;
+          location_metadata: Json;
+          next_backup_at: string | null;
+          owner_id: string;
+          retention_seconds: number;
+          verification_status: string;
+        };
+        Insert: {
+          asset_type: string;
+          company_id: string;
+          encryption_expectation: string;
+          environment: string;
+          failure_reason_redacted?: string | null;
+          frequency_seconds: number;
+          id?: string;
+          last_successful_backup_at?: string | null;
+          location_metadata?: Json;
+          next_backup_at?: string | null;
+          owner_id: string;
+          retention_seconds: number;
+          verification_status?: string;
+        };
+        Update: {
+          asset_type?: string;
+          company_id?: string;
+          encryption_expectation?: string;
+          environment?: string;
+          failure_reason_redacted?: string | null;
+          frequency_seconds?: number;
+          id?: string;
+          last_successful_backup_at?: string | null;
+          location_metadata?: Json;
+          next_backup_at?: string | null;
+          owner_id?: string;
+          retention_seconds?: number;
+          verification_status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_backup_policies_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_backup_records: {
+        Row: {
+          backup_id: string;
+          company_id: string;
+          completed_at: string | null;
+          environment: string;
+          evidence: Json;
+          failure_reason_redacted: string | null;
+          id: string;
+          policy_id: string;
+          provider_reference: string | null;
+          retention_expires_at: string | null;
+          size_bytes: number | null;
+          source: string;
+          started_at: string;
+          status: string;
+          verification: string;
+        };
+        Insert: {
+          backup_id: string;
+          company_id: string;
+          completed_at?: string | null;
+          environment: string;
+          evidence?: Json;
+          failure_reason_redacted?: string | null;
+          id?: string;
+          policy_id: string;
+          provider_reference?: string | null;
+          retention_expires_at?: string | null;
+          size_bytes?: number | null;
+          source: string;
+          started_at: string;
+          status: string;
+          verification?: string;
+        };
+        Update: {
+          backup_id?: string;
+          company_id?: string;
+          completed_at?: string | null;
+          environment?: string;
+          evidence?: Json;
+          failure_reason_redacted?: string | null;
+          id?: string;
+          policy_id?: string;
+          provider_reference?: string | null;
+          retention_expires_at?: string | null;
+          size_bytes?: number | null;
+          source?: string;
+          started_at?: string;
+          status?: string;
+          verification?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_backup_records_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_backup_records_policy_id_fkey";
+            columns: ["policy_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_backup_policies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_capacity_snapshots: {
+        Row: {
+          assumptions: Json;
+          company_id: string;
+          confidence: string;
+          cost_classification: string | null;
+          cost_value: number | null;
+          environment: string;
+          forecast_threshold_at: string | null;
+          id: string;
+          metric: string;
+          missing_data: Json;
+          monthly_growth: number | null;
+          recorded_at: string;
+          source: string;
+          threshold: number | null;
+          unit: string;
+          value: number;
+        };
+        Insert: {
+          assumptions?: Json;
+          company_id: string;
+          confidence: string;
+          cost_classification?: string | null;
+          cost_value?: number | null;
+          environment: string;
+          forecast_threshold_at?: string | null;
+          id?: string;
+          metric: string;
+          missing_data?: Json;
+          monthly_growth?: number | null;
+          recorded_at?: string;
+          source: string;
+          threshold?: number | null;
+          unit: string;
+          value: number;
+        };
+        Update: {
+          assumptions?: Json;
+          company_id?: string;
+          confidence?: string;
+          cost_classification?: string | null;
+          cost_value?: number | null;
+          environment?: string;
+          forecast_threshold_at?: string | null;
+          id?: string;
+          metric?: string;
+          missing_data?: Json;
+          monthly_growth?: number | null;
+          recorded_at?: string;
+          source?: string;
+          threshold?: number | null;
+          unit?: string;
+          value?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_capacity_snapshots_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_deployments: {
+        Row: {
+          company_id: string;
+          completed_at: string | null;
+          environment: string;
+          evidence: Json;
+          id: string;
+          platform_deployment_id: string | null;
+          release_id: string;
+          requested_by: string;
+          rollback_plan: Json;
+          started_at: string | null;
+          state: string;
+        };
+        Insert: {
+          company_id: string;
+          completed_at?: string | null;
+          environment: string;
+          evidence?: Json;
+          id?: string;
+          platform_deployment_id?: string | null;
+          release_id: string;
+          requested_by?: string;
+          rollback_plan?: Json;
+          started_at?: string | null;
+          state: string;
+        };
+        Update: {
+          company_id?: string;
+          completed_at?: string | null;
+          environment?: string;
+          evidence?: Json;
+          id?: string;
+          platform_deployment_id?: string | null;
+          release_id?: string;
+          requested_by?: string;
+          rollback_plan?: Json;
+          started_at?: string | null;
+          state?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_deployments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_deployments_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_dr_plans: {
+        Row: {
+          actual_loss_window_seconds: number | null;
+          actual_recovery_seconds: number | null;
+          communication: string;
+          company_id: string;
+          containment: string;
+          detection: string;
+          environment: string;
+          escalation: string;
+          id: string;
+          last_tested_at: string | null;
+          next_review_at: string | null;
+          owner_id: string;
+          recovery: string;
+          rpo_seconds: number;
+          rto_seconds: number;
+          runbook_id: string | null;
+          scenario: string;
+          status: string;
+          validation: string;
+        };
+        Insert: {
+          actual_loss_window_seconds?: number | null;
+          actual_recovery_seconds?: number | null;
+          communication: string;
+          company_id: string;
+          containment: string;
+          detection: string;
+          environment: string;
+          escalation: string;
+          id?: string;
+          last_tested_at?: string | null;
+          next_review_at?: string | null;
+          owner_id: string;
+          recovery: string;
+          rpo_seconds: number;
+          rto_seconds: number;
+          runbook_id?: string | null;
+          scenario: string;
+          status?: string;
+          validation: string;
+        };
+        Update: {
+          actual_loss_window_seconds?: number | null;
+          actual_recovery_seconds?: number | null;
+          communication?: string;
+          company_id?: string;
+          containment?: string;
+          detection?: string;
+          environment?: string;
+          escalation?: string;
+          id?: string;
+          last_tested_at?: string | null;
+          next_review_at?: string | null;
+          owner_id?: string;
+          recovery?: string;
+          rpo_seconds?: number;
+          rto_seconds?: number;
+          runbook_id?: string | null;
+          scenario?: string;
+          status?: string;
+          validation?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_dr_plans_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_dr_runbook_fk";
+            columns: ["runbook_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_runbooks";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_error_events: {
+        Row: {
+          company_id: string;
+          correlation_id: string | null;
+          error_group_id: string;
+          id: string;
+          occurred_at: string;
+          safe_metadata: Json;
+          source_type: string;
+        };
+        Insert: {
+          company_id: string;
+          correlation_id?: string | null;
+          error_group_id: string;
+          id?: string;
+          occurred_at?: string;
+          safe_metadata?: Json;
+          source_type: string;
+        };
+        Update: {
+          company_id?: string;
+          correlation_id?: string | null;
+          error_group_id?: string;
+          id?: string;
+          occurred_at?: string;
+          safe_metadata?: Json;
+          source_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_error_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_error_events_error_group_id_fkey";
+            columns: ["error_group_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_error_groups";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_error_groups: {
+        Row: {
+          affected_company_count: number;
+          affected_user_count: number;
+          company_id: string;
+          environment: string;
+          fingerprint: string;
+          first_seen: string;
+          id: string;
+          last_seen: string;
+          occurrence_count: number;
+          owner_id: string | null;
+          redacted_stack: string | null;
+          related_incident_id: string | null;
+          resolution: string | null;
+          route_operation: string | null;
+          service_id: string | null;
+          severity: string;
+          status: string;
+          version: string | null;
+        };
+        Insert: {
+          affected_company_count?: number;
+          affected_user_count?: number;
+          company_id: string;
+          environment: string;
+          fingerprint: string;
+          first_seen: string;
+          id?: string;
+          last_seen: string;
+          occurrence_count?: number;
+          owner_id?: string | null;
+          redacted_stack?: string | null;
+          related_incident_id?: string | null;
+          resolution?: string | null;
+          route_operation?: string | null;
+          service_id?: string | null;
+          severity: string;
+          status?: string;
+          version?: string | null;
+        };
+        Update: {
+          affected_company_count?: number;
+          affected_user_count?: number;
+          company_id?: string;
+          environment?: string;
+          fingerprint?: string;
+          first_seen?: string;
+          id?: string;
+          last_seen?: string;
+          occurrence_count?: number;
+          owner_id?: string | null;
+          redacted_stack?: string | null;
+          related_incident_id?: string | null;
+          resolution?: string | null;
+          route_operation?: string | null;
+          service_id?: string | null;
+          severity?: string;
+          status?: string;
+          version?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_error_groups_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_error_groups_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_services";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_error_incident_fk";
+            columns: ["related_incident_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_incidents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_feature_flags: {
+        Row: {
+          approval_id: string | null;
+          company_id: string;
+          company_scope: string[];
+          created_at: string;
+          enabled: boolean;
+          ends_at: string | null;
+          environment: string;
+          id: string;
+          key: string;
+          kill_switch: boolean;
+          owner_id: string;
+          reason: string;
+          role_scope: string[];
+          rollout_percentage: number;
+          rollout_stage: string;
+          server_enforced: boolean;
+          starts_at: string | null;
+        };
+        Insert: {
+          approval_id?: string | null;
+          company_id: string;
+          company_scope?: string[];
+          created_at?: string;
+          enabled?: boolean;
+          ends_at?: string | null;
+          environment: string;
+          id?: string;
+          key: string;
+          kill_switch?: boolean;
+          owner_id: string;
+          reason: string;
+          role_scope?: string[];
+          rollout_percentage?: number;
+          rollout_stage?: string;
+          server_enforced?: boolean;
+          starts_at?: string | null;
+        };
+        Update: {
+          approval_id?: string | null;
+          company_id?: string;
+          company_scope?: string[];
+          created_at?: string;
+          enabled?: boolean;
+          ends_at?: string | null;
+          environment?: string;
+          id?: string;
+          key?: string;
+          kill_switch?: boolean;
+          owner_id?: string;
+          reason?: string;
+          role_scope?: string[];
+          rollout_percentage?: number;
+          rollout_stage?: string;
+          server_enforced?: boolean;
+          starts_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_feature_flags_approval_id_fkey";
+            columns: ["approval_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_release_approvals";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_feature_flags_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_health_checks: {
+        Row: {
+          check_type: string;
+          checked_at: string;
+          company_id: string;
+          confidence: number | null;
+          created_at: string;
+          expected_next_at: string | null;
+          failure_reason_redacted: string | null;
+          id: string;
+          last_successful_at: string | null;
+          scope_metadata: Json;
+          service_id: string;
+          source_authority: string;
+          source_record_id: string | null;
+          state: string;
+        };
+        Insert: {
+          check_type: string;
+          checked_at: string;
+          company_id: string;
+          confidence?: number | null;
+          created_at?: string;
+          expected_next_at?: string | null;
+          failure_reason_redacted?: string | null;
+          id?: string;
+          last_successful_at?: string | null;
+          scope_metadata?: Json;
+          service_id: string;
+          source_authority: string;
+          source_record_id?: string | null;
+          state: string;
+        };
+        Update: {
+          check_type?: string;
+          checked_at?: string;
+          company_id?: string;
+          confidence?: number | null;
+          created_at?: string;
+          expected_next_at?: string | null;
+          failure_reason_redacted?: string | null;
+          id?: string;
+          last_successful_at?: string | null;
+          scope_metadata?: Json;
+          service_id?: string;
+          source_authority?: string;
+          source_record_id?: string | null;
+          state?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_health_checks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_health_checks_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_incident_timeline: {
+        Row: {
+          actor_id: string;
+          company_id: string;
+          event_type: string;
+          id: string;
+          incident_id: string;
+          occurred_at: string;
+          safe_evidence: Json;
+          summary: string;
+        };
+        Insert: {
+          actor_id?: string;
+          company_id: string;
+          event_type: string;
+          id?: string;
+          incident_id: string;
+          occurred_at?: string;
+          safe_evidence?: Json;
+          summary: string;
+        };
+        Update: {
+          actor_id?: string;
+          company_id?: string;
+          event_type?: string;
+          id?: string;
+          incident_id?: string;
+          occurred_at?: string;
+          safe_evidence?: Json;
+          summary?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_incident_timeline_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_incident_timeline_incident_id_fkey";
+            columns: ["incident_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_incidents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_incidents: {
+        Row: {
+          affected_customer_count: number;
+          affected_service_ids: string[];
+          closed_at: string | null;
+          closed_by: string | null;
+          commander_id: string | null;
+          company_id: string;
+          customer_communication_state: string;
+          declared_at: string;
+          declared_by: string;
+          detection_source: string;
+          id: string;
+          mitigation: string | null;
+          resolution: string | null;
+          resolved_at: string | null;
+          responder_ids: string[];
+          root_cause: string | null;
+          severity: string;
+          status: string;
+          title: string;
+        };
+        Insert: {
+          affected_customer_count?: number;
+          affected_service_ids?: string[];
+          closed_at?: string | null;
+          closed_by?: string | null;
+          commander_id?: string | null;
+          company_id: string;
+          customer_communication_state?: string;
+          declared_at?: string;
+          declared_by?: string;
+          detection_source: string;
+          id?: string;
+          mitigation?: string | null;
+          resolution?: string | null;
+          resolved_at?: string | null;
+          responder_ids?: string[];
+          root_cause?: string | null;
+          severity: string;
+          status?: string;
+          title: string;
+        };
+        Update: {
+          affected_customer_count?: number;
+          affected_service_ids?: string[];
+          closed_at?: string | null;
+          closed_by?: string | null;
+          commander_id?: string | null;
+          company_id?: string;
+          customer_communication_state?: string;
+          declared_at?: string;
+          declared_by?: string;
+          detection_source?: string;
+          id?: string;
+          mitigation?: string | null;
+          resolution?: string | null;
+          resolved_at?: string | null;
+          responder_ids?: string[];
+          root_cause?: string | null;
+          severity?: string;
+          status?: string;
+          title?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_incidents_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_maintenance_windows: {
+        Row: {
+          affected_service_ids: string[];
+          approval_id: string | null;
+          company_id: string;
+          completed_at: string | null;
+          customer_delivery_state: string;
+          customer_visibility: boolean;
+          expected_impact: string;
+          id: string;
+          internal_notification_id: string | null;
+          owner_id: string;
+          planned_end: string;
+          planned_start: string;
+          status: string;
+        };
+        Insert: {
+          affected_service_ids?: string[];
+          approval_id?: string | null;
+          company_id: string;
+          completed_at?: string | null;
+          customer_delivery_state?: string;
+          customer_visibility?: boolean;
+          expected_impact: string;
+          id?: string;
+          internal_notification_id?: string | null;
+          owner_id: string;
+          planned_end: string;
+          planned_start: string;
+          status?: string;
+        };
+        Update: {
+          affected_service_ids?: string[];
+          approval_id?: string | null;
+          company_id?: string;
+          completed_at?: string | null;
+          customer_delivery_state?: string;
+          customer_visibility?: boolean;
+          expected_impact?: string;
+          id?: string;
+          internal_notification_id?: string | null;
+          owner_id?: string;
+          planned_end?: string;
+          planned_start?: string;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_maintenance_windows_approval_id_fkey";
+            columns: ["approval_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_release_approvals";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_maintenance_windows_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_performance_samples: {
+        Row: {
+          company_id: string;
+          duration_ms: number | null;
+          environment: string;
+          error_count: number;
+          id: string;
+          metric: string;
+          period_end: string;
+          period_start: string;
+          safe_dimensions: Json;
+          sample_count: number;
+          service_id: string | null;
+          source_authority: string;
+          timeout_count: number;
+          value: number | null;
+        };
+        Insert: {
+          company_id: string;
+          duration_ms?: number | null;
+          environment: string;
+          error_count?: number;
+          id?: string;
+          metric: string;
+          period_end: string;
+          period_start: string;
+          safe_dimensions?: Json;
+          sample_count?: number;
+          service_id?: string | null;
+          source_authority: string;
+          timeout_count?: number;
+          value?: number | null;
+        };
+        Update: {
+          company_id?: string;
+          duration_ms?: number | null;
+          environment?: string;
+          error_count?: number;
+          id?: string;
+          metric?: string;
+          period_end?: string;
+          period_start?: string;
+          safe_dimensions?: Json;
+          sample_count?: number;
+          service_id?: string | null;
+          source_authority?: string;
+          timeout_count?: number;
+          value?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_performance_samples_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_performance_samples_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_post_incident_reviews: {
+        Row: {
+          approved_at: string | null;
+          approved_by: string | null;
+          company_id: string;
+          corrective_actions: Json;
+          created_at: string;
+          id: string;
+          incident_id: string;
+          review: Json;
+          status: string;
+        };
+        Insert: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id: string;
+          corrective_actions?: Json;
+          created_at?: string;
+          id?: string;
+          incident_id: string;
+          review?: Json;
+          status?: string;
+        };
+        Update: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id?: string;
+          corrective_actions?: Json;
+          created_at?: string;
+          id?: string;
+          incident_id?: string;
+          review?: Json;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_post_incident_reviews_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_post_incident_reviews_incident_id_fkey";
+            columns: ["incident_id"];
+            isOneToOne: true;
+            referencedRelation: "reliability_incidents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_readiness_reviews: {
+        Row: {
+          checklist: Json;
+          company_id: string;
+          conditions: string | null;
+          decided_at: string;
+          decided_by: string;
+          id: string;
+          known_risks: Json;
+          release_id: string | null;
+          result: string;
+        };
+        Insert: {
+          checklist?: Json;
+          company_id: string;
+          conditions?: string | null;
+          decided_at?: string;
+          decided_by: string;
+          id?: string;
+          known_risks?: Json;
+          release_id?: string | null;
+          result: string;
+        };
+        Update: {
+          checklist?: Json;
+          company_id?: string;
+          conditions?: string | null;
+          decided_at?: string;
+          decided_by?: string;
+          id?: string;
+          known_risks?: Json;
+          release_id?: string | null;
+          result?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_readiness_reviews_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_readiness_reviews_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_release_approvals: {
+        Row: {
+          approval_type: string;
+          approver_id: string | null;
+          company_id: string;
+          conditions: string | null;
+          decided_at: string | null;
+          decision: string;
+          deployment_id: string | null;
+          evidence: Json;
+          id: string;
+          release_id: string | null;
+          requester_id: string;
+          risk: string;
+        };
+        Insert: {
+          approval_type: string;
+          approver_id?: string | null;
+          company_id: string;
+          conditions?: string | null;
+          decided_at?: string | null;
+          decision?: string;
+          deployment_id?: string | null;
+          evidence?: Json;
+          id?: string;
+          release_id?: string | null;
+          requester_id: string;
+          risk: string;
+        };
+        Update: {
+          approval_type?: string;
+          approver_id?: string | null;
+          company_id?: string;
+          conditions?: string | null;
+          decided_at?: string | null;
+          decision?: string;
+          deployment_id?: string | null;
+          evidence?: Json;
+          id?: string;
+          release_id?: string | null;
+          requester_id?: string;
+          risk?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_release_approvals_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_release_approvals_deployment_id_fkey";
+            columns: ["deployment_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_deployments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_release_approvals_release_id_fkey";
+            columns: ["release_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_releases";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_releases: {
+        Row: {
+          build_evidence: Json;
+          commit_sha: string;
+          company_id: string;
+          created_at: string;
+          created_by: string;
+          environment: string;
+          feature_flag_ids: string[];
+          id: string;
+          known_risks: Json;
+          migration_set: string[];
+          release_notes: string | null;
+          rollback_target: string | null;
+          state: string;
+          test_evidence: Json;
+          validated_at: string | null;
+          version: string;
+        };
+        Insert: {
+          build_evidence?: Json;
+          commit_sha: string;
+          company_id: string;
+          created_at?: string;
+          created_by?: string;
+          environment: string;
+          feature_flag_ids?: string[];
+          id?: string;
+          known_risks?: Json;
+          migration_set?: string[];
+          release_notes?: string | null;
+          rollback_target?: string | null;
+          state?: string;
+          test_evidence?: Json;
+          validated_at?: string | null;
+          version: string;
+        };
+        Update: {
+          build_evidence?: Json;
+          commit_sha?: string;
+          company_id?: string;
+          created_at?: string;
+          created_by?: string;
+          environment?: string;
+          feature_flag_ids?: string[];
+          id?: string;
+          known_risks?: Json;
+          migration_set?: string[];
+          release_notes?: string | null;
+          rollback_target?: string | null;
+          state?: string;
+          test_evidence?: Json;
+          validated_at?: string | null;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_releases_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_restore_tests: {
+        Row: {
+          auth_validation: boolean | null;
+          authorised_by: string;
+          backup_record_id: string;
+          company_id: string;
+          completed_at: string | null;
+          data_integrity: boolean | null;
+          evidence: Json;
+          id: string;
+          migration_parity: boolean | null;
+          outcome: string;
+          rls_validation: boolean | null;
+          smoke_tests: boolean | null;
+          started_at: string | null;
+          storage_validation: boolean | null;
+          target_environment: string;
+        };
+        Insert: {
+          auth_validation?: boolean | null;
+          authorised_by: string;
+          backup_record_id: string;
+          company_id: string;
+          completed_at?: string | null;
+          data_integrity?: boolean | null;
+          evidence?: Json;
+          id?: string;
+          migration_parity?: boolean | null;
+          outcome?: string;
+          rls_validation?: boolean | null;
+          smoke_tests?: boolean | null;
+          started_at?: string | null;
+          storage_validation?: boolean | null;
+          target_environment: string;
+        };
+        Update: {
+          auth_validation?: boolean | null;
+          authorised_by?: string;
+          backup_record_id?: string;
+          company_id?: string;
+          completed_at?: string | null;
+          data_integrity?: boolean | null;
+          evidence?: Json;
+          id?: string;
+          migration_parity?: boolean | null;
+          outcome?: string;
+          rls_validation?: boolean | null;
+          smoke_tests?: boolean | null;
+          started_at?: string | null;
+          storage_validation?: boolean | null;
+          target_environment?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_restore_tests_backup_record_id_fkey";
+            columns: ["backup_record_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_backup_records";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_restore_tests_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_runbooks: {
+        Row: {
+          approved_at: string | null;
+          approved_by: string | null;
+          code: string;
+          company_id: string;
+          content: Json;
+          created_at: string;
+          id: string;
+          lifecycle: string;
+          owner_id: string;
+          title: string;
+          version: number;
+        };
+        Insert: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          code: string;
+          company_id: string;
+          content?: Json;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          owner_id: string;
+          title: string;
+          version: number;
+        };
+        Update: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          code?: string;
+          company_id?: string;
+          content?: Json;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          owner_id?: string;
+          title?: string;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_runbooks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_service_dependencies: {
+        Row: {
+          company_id: string;
+          critical: boolean;
+          dependency_service_id: string;
+          id: string;
+          service_id: string;
+        };
+        Insert: {
+          company_id: string;
+          critical?: boolean;
+          dependency_service_id: string;
+          id?: string;
+          service_id: string;
+        };
+        Update: {
+          company_id?: string;
+          critical?: boolean;
+          dependency_service_id?: string;
+          id?: string;
+          service_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_service_dependencies_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_service_dependencies_dependency_service_id_fkey";
+            columns: ["dependency_service_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_services";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_service_dependencies_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_services: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          criticality: string;
+          customer_visibility: string;
+          deployment_id: string | null;
+          environment: string;
+          health_endpoint_metadata: Json;
+          id: string;
+          monitoring_state: string;
+          name: string;
+          owner_id: string | null;
+          recovery_objectives: Json;
+          region: string | null;
+          runbook_id: string | null;
+          service_type: string;
+          support_contact_metadata: Json;
+          version: string | null;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          criticality: string;
+          customer_visibility?: string;
+          deployment_id?: string | null;
+          environment: string;
+          health_endpoint_metadata?: Json;
+          id?: string;
+          monitoring_state?: string;
+          name: string;
+          owner_id?: string | null;
+          recovery_objectives?: Json;
+          region?: string | null;
+          runbook_id?: string | null;
+          service_type: string;
+          support_contact_metadata?: Json;
+          version?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          criticality?: string;
+          customer_visibility?: string;
+          deployment_id?: string | null;
+          environment?: string;
+          health_endpoint_metadata?: Json;
+          id?: string;
+          monitoring_state?: string;
+          name?: string;
+          owner_id?: string | null;
+          recovery_objectives?: Json;
+          region?: string | null;
+          runbook_id?: string | null;
+          service_type?: string;
+          support_contact_metadata?: Json;
+          version?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_service_runbook_fk";
+            columns: ["runbook_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_runbooks";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_services_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_slo_definitions: {
+        Row: {
+          active: boolean;
+          company_id: string;
+          contractual: boolean;
+          customer_impact: string | null;
+          id: string;
+          indicator: string;
+          measurement_source: string;
+          name: string;
+          owner_id: string | null;
+          review_frequency: string;
+          service_id: string;
+          severity: string;
+          target: number;
+          window_seconds: number;
+        };
+        Insert: {
+          active?: boolean;
+          company_id: string;
+          contractual?: boolean;
+          customer_impact?: string | null;
+          id?: string;
+          indicator: string;
+          measurement_source: string;
+          name: string;
+          owner_id?: string | null;
+          review_frequency: string;
+          service_id: string;
+          severity: string;
+          target: number;
+          window_seconds: number;
+        };
+        Update: {
+          active?: boolean;
+          company_id?: string;
+          contractual?: boolean;
+          customer_impact?: string | null;
+          id?: string;
+          indicator?: string;
+          measurement_source?: string;
+          name?: string;
+          owner_id?: string | null;
+          review_frequency?: string;
+          service_id?: string;
+          severity?: string;
+          target?: number;
+          window_seconds?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_slo_definitions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_slo_definitions_service_id_fkey";
+            columns: ["service_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_services";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_slo_measurements: {
+        Row: {
+          allowed_failures: number | null;
+          burn_rate: number | null;
+          calculated_at: string;
+          company_id: string;
+          consumed_budget: number | null;
+          good_events: number | null;
+          id: string;
+          period_end: string;
+          period_start: string;
+          remaining_budget: number | null;
+          slo_id: string;
+          source_record_ids: string[];
+          status: string;
+          total_events: number | null;
+        };
+        Insert: {
+          allowed_failures?: number | null;
+          burn_rate?: number | null;
+          calculated_at?: string;
+          company_id: string;
+          consumed_budget?: number | null;
+          good_events?: number | null;
+          id?: string;
+          period_end: string;
+          period_start: string;
+          remaining_budget?: number | null;
+          slo_id: string;
+          source_record_ids?: string[];
+          status: string;
+          total_events?: number | null;
+        };
+        Update: {
+          allowed_failures?: number | null;
+          burn_rate?: number | null;
+          calculated_at?: string;
+          company_id?: string;
+          consumed_budget?: number | null;
+          good_events?: number | null;
+          id?: string;
+          period_end?: string;
+          period_start?: string;
+          remaining_budget?: number | null;
+          slo_id?: string;
+          source_record_ids?: string[];
+          status?: string;
+          total_events?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_slo_measurements_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_slo_measurements_slo_id_fkey";
+            columns: ["slo_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_slo_definitions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_status_updates: {
+        Row: {
+          affected_capability: string;
+          audience: string;
+          company_id: string;
+          description_redacted: string;
+          id: string;
+          incident_id: string | null;
+          published_at: string;
+          published_by: string;
+          resolution_state: string;
+          service_state: string;
+          source_record_ids: string[];
+        };
+        Insert: {
+          affected_capability: string;
+          audience: string;
+          company_id: string;
+          description_redacted: string;
+          id?: string;
+          incident_id?: string | null;
+          published_at?: string;
+          published_by?: string;
+          resolution_state: string;
+          service_state: string;
+          source_record_ids?: string[];
+        };
+        Update: {
+          affected_capability?: string;
+          audience?: string;
+          company_id?: string;
+          description_redacted?: string;
+          id?: string;
+          incident_id?: string | null;
+          published_at?: string;
+          published_by?: string;
+          resolution_state?: string;
+          service_state?: string;
+          source_record_ids?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "reliability_status_updates_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "reliability_status_updates_incident_id_fkey";
+            columns: ["incident_id"];
+            isOneToOne: false;
+            referencedRelation: "reliability_incidents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       replacement_review_assessments: {
         Row: {
           assessment_status: string;
@@ -18336,6 +20229,1013 @@ export type Database = {
             columns: ["customer_id"];
             isOneToOne: false;
             referencedRelation: "customers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_access_review_items: {
+        Row: {
+          company_id: string;
+          decision: string | null;
+          decision_reason: string | null;
+          evidence: Json;
+          id: string;
+          identity_id: string | null;
+          review_id: string;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          subject_reference: string | null;
+        };
+        Insert: {
+          company_id: string;
+          decision?: string | null;
+          decision_reason?: string | null;
+          evidence?: Json;
+          id?: string;
+          identity_id?: string | null;
+          review_id: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          subject_reference?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          decision?: string | null;
+          decision_reason?: string | null;
+          evidence?: Json;
+          id?: string;
+          identity_id?: string | null;
+          review_id?: string;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          subject_reference?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_access_review_items_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_access_review_items_identity_id_fkey";
+            columns: ["identity_id"];
+            isOneToOne: false;
+            referencedRelation: "security_identities";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_access_review_items_review_id_fkey";
+            columns: ["review_id"];
+            isOneToOne: false;
+            referencedRelation: "security_access_reviews";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_access_reviews: {
+        Row: {
+          approved_at: string | null;
+          approved_by: string | null;
+          company_id: string;
+          due_at: string;
+          id: string;
+          name: string;
+          period_end: string;
+          period_start: string;
+          review_type: string;
+          reviewer_id: string;
+          status: string;
+          summary: Json;
+        };
+        Insert: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id: string;
+          due_at: string;
+          id?: string;
+          name: string;
+          period_end: string;
+          period_start: string;
+          review_type: string;
+          reviewer_id: string;
+          status?: string;
+          summary?: Json;
+        };
+        Update: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id?: string;
+          due_at?: string;
+          id?: string;
+          name?: string;
+          period_end?: string;
+          period_start?: string;
+          review_type?: string;
+          reviewer_id?: string;
+          status?: string;
+          summary?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_access_reviews_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_api_identities: {
+        Row: {
+          company_id: string;
+          environment: string;
+          expires_at: string;
+          id: string;
+          identity_id: string;
+          issued_at: string;
+          last_rotated_at: string | null;
+          last_used_at: string | null;
+          name: string;
+          revoked_at: string | null;
+          rotation_due_at: string | null;
+          scopes: string[];
+          token_reference_hash: string;
+          usage_count: number;
+        };
+        Insert: {
+          company_id: string;
+          environment: string;
+          expires_at: string;
+          id?: string;
+          identity_id: string;
+          issued_at: string;
+          last_rotated_at?: string | null;
+          last_used_at?: string | null;
+          name: string;
+          revoked_at?: string | null;
+          rotation_due_at?: string | null;
+          scopes?: string[];
+          token_reference_hash: string;
+          usage_count?: number;
+        };
+        Update: {
+          company_id?: string;
+          environment?: string;
+          expires_at?: string;
+          id?: string;
+          identity_id?: string;
+          issued_at?: string;
+          last_rotated_at?: string | null;
+          last_used_at?: string | null;
+          name?: string;
+          revoked_at?: string | null;
+          rotation_due_at?: string | null;
+          scopes?: string[];
+          token_reference_hash?: string;
+          usage_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_api_identities_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_api_identities_identity_id_fkey";
+            columns: ["identity_id"];
+            isOneToOne: false;
+            referencedRelation: "security_identities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_auth_factors: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          factor_type: string;
+          id: string;
+          identity_id: string;
+          last_challenged_at: string | null;
+          provider_factor_reference: string | null;
+          status: string;
+          verified_at: string | null;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          factor_type: string;
+          id?: string;
+          identity_id: string;
+          last_challenged_at?: string | null;
+          provider_factor_reference?: string | null;
+          status?: string;
+          verified_at?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          factor_type?: string;
+          id?: string;
+          identity_id?: string;
+          last_challenged_at?: string | null;
+          provider_factor_reference?: string | null;
+          status?: string;
+          verified_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_auth_factors_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_auth_factors_identity_id_fkey";
+            columns: ["identity_id"];
+            isOneToOne: false;
+            referencedRelation: "security_identities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_certificate_metadata: {
+        Row: {
+          company_id: string;
+          environment: string;
+          expires_at: string | null;
+          fingerprint: string;
+          id: string;
+          issuer_metadata: Json;
+          name: string;
+          owner_id: string;
+          rotation_due_at: string | null;
+          status: string;
+          usage_metadata: Json;
+          valid_from: string | null;
+        };
+        Insert: {
+          company_id: string;
+          environment: string;
+          expires_at?: string | null;
+          fingerprint: string;
+          id?: string;
+          issuer_metadata?: Json;
+          name: string;
+          owner_id: string;
+          rotation_due_at?: string | null;
+          status: string;
+          usage_metadata?: Json;
+          valid_from?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          environment?: string;
+          expires_at?: string | null;
+          fingerprint?: string;
+          id?: string;
+          issuer_metadata?: Json;
+          name?: string;
+          owner_id?: string;
+          rotation_due_at?: string | null;
+          status?: string;
+          usage_metadata?: Json;
+          valid_from?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_certificate_metadata_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_data_classifications: {
+        Row: {
+          classification: string;
+          company_id: string;
+          id: string;
+          minimum_fields: Json;
+          owner_id: string;
+          policy_reference: string;
+          resource_kind: string;
+          resource_reference: string;
+          reviewed_at: string | null;
+        };
+        Insert: {
+          classification: string;
+          company_id: string;
+          id?: string;
+          minimum_fields?: Json;
+          owner_id: string;
+          policy_reference: string;
+          resource_kind: string;
+          resource_reference: string;
+          reviewed_at?: string | null;
+        };
+        Update: {
+          classification?: string;
+          company_id?: string;
+          id?: string;
+          minimum_fields?: Json;
+          owner_id?: string;
+          policy_reference?: string;
+          resource_kind?: string;
+          resource_reference?: string;
+          reviewed_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_data_classifications_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_encryption_coverage: {
+        Row: {
+          at_rest_state: string;
+          checked_at: string | null;
+          company_id: string;
+          coverage: number | null;
+          environment: string;
+          evidence_source: string | null;
+          id: string;
+          in_transit_state: string;
+          key_provider_metadata: Json;
+          key_version_reference: string | null;
+          resource_type: string;
+          rotated_at: string | null;
+          rotation_due_at: string | null;
+        };
+        Insert: {
+          at_rest_state: string;
+          checked_at?: string | null;
+          company_id: string;
+          coverage?: number | null;
+          environment: string;
+          evidence_source?: string | null;
+          id?: string;
+          in_transit_state: string;
+          key_provider_metadata?: Json;
+          key_version_reference?: string | null;
+          resource_type: string;
+          rotated_at?: string | null;
+          rotation_due_at?: string | null;
+        };
+        Update: {
+          at_rest_state?: string;
+          checked_at?: string | null;
+          company_id?: string;
+          coverage?: number | null;
+          environment?: string;
+          evidence_source?: string | null;
+          id?: string;
+          in_transit_state?: string;
+          key_provider_metadata?: Json;
+          key_version_reference?: string | null;
+          resource_type?: string;
+          rotated_at?: string | null;
+          rotation_due_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_encryption_coverage_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_events: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          correlation_id: string | null;
+          event_type: string;
+          id: string;
+          identity_id: string | null;
+          occurred_at: string;
+          safe_metadata: Json;
+          severity: string;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          correlation_id?: string | null;
+          event_type: string;
+          id?: string;
+          identity_id?: string | null;
+          occurred_at?: string;
+          safe_metadata?: Json;
+          severity: string;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          correlation_id?: string | null;
+          event_type?: string;
+          id?: string;
+          identity_id?: string | null;
+          occurred_at?: string;
+          safe_metadata?: Json;
+          severity?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_events_identity_id_fkey";
+            columns: ["identity_id"];
+            isOneToOne: false;
+            referencedRelation: "security_identities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_identities: {
+        Row: {
+          auth_user_id: string | null;
+          branch_id: string | null;
+          company_id: string;
+          created_at: string;
+          department_id: string | null;
+          display_name: string;
+          id: string;
+          identity_type: string;
+          metadata: Json;
+          owner_id: string | null;
+          status: string;
+        };
+        Insert: {
+          auth_user_id?: string | null;
+          branch_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          department_id?: string | null;
+          display_name: string;
+          id?: string;
+          identity_type: string;
+          metadata?: Json;
+          owner_id?: string | null;
+          status?: string;
+        };
+        Update: {
+          auth_user_id?: string | null;
+          branch_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          department_id?: string | null;
+          display_name?: string;
+          id?: string;
+          identity_type?: string;
+          metadata?: Json;
+          owner_id?: string | null;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_identities_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_legal_holds: {
+        Row: {
+          approved_at: string | null;
+          approved_by: string | null;
+          company_id: string;
+          created_by: string;
+          expires_at: string | null;
+          id: string;
+          name: string;
+          reason: string;
+          release_reason: string | null;
+          released_at: string | null;
+          released_by: string | null;
+          scope: Json;
+          starts_at: string;
+        };
+        Insert: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id: string;
+          created_by?: string;
+          expires_at?: string | null;
+          id?: string;
+          name: string;
+          reason: string;
+          release_reason?: string | null;
+          released_at?: string | null;
+          released_by?: string | null;
+          scope: Json;
+          starts_at: string;
+        };
+        Update: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id?: string;
+          created_by?: string;
+          expires_at?: string | null;
+          id?: string;
+          name?: string;
+          reason?: string;
+          release_reason?: string | null;
+          released_at?: string | null;
+          released_by?: string | null;
+          scope?: Json;
+          starts_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_legal_holds_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_permission_grants: {
+        Row: {
+          approved_by: string | null;
+          branch_id: string | null;
+          company_id: string;
+          delegated_by: string | null;
+          department_id: string | null;
+          existing_role: Database["public"]["Enums"]["app_role"] | null;
+          expires_at: string;
+          grant_type: string;
+          id: string;
+          owner_only: boolean;
+          permission: string;
+          project_id: string | null;
+          reason: string;
+          resource_id: string | null;
+          resource_type: string | null;
+          revoked_at: string | null;
+          starts_at: string;
+          user_id: string;
+        };
+        Insert: {
+          approved_by?: string | null;
+          branch_id?: string | null;
+          company_id: string;
+          delegated_by?: string | null;
+          department_id?: string | null;
+          existing_role?: Database["public"]["Enums"]["app_role"] | null;
+          expires_at: string;
+          grant_type: string;
+          id?: string;
+          owner_only?: boolean;
+          permission: string;
+          project_id?: string | null;
+          reason: string;
+          resource_id?: string | null;
+          resource_type?: string | null;
+          revoked_at?: string | null;
+          starts_at: string;
+          user_id: string;
+        };
+        Update: {
+          approved_by?: string | null;
+          branch_id?: string | null;
+          company_id?: string;
+          delegated_by?: string | null;
+          department_id?: string | null;
+          existing_role?: Database["public"]["Enums"]["app_role"] | null;
+          expires_at?: string;
+          grant_type?: string;
+          id?: string;
+          owner_only?: boolean;
+          permission?: string;
+          project_id?: string | null;
+          reason?: string;
+          resource_id?: string | null;
+          resource_type?: string | null;
+          revoked_at?: string | null;
+          starts_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_permission_grants_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_privacy_requests: {
+        Row: {
+          approved_by: string | null;
+          company_id: string;
+          due_at: string | null;
+          evidence: Json;
+          id: string;
+          request_type: string;
+          requested_at: string;
+          resolution: string | null;
+          reviewed_by: string | null;
+          scope: Json;
+          status: string;
+          subject_reference_hash: string;
+        };
+        Insert: {
+          approved_by?: string | null;
+          company_id: string;
+          due_at?: string | null;
+          evidence?: Json;
+          id?: string;
+          request_type: string;
+          requested_at?: string;
+          resolution?: string | null;
+          reviewed_by?: string | null;
+          scope?: Json;
+          status?: string;
+          subject_reference_hash: string;
+        };
+        Update: {
+          approved_by?: string | null;
+          company_id?: string;
+          due_at?: string | null;
+          evidence?: Json;
+          id?: string;
+          request_type?: string;
+          requested_at?: string;
+          resolution?: string | null;
+          reviewed_by?: string | null;
+          scope?: Json;
+          status?: string;
+          subject_reference_hash?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_privacy_requests_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_retention_policies: {
+        Row: {
+          approved_by: string | null;
+          classification: string;
+          company_id: string;
+          disposition: string;
+          effective_at: string;
+          id: string;
+          legal_basis: string;
+          owner_id: string;
+          record_type: string;
+          retention_days: number;
+        };
+        Insert: {
+          approved_by?: string | null;
+          classification: string;
+          company_id: string;
+          disposition?: string;
+          effective_at: string;
+          id?: string;
+          legal_basis: string;
+          owner_id: string;
+          record_type: string;
+          retention_days: number;
+        };
+        Update: {
+          approved_by?: string | null;
+          classification?: string;
+          company_id?: string;
+          disposition?: string;
+          effective_at?: string;
+          id?: string;
+          legal_basis?: string;
+          owner_id?: string;
+          record_type?: string;
+          retention_days?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_retention_policies_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_score_snapshots: {
+        Row: {
+          access_review_completion: number | null;
+          calculated_at: string;
+          company_id: string;
+          confidence: string;
+          dormant_accounts: number | null;
+          expired_tokens: number | null;
+          high_risk_findings: number | null;
+          id: string;
+          mfa_adoption: number | null;
+          old_certificates: number | null;
+          open_incidents: number | null;
+          policy_compliance: number | null;
+          score: number | null;
+          source_record_ids: string[];
+        };
+        Insert: {
+          access_review_completion?: number | null;
+          calculated_at?: string;
+          company_id: string;
+          confidence: string;
+          dormant_accounts?: number | null;
+          expired_tokens?: number | null;
+          high_risk_findings?: number | null;
+          id?: string;
+          mfa_adoption?: number | null;
+          old_certificates?: number | null;
+          open_incidents?: number | null;
+          policy_compliance?: number | null;
+          score?: number | null;
+          source_record_ids?: string[];
+        };
+        Update: {
+          access_review_completion?: number | null;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: string;
+          dormant_accounts?: number | null;
+          expired_tokens?: number | null;
+          high_risk_findings?: number | null;
+          id?: string;
+          mfa_adoption?: number | null;
+          old_certificates?: number | null;
+          open_incidents?: number | null;
+          policy_compliance?: number | null;
+          score?: number | null;
+          source_record_ids?: string[];
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_score_snapshots_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_secret_metadata: {
+        Row: {
+          company_id: string;
+          environment: string;
+          expires_at: string | null;
+          id: string;
+          name: string;
+          owner_id: string;
+          provider_reference: string | null;
+          rotated_at: string | null;
+          rotation_due_at: string | null;
+          secret_type: string;
+          status: string;
+          usage_metadata: Json;
+        };
+        Insert: {
+          company_id: string;
+          environment: string;
+          expires_at?: string | null;
+          id?: string;
+          name: string;
+          owner_id: string;
+          provider_reference?: string | null;
+          rotated_at?: string | null;
+          rotation_due_at?: string | null;
+          secret_type: string;
+          status: string;
+          usage_metadata?: Json;
+        };
+        Update: {
+          company_id?: string;
+          environment?: string;
+          expires_at?: string | null;
+          id?: string;
+          name?: string;
+          owner_id?: string;
+          provider_reference?: string | null;
+          rotated_at?: string | null;
+          rotation_due_at?: string | null;
+          secret_type?: string;
+          status?: string;
+          usage_metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_secret_metadata_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_sessions: {
+        Row: {
+          browser_metadata: Json;
+          company_id: string;
+          country_code: string | null;
+          created_at: string;
+          device_id: string | null;
+          expires_at: string;
+          id: string;
+          identity_id: string;
+          idle_timeout_seconds: number;
+          ip_hash: string | null;
+          last_activity_at: string;
+          provider_session_hash: string;
+          revoked_at: string | null;
+          revoked_by: string | null;
+          risk_score: number;
+        };
+        Insert: {
+          browser_metadata?: Json;
+          company_id: string;
+          country_code?: string | null;
+          created_at?: string;
+          device_id?: string | null;
+          expires_at: string;
+          id?: string;
+          identity_id: string;
+          idle_timeout_seconds: number;
+          ip_hash?: string | null;
+          last_activity_at: string;
+          provider_session_hash: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          risk_score?: number;
+        };
+        Update: {
+          browser_metadata?: Json;
+          company_id?: string;
+          country_code?: string | null;
+          created_at?: string;
+          device_id?: string | null;
+          expires_at?: string;
+          id?: string;
+          identity_id?: string;
+          idle_timeout_seconds?: number;
+          ip_hash?: string | null;
+          last_activity_at?: string;
+          provider_session_hash?: string;
+          revoked_at?: string | null;
+          revoked_by?: string | null;
+          risk_score?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_session_device_fk";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "security_trusted_devices";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_sessions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_sessions_identity_id_fkey";
+            columns: ["identity_id"];
+            isOneToOne: false;
+            referencedRelation: "security_identities";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_threat_findings: {
+        Row: {
+          brain_advice: Json;
+          company_id: string;
+          created_at: string;
+          finding_type: string;
+          id: string;
+          owner_id: string | null;
+          resolution: string | null;
+          risk: string;
+          source_event_ids: string[];
+          status: string;
+        };
+        Insert: {
+          brain_advice?: Json;
+          company_id: string;
+          created_at?: string;
+          finding_type: string;
+          id?: string;
+          owner_id?: string | null;
+          resolution?: string | null;
+          risk: string;
+          source_event_ids?: string[];
+          status?: string;
+        };
+        Update: {
+          brain_advice?: Json;
+          company_id?: string;
+          created_at?: string;
+          finding_type?: string;
+          id?: string;
+          owner_id?: string | null;
+          resolution?: string | null;
+          risk?: string;
+          source_event_ids?: string[];
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_threat_findings_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      security_trusted_devices: {
+        Row: {
+          approved_at: string | null;
+          approved_by: string | null;
+          company_id: string;
+          device_metadata: Json;
+          expires_at: string;
+          fingerprint_hash: string;
+          id: string;
+          identity_id: string;
+          last_reviewed_at: string | null;
+          registered_at: string;
+          revoked_at: string | null;
+          risk_score: number;
+        };
+        Insert: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id: string;
+          device_metadata?: Json;
+          expires_at: string;
+          fingerprint_hash: string;
+          id?: string;
+          identity_id: string;
+          last_reviewed_at?: string | null;
+          registered_at?: string;
+          revoked_at?: string | null;
+          risk_score?: number;
+        };
+        Update: {
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id?: string;
+          device_metadata?: Json;
+          expires_at?: string;
+          fingerprint_hash?: string;
+          id?: string;
+          identity_id?: string;
+          last_reviewed_at?: string | null;
+          registered_at?: string;
+          revoked_at?: string | null;
+          risk_score?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "security_trusted_devices_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "security_trusted_devices_identity_id_fkey";
+            columns: ["identity_id"];
+            isOneToOne: false;
+            referencedRelation: "security_identities";
             referencedColumns: ["id"];
           },
         ];
@@ -23163,7 +26063,83 @@ export type Database = {
       };
     };
     Views: {
-      [_ in never]: never;
+      reliability_integration_health_source: {
+        Row: {
+          checked_at: string | null;
+          company_id: string | null;
+          detail_metadata: Json | null;
+          health_area: string | null;
+          integration_id: string | null;
+          status: string | null;
+        };
+        Insert: {
+          checked_at?: string | null;
+          company_id?: string | null;
+          detail_metadata?: Json | null;
+          health_area?: string | null;
+          integration_id?: string | null;
+          status?: string | null;
+        };
+        Update: {
+          checked_at?: string | null;
+          company_id?: string | null;
+          detail_metadata?: Json | null;
+          health_area?: string | null;
+          integration_id?: string | null;
+          status?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "integration_health_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "integration_health_integration_id_fkey";
+            columns: ["integration_id"];
+            isOneToOne: false;
+            referencedRelation: "integration_registry";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_phase22_dlq_health: {
+        Row: {
+          backlog: number | null;
+          company_id: string | null;
+          oldest_due: string | null;
+          source: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "integration_dead_letter_queue_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      reliability_phase22_queue_health: {
+        Row: {
+          backlog: number | null;
+          company_id: string | null;
+          failures: number | null;
+          oldest_due: string | null;
+          source: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "integration_retry_queue_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
     };
     Functions: {
       assign_job_with_conflict_check: {
@@ -24498,6 +27474,14 @@ export type Database = {
         Returns: number;
       };
       open_shipment_share_link: { Args: { p_token: string }; Returns: Json };
+      operations_intelligence_can_read: {
+        Args: { c: string };
+        Returns: boolean;
+      };
+      operations_intelligence_can_write: {
+        Args: { c: string };
+        Returns: boolean;
+      };
       phase11_provisioning_rank: { Args: { _state: string }; Returns: number };
       platform_ingest_device_telemetry: {
         Args: {
@@ -24669,6 +27653,13 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      reliability_can_approve: { Args: { p_company: string }; Returns: boolean };
+      reliability_can_read: { Args: { p_company: string }; Returns: boolean };
+      reliability_can_write: { Args: { p_company: string }; Returns: boolean };
+      reliability_human_close_incident: {
+        Args: { p_incident: string; p_resolution: string };
+        Returns: undefined;
+      };
       revoke_shipment_share_link: {
         Args: { p_link_id: string };
         Returns: undefined;
@@ -24681,6 +27672,9 @@ export type Database = {
         };
         Returns: string;
       };
+      security_can_approve: { Args: { c: string }; Returns: boolean };
+      security_can_read: { Args: { c: string }; Returns: boolean };
+      security_can_write: { Args: { c: string }; Returns: boolean };
       submit_job_proof: {
         Args: {
           _job_id: string;

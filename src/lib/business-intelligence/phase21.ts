@@ -176,3 +176,45 @@ export function valueKind(
   if (snapshot.data_freshness === "live") return "live" as const;
   return snapshot.period_end ? ("historical_snapshot" as const) : ("live" as const);
 }
+
+/** Persisted Phase 31 metric codes consumed by the existing BI builder. */
+export const RELIABILITY_METRIC_CODES = [
+  "availability_trend",
+  "incident_count",
+  "mtta",
+  "mttr",
+  "error_rate",
+  "slo_compliance",
+  "error_budget_burn",
+  "deployment_success_rate",
+  "rollback_rate",
+  "backup_success",
+  "restore_success",
+  "queue_lag",
+  "worker_uptime",
+  "telemetry_availability",
+  "capacity_trend",
+] as const;
+
+export const SECURITY_METRIC_CODES = [
+  "security_score",
+  "mfa_adoption",
+  "threat_trend",
+  "dormant_accounts",
+  "session_count",
+  "access_review_completion",
+  "policy_violations",
+  "certificate_expiry",
+  "secret_rotation",
+] as const;
+
+/** Phase 33 consumes these through Phase 21 snapshots; it does not create a second KPI engine. */
+export const OPERATIONS_INTELLIGENCE_METRIC_CODES = [
+  "enterprise_scorecard",
+  "branch_benchmark",
+  "warehouse_benchmark",
+  "fleet_benchmark",
+  "forecast_warning",
+  "bottleneck_count",
+  "executive_priority",
+] as const;

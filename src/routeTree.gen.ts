@@ -35,9 +35,12 @@ import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authentica
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
 import { Route as AuthenticatedTrackingRouteImport } from './routes/_authenticated/tracking'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSecurityRouteImport } from './routes/_authenticated/security'
 import { Route as AuthenticatedRouteIntelligenceRouteImport } from './routes/_authenticated/route-intelligence'
+import { Route as AuthenticatedReliabilityRouteImport } from './routes/_authenticated/reliability'
 import { Route as AuthenticatedProcurementRouteImport } from './routes/_authenticated/procurement'
 import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticated/platform'
+import { Route as AuthenticatedOperationsIntelligenceRouteImport } from './routes/_authenticated/operations-intelligence'
 import { Route as AuthenticatedOperationsControlRouteImport } from './routes/_authenticated/operations-control'
 import { Route as AuthenticatedOperationsRouteImport } from './routes/_authenticated/operations'
 import { Route as AuthenticatedNotificationsRouteImport } from './routes/_authenticated/notifications'
@@ -197,10 +200,21 @@ const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSecurityRoute = AuthenticatedSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedRouteIntelligenceRoute =
   AuthenticatedRouteIntelligenceRouteImport.update({
     id: '/route-intelligence',
     path: '/route-intelligence',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedReliabilityRoute =
+  AuthenticatedReliabilityRouteImport.update({
+    id: '/reliability',
+    path: '/reliability',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedProcurementRoute =
@@ -214,6 +228,12 @@ const AuthenticatedPlatformRoute = AuthenticatedPlatformRouteImport.update({
   path: '/platform',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedOperationsIntelligenceRoute =
+  AuthenticatedOperationsIntelligenceRouteImport.update({
+    id: '/operations-intelligence',
+    path: '/operations-intelligence',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedOperationsControlRoute =
   AuthenticatedOperationsControlRouteImport.update({
     id: '/operations-control',
@@ -400,9 +420,12 @@ export interface FileRoutesByFullPath {
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/operations-control': typeof AuthenticatedOperationsControlRoute
+  '/operations-intelligence': typeof AuthenticatedOperationsIntelligenceRoute
   '/platform': typeof AuthenticatedPlatformRoute
   '/procurement': typeof AuthenticatedProcurementRoute
+  '/reliability': typeof AuthenticatedReliabilityRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
+  '/security': typeof AuthenticatedSecurityRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracking': typeof AuthenticatedTrackingRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
@@ -457,9 +480,12 @@ export interface FileRoutesByTo {
   '/notifications': typeof AuthenticatedNotificationsRoute
   '/operations': typeof AuthenticatedOperationsRoute
   '/operations-control': typeof AuthenticatedOperationsControlRoute
+  '/operations-intelligence': typeof AuthenticatedOperationsIntelligenceRoute
   '/platform': typeof AuthenticatedPlatformRoute
   '/procurement': typeof AuthenticatedProcurementRoute
+  '/reliability': typeof AuthenticatedReliabilityRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
+  '/security': typeof AuthenticatedSecurityRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracking': typeof AuthenticatedTrackingRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
@@ -516,9 +542,12 @@ export interface FileRoutesById {
   '/_authenticated/notifications': typeof AuthenticatedNotificationsRoute
   '/_authenticated/operations': typeof AuthenticatedOperationsRoute
   '/_authenticated/operations-control': typeof AuthenticatedOperationsControlRoute
+  '/_authenticated/operations-intelligence': typeof AuthenticatedOperationsIntelligenceRoute
   '/_authenticated/platform': typeof AuthenticatedPlatformRoute
   '/_authenticated/procurement': typeof AuthenticatedProcurementRoute
+  '/_authenticated/reliability': typeof AuthenticatedReliabilityRoute
   '/_authenticated/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
+  '/_authenticated/security': typeof AuthenticatedSecurityRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tracking': typeof AuthenticatedTrackingRoute
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
@@ -575,9 +604,12 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/operations'
     | '/operations-control'
+    | '/operations-intelligence'
     | '/platform'
     | '/procurement'
+    | '/reliability'
     | '/route-intelligence'
+    | '/security'
     | '/settings'
     | '/tracking'
     | '/vehicles'
@@ -632,9 +664,12 @@ export interface FileRouteTypes {
     | '/notifications'
     | '/operations'
     | '/operations-control'
+    | '/operations-intelligence'
     | '/platform'
     | '/procurement'
+    | '/reliability'
     | '/route-intelligence'
+    | '/security'
     | '/settings'
     | '/tracking'
     | '/vehicles'
@@ -690,9 +725,12 @@ export interface FileRouteTypes {
     | '/_authenticated/notifications'
     | '/_authenticated/operations'
     | '/_authenticated/operations-control'
+    | '/_authenticated/operations-intelligence'
     | '/_authenticated/platform'
     | '/_authenticated/procurement'
+    | '/_authenticated/reliability'
     | '/_authenticated/route-intelligence'
+    | '/_authenticated/security'
     | '/_authenticated/settings'
     | '/_authenticated/tracking'
     | '/_authenticated/vehicles'
@@ -912,11 +950,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/security': {
+      id: '/_authenticated/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof AuthenticatedSecurityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/route-intelligence': {
       id: '/_authenticated/route-intelligence'
       path: '/route-intelligence'
       fullPath: '/route-intelligence'
       preLoaderRoute: typeof AuthenticatedRouteIntelligenceRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reliability': {
+      id: '/_authenticated/reliability'
+      path: '/reliability'
+      fullPath: '/reliability'
+      preLoaderRoute: typeof AuthenticatedReliabilityRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/procurement': {
@@ -931,6 +983,13 @@ declare module '@tanstack/react-router' {
       path: '/platform'
       fullPath: '/platform'
       preLoaderRoute: typeof AuthenticatedPlatformRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/operations-intelligence': {
+      id: '/_authenticated/operations-intelligence'
+      path: '/operations-intelligence'
+      fullPath: '/operations-intelligence'
+      preLoaderRoute: typeof AuthenticatedOperationsIntelligenceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/operations-control': {
@@ -1171,9 +1230,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedNotificationsRoute: typeof AuthenticatedNotificationsRoute
   AuthenticatedOperationsRoute: typeof AuthenticatedOperationsRoute
   AuthenticatedOperationsControlRoute: typeof AuthenticatedOperationsControlRoute
+  AuthenticatedOperationsIntelligenceRoute: typeof AuthenticatedOperationsIntelligenceRoute
   AuthenticatedPlatformRoute: typeof AuthenticatedPlatformRoute
   AuthenticatedProcurementRoute: typeof AuthenticatedProcurementRoute
+  AuthenticatedReliabilityRoute: typeof AuthenticatedReliabilityRoute
   AuthenticatedRouteIntelligenceRoute: typeof AuthenticatedRouteIntelligenceRoute
+  AuthenticatedSecurityRoute: typeof AuthenticatedSecurityRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackingRoute: typeof AuthenticatedTrackingRoute
   AuthenticatedVehiclesRoute: typeof AuthenticatedVehiclesRoute
@@ -1207,9 +1269,13 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedNotificationsRoute: AuthenticatedNotificationsRoute,
   AuthenticatedOperationsRoute: AuthenticatedOperationsRoute,
   AuthenticatedOperationsControlRoute: AuthenticatedOperationsControlRoute,
+  AuthenticatedOperationsIntelligenceRoute:
+    AuthenticatedOperationsIntelligenceRoute,
   AuthenticatedPlatformRoute: AuthenticatedPlatformRoute,
   AuthenticatedProcurementRoute: AuthenticatedProcurementRoute,
+  AuthenticatedReliabilityRoute: AuthenticatedReliabilityRoute,
   AuthenticatedRouteIntelligenceRoute: AuthenticatedRouteIntelligenceRoute,
+  AuthenticatedSecurityRoute: AuthenticatedSecurityRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackingRoute: AuthenticatedTrackingRoute,
   AuthenticatedVehiclesRoute: AuthenticatedVehiclesRoute,

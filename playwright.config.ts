@@ -5,7 +5,10 @@ const baseURL = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${port}`;
 const stagingE2E =
   process.env.ZAPPOS_RUN_STAGING_E2E === "true" ||
   process.env.ZAPPOS_RUN_PHASE29_STAGING_E2E === "true" ||
-  process.env.ZAPPOS_RUN_PHASE30_STAGING_E2E === "true";
+  process.env.ZAPPOS_RUN_PHASE30_STAGING_E2E === "true" ||
+  process.env.ZAPPOS_RUN_PHASE31_STAGING_E2E === "true" ||
+  process.env.ZAPPOS_RUN_PHASE32_STAGING_E2E === "true" ||
+  process.env.ZAPPOS_RUN_PHASE33_STAGING_E2E === "true";
 
 const publicUse = {
   storageState: { cookies: [], origins: [] },
@@ -17,6 +20,9 @@ const stagingTests = [
   /phase26-customer-portal-staging\.spec\.ts/,
   /phase29-authenticated-staging\.spec\.ts/,
   /phase30-authenticated-staging\.spec\.ts/,
+  /phase31-authenticated-staging\.spec\.ts/,
+  /phase32-authenticated-staging\.spec\.ts/,
+  /phase33-authenticated-staging\.spec\.ts/,
 ];
 
 export default defineConfig({
