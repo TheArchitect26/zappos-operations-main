@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-test";
 
 test.describe("Phase 23C experimental evaluation boundary", () => {
   test("keeps the direct evaluation workspace behind authentication", async ({ page }) => {

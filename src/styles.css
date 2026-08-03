@@ -138,4 +138,37 @@ html {
   .tabular-nums {
     font-variant-numeric: tabular-nums;
   }
+
+  :focus-visible {
+    outline: 2px solid var(--ring);
+    outline-offset: 2px;
+  }
+
+  @media (pointer: coarse) {
+    button,
+    a,
+    input,
+    select,
+    textarea {
+      min-height: 44px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      scroll-behavior: auto !important;
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+
+  @media (prefers-contrast: more) {
+    :root {
+      --border: oklch(0.72 0.02 240);
+      --muted-foreground: oklch(0.88 0.01 240);
+    }
+  }
 }

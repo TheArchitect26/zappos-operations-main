@@ -34,6 +34,10 @@ const WORKSPACE_CONTENT: Record<
       "Fuel & expenses",
       "Inspection & checklist",
       "Incidents & messages",
+      "Personal performance summary",
+      "Score evidence & explanation",
+      "Coaching recommendations",
+      "Submit evidence dispute",
     ],
   },
   technician: {
@@ -48,6 +52,10 @@ const WORKSPACE_CONTENT: Record<
       "Parts used",
       "Customer signature",
       "Device activation",
+      "Vehicle-health evidence",
+      "Repeat-fault history",
+      "Maintenance-review context",
+      "Diagnostic-code recurrence",
     ],
   },
   warehouse: {
@@ -76,6 +84,10 @@ const WORKSPACE_CONTENT: Record<
       "Compliance alerts",
       "Incident review",
       "Mobile dashboards",
+      "Fleet risk summary",
+      "Vehicle-health warnings",
+      "Driver eligibility warnings",
+      "Route & telemetry warnings",
     ],
   },
   executive: {
@@ -89,6 +101,7 @@ const WORKSPACE_CONTENT: Record<
       "CRM summary",
       "Compliance summary",
       "Brain insights",
+      "Fleet Intelligence summary",
     ],
   },
   customer_care: {

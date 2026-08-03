@@ -38,6 +38,7 @@ import { Wordmark } from "@/components/brand/wordmark";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import type { Database } from "@/integrations/supabase/types";
+import { UnifiedExperienceBar } from "@/components/unified/unified-experience";
 
 type Role = Database["public"]["Enums"]["app_role"];
 
@@ -119,12 +120,21 @@ const ALL: NavItem[] = [
     roles: [
       "admin",
       "fleet_manager",
+      "fleet_controller",
       "dispatcher",
       "operations_manager",
+      "maintenance_manager",
+      "maintenance_coordinator",
+      "commercial_manager",
+      "finance_manager",
+      "compliance_manager",
       "executive",
       "managing_director",
       "analyst",
+      "brain_analyst",
+      "brain_reviewer",
       "viewer",
+      "driver",
     ],
   },
   {
@@ -548,6 +558,8 @@ export function AppShell({ children }: { children: ReactNode }) {
             </Button>
           </Link>
         </header>
+
+        <UnifiedExperienceBar />
 
         {/* Content */}
         <main className="min-w-0 flex-1 pb-20 lg:pb-0">{children}</main>

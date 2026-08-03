@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-test";
 
 test.describe("Phase 25 Zapp Platform", () => {
   test("redirects unauthenticated visitors from internal platform controls", async ({ page }) => {

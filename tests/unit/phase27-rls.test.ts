@@ -22,7 +22,7 @@ describe("Phase 27 mobile RLS", () => {
     expect(sql).toContain("Phase 27 requires NULL");
   });
   it("links queue records to Phase 22 instead of duplicating synchronization", () => {
-    expect(sql).toContain("phase22_sync_run_id UUID REFERENCES public.integration_sync_runs");
+    expect(sql).toContain("phase22_sync_run_id UUID REFERENCES public.integration_sync_jobs");
     expect(sql).toContain("not a separate synchronization platform");
   });
 });

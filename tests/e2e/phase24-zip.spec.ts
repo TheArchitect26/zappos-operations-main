@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-test";
 
 test.describe("Phase 24 ZIP intelligence platform", () => {
   test("redirects unauthenticated users away from the internal intelligence workspace", async ({

@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-test";
 
 const portalRoutes = [
   "/customer-portal",

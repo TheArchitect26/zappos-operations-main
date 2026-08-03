@@ -5068,6 +5068,41 @@ export type Database = {
         };
         Relationships: [];
       };
+      company_experience_settings: {
+        Row: {
+          company_id: string;
+          industry_pack: string;
+          navigation_config: Json;
+          terminology: Json;
+          updated_at: string;
+          updated_by: string | null;
+        };
+        Insert: {
+          company_id: string;
+          industry_pack?: string;
+          navigation_config?: Json;
+          terminology?: Json;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          industry_pack?: string;
+          navigation_config?: Json;
+          terminology?: Json;
+          updated_at?: string;
+          updated_by?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "company_experience_settings_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: true;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       company_members: {
         Row: {
           company_id: string;
@@ -9724,6 +9759,89 @@ export type Database = {
           },
         ];
       };
+      driver_performance_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_performance_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       drivers: {
         Row: {
           assigned_vehicle_id: string | null;
@@ -10505,6 +10623,794 @@ export type Database = {
             columns: ["fitment_job_id"];
             isOneToOne: false;
             referencedRelation: "device_fitment_jobs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_cost_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_cost_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_audit_logs: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          metadata: Json;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_evidence: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          field_name: string;
+          id: string;
+          observed_at: string;
+          observed_value: Json;
+          recommendation_id: string | null;
+          snapshot_id: string | null;
+          source_record_id: string;
+          source_type: string;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          field_name: string;
+          id?: string;
+          observed_at: string;
+          observed_value: Json;
+          recommendation_id?: string | null;
+          snapshot_id?: string | null;
+          source_record_id: string;
+          source_type: string;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          field_name?: string;
+          id?: string;
+          observed_at?: string;
+          observed_value?: Json;
+          recommendation_id?: string | null;
+          snapshot_id?: string | null;
+          source_record_id?: string;
+          source_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_evidence_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_evidence_recommendation_fk";
+            columns: ["recommendation_id"];
+            isOneToOne: false;
+            referencedRelation: "fleet_intelligence_recommendations";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_evidence_snapshot_id_fkey";
+            columns: ["snapshot_id"];
+            isOneToOne: false;
+            referencedRelation: "fleet_intelligence_snapshots";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_feedback: {
+        Row: {
+          assessment_id: string;
+          company_id: string;
+          created_at: string;
+          driver_id: string;
+          feedback_type: string;
+          id: string;
+          review_note: string | null;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          statement: string;
+          status: string;
+          submitted_by: string;
+        };
+        Insert: {
+          assessment_id: string;
+          company_id: string;
+          created_at?: string;
+          driver_id: string;
+          feedback_type: string;
+          id?: string;
+          review_note?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          statement: string;
+          status?: string;
+          submitted_by: string;
+        };
+        Update: {
+          assessment_id?: string;
+          company_id?: string;
+          created_at?: string;
+          driver_id?: string;
+          feedback_type?: string;
+          id?: string;
+          review_note?: string | null;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          statement?: string;
+          status?: string;
+          submitted_by?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_feedback_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_feedback_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_recommendations: {
+        Row: {
+          advisory_only: boolean;
+          brain_insight_id: string | null;
+          company_id: string;
+          confidence: number;
+          created_at: string;
+          domain: string;
+          evidence_count: number;
+          explanation: string;
+          freshness: string;
+          human_decision_note: string | null;
+          id: string;
+          owner: string;
+          priority: number;
+          prohibited_automatic_action: string;
+          recommendation_code: string;
+          requires_human_decision: boolean;
+          reviewed_at: string | null;
+          reviewed_by: string | null;
+          risk_level: string;
+          snapshot_id: string | null;
+          source_record_id: string | null;
+          source_record_type: string | null;
+          status: string;
+          subject_id: string | null;
+          subject_type: string;
+          suggested_action: string;
+          title: string;
+          updated_at: string;
+        };
+        Insert: {
+          advisory_only?: boolean;
+          brain_insight_id?: string | null;
+          company_id: string;
+          confidence: number;
+          created_at?: string;
+          domain: string;
+          evidence_count?: number;
+          explanation: string;
+          freshness?: string;
+          human_decision_note?: string | null;
+          id?: string;
+          owner?: string;
+          priority?: number;
+          prohibited_automatic_action: string;
+          recommendation_code: string;
+          requires_human_decision?: boolean;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          risk_level: string;
+          snapshot_id?: string | null;
+          source_record_id?: string | null;
+          source_record_type?: string | null;
+          status?: string;
+          subject_id?: string | null;
+          subject_type?: string;
+          suggested_action: string;
+          title: string;
+          updated_at?: string;
+        };
+        Update: {
+          advisory_only?: boolean;
+          brain_insight_id?: string | null;
+          company_id?: string;
+          confidence?: number;
+          created_at?: string;
+          domain?: string;
+          evidence_count?: number;
+          explanation?: string;
+          freshness?: string;
+          human_decision_note?: string | null;
+          id?: string;
+          owner?: string;
+          priority?: number;
+          prohibited_automatic_action?: string;
+          recommendation_code?: string;
+          requires_human_decision?: boolean;
+          reviewed_at?: string | null;
+          reviewed_by?: string | null;
+          risk_level?: string;
+          snapshot_id?: string | null;
+          source_record_id?: string | null;
+          source_record_type?: string | null;
+          status?: string;
+          subject_id?: string | null;
+          subject_type?: string;
+          suggested_action?: string;
+          title?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_recommendations_brain_insight_id_fkey";
+            columns: ["brain_insight_id"];
+            isOneToOne: false;
+            referencedRelation: "zapp_brain_insights";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_recommendations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_recommendations_snapshot_id_fkey";
+            columns: ["snapshot_id"];
+            isOneToOne: false;
+            referencedRelation: "fleet_intelligence_snapshots";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_rule_versions: {
+        Row: {
+          active: boolean;
+          approved_at: string | null;
+          approved_by: string | null;
+          company_id: string;
+          created_at: string;
+          description: string;
+          domain: string;
+          governance_status: string;
+          id: string;
+          parameters: Json;
+          rule_code: string;
+          version: number;
+        };
+        Insert: {
+          active?: boolean;
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id: string;
+          created_at?: string;
+          description: string;
+          domain: string;
+          governance_status?: string;
+          id?: string;
+          parameters?: Json;
+          rule_code: string;
+          version: number;
+        };
+        Update: {
+          active?: boolean;
+          approved_at?: string | null;
+          approved_by?: string | null;
+          company_id?: string;
+          created_at?: string;
+          description?: string;
+          domain?: string;
+          governance_status?: string;
+          id?: string;
+          parameters?: Json;
+          rule_code?: string;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_rule_versions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_runs: {
+        Row: {
+          company_id: string;
+          completed_at: string | null;
+          created_at: string;
+          error_summary: string | null;
+          id: string;
+          input_count: number;
+          output_count: number;
+          requested_by: string | null;
+          rule_version_id: string;
+          started_at: string | null;
+          status: string;
+        };
+        Insert: {
+          company_id: string;
+          completed_at?: string | null;
+          created_at?: string;
+          error_summary?: string | null;
+          id?: string;
+          input_count?: number;
+          output_count?: number;
+          requested_by?: string | null;
+          rule_version_id: string;
+          started_at?: string | null;
+          status: string;
+        };
+        Update: {
+          company_id?: string;
+          completed_at?: string | null;
+          created_at?: string;
+          error_summary?: string | null;
+          id?: string;
+          input_count?: number;
+          output_count?: number;
+          requested_by?: string | null;
+          rule_version_id?: string;
+          started_at?: string | null;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_runs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_runs_rule_version_id_fkey";
+            columns: ["rule_version_id"];
+            isOneToOne: false;
+            referencedRelation: "fleet_intelligence_rule_versions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_intelligence_snapshots: {
+        Row: {
+          calculated_at: string;
+          company_id: string;
+          created_at: string;
+          evidence_quality: string;
+          id: string;
+          metric_code: string;
+          metric_value: number | null;
+          period_end: string | null;
+          period_start: string | null;
+          risk_level: string;
+          rule_version_id: string;
+          sample_size: number;
+          scope_id: string | null;
+          scope_type: string;
+          unit: string | null;
+        };
+        Insert: {
+          calculated_at: string;
+          company_id: string;
+          created_at?: string;
+          evidence_quality: string;
+          id?: string;
+          metric_code: string;
+          metric_value?: number | null;
+          period_end?: string | null;
+          period_start?: string | null;
+          risk_level: string;
+          rule_version_id: string;
+          sample_size?: number;
+          scope_id?: string | null;
+          scope_type: string;
+          unit?: string | null;
+        };
+        Update: {
+          calculated_at?: string;
+          company_id?: string;
+          created_at?: string;
+          evidence_quality?: string;
+          id?: string;
+          metric_code?: string;
+          metric_value?: number | null;
+          period_end?: string | null;
+          period_start?: string | null;
+          risk_level?: string;
+          rule_version_id?: string;
+          sample_size?: number;
+          scope_id?: string | null;
+          scope_type?: string;
+          unit?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_intelligence_snapshots_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "fleet_intelligence_snapshots_rule_version_id_fkey";
+            columns: ["rule_version_id"];
+            isOneToOne: false;
+            referencedRelation: "fleet_intelligence_rule_versions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_planning_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_planning_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_utilisation_snapshots: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_utilisation_snapshots_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fuel_performance_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fuel_performance_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
             referencedColumns: ["id"];
           },
         ];
@@ -13476,6 +14382,428 @@ export type Database = {
           },
         ];
       };
+      maintenance_risk_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "maintenance_risk_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      mobile_devices: {
+        Row: {
+          app_version: string;
+          biometric_enabled: boolean;
+          company_id: string;
+          created_at: string;
+          device_identifier_hash: string;
+          id: string;
+          last_seen_at: string | null;
+          nickname: string;
+          platform: string;
+          revoked_at: string | null;
+          trusted: boolean;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          app_version: string;
+          biometric_enabled?: boolean;
+          company_id: string;
+          created_at?: string;
+          device_identifier_hash: string;
+          id?: string;
+          last_seen_at?: string | null;
+          nickname: string;
+          platform: string;
+          revoked_at?: string | null;
+          trusted?: boolean;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          app_version?: string;
+          biometric_enabled?: boolean;
+          company_id?: string;
+          created_at?: string;
+          device_identifier_hash?: string;
+          id?: string;
+          last_seen_at?: string | null;
+          nickname?: string;
+          platform?: string;
+          revoked_at?: string | null;
+          trusted?: boolean;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mobile_devices_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      mobile_notification_preferences: {
+        Row: {
+          background_allowed: boolean;
+          category: string;
+          company_id: string;
+          device_id: string | null;
+          enabled: boolean;
+          id: string;
+          production_provider_token: string | null;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          background_allowed?: boolean;
+          category: string;
+          company_id: string;
+          device_id?: string | null;
+          enabled?: boolean;
+          id?: string;
+          production_provider_token?: string | null;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          background_allowed?: boolean;
+          category?: string;
+          company_id?: string;
+          device_id?: string | null;
+          enabled?: boolean;
+          id?: string;
+          production_provider_token?: string | null;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mobile_notification_preferences_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mobile_notification_preferences_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "mobile_devices";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      mobile_session_history: {
+        Row: {
+          company_id: string;
+          device_id: string | null;
+          event_type: string;
+          id: string;
+          metadata: Json;
+          occurred_at: string;
+          session_reference_hash: string | null;
+          user_id: string;
+        };
+        Insert: {
+          company_id: string;
+          device_id?: string | null;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+          occurred_at?: string;
+          session_reference_hash?: string | null;
+          user_id: string;
+        };
+        Update: {
+          company_id?: string;
+          device_id?: string | null;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+          occurred_at?: string;
+          session_reference_hash?: string | null;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mobile_session_history_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mobile_session_history_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "mobile_devices";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      mobile_sync_checkpoints: {
+        Row: {
+          company_id: string;
+          cursor_value: string | null;
+          device_id: string | null;
+          id: string;
+          scope: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          company_id: string;
+          cursor_value?: string | null;
+          device_id?: string | null;
+          id?: string;
+          scope: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          company_id?: string;
+          cursor_value?: string | null;
+          device_id?: string | null;
+          id?: string;
+          scope?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mobile_sync_checkpoints_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mobile_sync_checkpoints_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "mobile_devices";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      mobile_sync_queue: {
+        Row: {
+          attempt: number;
+          base_version: number | null;
+          checksum: string;
+          company_id: string;
+          created_at: string;
+          device_id: string | null;
+          entity_id: string;
+          entity_type: string;
+          id: string;
+          next_retry_at: string | null;
+          operation: string;
+          payload: Json;
+          phase22_sync_run_id: string | null;
+          state: string;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          attempt?: number;
+          base_version?: number | null;
+          checksum: string;
+          company_id: string;
+          created_at?: string;
+          device_id?: string | null;
+          entity_id: string;
+          entity_type: string;
+          id: string;
+          next_retry_at?: string | null;
+          operation: string;
+          payload: Json;
+          phase22_sync_run_id?: string | null;
+          state?: string;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          attempt?: number;
+          base_version?: number | null;
+          checksum?: string;
+          company_id?: string;
+          created_at?: string;
+          device_id?: string | null;
+          entity_id?: string;
+          entity_type?: string;
+          id?: string;
+          next_retry_at?: string | null;
+          operation?: string;
+          payload?: Json;
+          phase22_sync_run_id?: string | null;
+          state?: string;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mobile_sync_queue_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mobile_sync_queue_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "mobile_devices";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mobile_sync_queue_phase22_sync_run_id_fkey";
+            columns: ["phase22_sync_run_id"];
+            isOneToOne: false;
+            referencedRelation: "integration_sync_jobs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      mobile_uploads: {
+        Row: {
+          byte_size: number;
+          checksum: string;
+          company_id: string;
+          created_at: string;
+          id: string;
+          mime_type: string;
+          queue_item_id: string | null;
+          state: string;
+          storage_path: string;
+          updated_at: string;
+          upload_offset: number;
+          user_id: string;
+        };
+        Insert: {
+          byte_size: number;
+          checksum: string;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          mime_type: string;
+          queue_item_id?: string | null;
+          state?: string;
+          storage_path: string;
+          updated_at?: string;
+          upload_offset?: number;
+          user_id: string;
+        };
+        Update: {
+          byte_size?: number;
+          checksum?: string;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          mime_type?: string;
+          queue_item_id?: string | null;
+          state?: string;
+          storage_path?: string;
+          updated_at?: string;
+          upload_offset?: number;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "mobile_uploads_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "mobile_uploads_queue_item_id_fkey";
+            columns: ["queue_item_id"];
+            isOneToOne: false;
+            referencedRelation: "mobile_sync_queue";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       notifications: {
         Row: {
           body: string | null;
@@ -16136,6 +17464,172 @@ export type Database = {
           },
         ];
       };
+      replacement_review_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "replacement_review_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      route_performance_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "route_performance_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       route_performance_records: {
         Row: {
           accepted_point_count: number;
@@ -16831,6 +18325,185 @@ export type Database = {
           },
         ];
       };
+      unified_experience_events: {
+        Row: {
+          company_id: string;
+          entity_type: string | null;
+          event_type: string;
+          id: string;
+          metadata: Json;
+          module: string | null;
+          occurred_at: string;
+          user_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          entity_type?: string | null;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+          module?: string | null;
+          occurred_at?: string;
+          user_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          entity_type?: string | null;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+          module?: string | null;
+          occurred_at?: string;
+          user_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unified_experience_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      unified_saved_views: {
+        Row: {
+          columns_config: Json;
+          company_id: string;
+          created_at: string;
+          filters: Json;
+          id: string;
+          module: string;
+          name: string;
+          owner_id: string | null;
+          pinned: boolean;
+          sort_config: Json;
+          updated_at: string;
+          visibility: string;
+        };
+        Insert: {
+          columns_config?: Json;
+          company_id: string;
+          created_at?: string;
+          filters?: Json;
+          id?: string;
+          module: string;
+          name: string;
+          owner_id?: string | null;
+          pinned?: boolean;
+          sort_config?: Json;
+          updated_at?: string;
+          visibility?: string;
+        };
+        Update: {
+          columns_config?: Json;
+          company_id?: string;
+          created_at?: string;
+          filters?: Json;
+          id?: string;
+          module?: string;
+          name?: string;
+          owner_id?: string | null;
+          pinned?: boolean;
+          sort_config?: Json;
+          updated_at?: string;
+          visibility?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unified_saved_views_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      unified_search_history: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          query: string;
+          result_count: number;
+          saved: boolean;
+          user_id: string;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          query: string;
+          result_count?: number;
+          saved?: boolean;
+          user_id: string;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          query?: string;
+          result_count?: number;
+          saved?: boolean;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unified_search_history_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      unified_workspace_preferences: {
+        Row: {
+          collapsed_panels: Json;
+          company_id: string;
+          id: string;
+          last_path: string | null;
+          layout: Json;
+          open_tabs: Json;
+          pinned_paths: Json;
+          recent_entities: Json;
+          updated_at: string;
+          user_id: string;
+        };
+        Insert: {
+          collapsed_panels?: Json;
+          company_id: string;
+          id?: string;
+          last_path?: string | null;
+          layout?: Json;
+          open_tabs?: Json;
+          pinned_paths?: Json;
+          recent_entities?: Json;
+          updated_at?: string;
+          user_id: string;
+        };
+        Update: {
+          collapsed_panels?: Json;
+          company_id?: string;
+          id?: string;
+          last_path?: string | null;
+          layout?: Json;
+          open_tabs?: Json;
+          pinned_paths?: Json;
+          recent_entities?: Json;
+          updated_at?: string;
+          user_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "unified_workspace_preferences_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       user_roles: {
         Row: {
           company_id: string;
@@ -16856,6 +18529,89 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "user_roles_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      vehicle_health_assessments: {
+        Row: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at: string;
+          evidence_references: Json;
+          expires_at: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id: string | null;
+        };
+        Insert: {
+          assessment_status: string;
+          calculated_at: string;
+          company_id: string;
+          confidence: number;
+          confidence_policy_version: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version: string;
+          freshness_state: string;
+          id?: string;
+          input_hash: string;
+          output_hash: string;
+          quality_state: string;
+          result?: Json;
+          rule_version: string;
+          source_count: number;
+          source_period_end: string;
+          source_period_start: string;
+          subject_id: string;
+          subject_type: string;
+          supersedes_id?: string | null;
+        };
+        Update: {
+          assessment_status?: string;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: number;
+          confidence_policy_version?: string;
+          created_at?: string;
+          evidence_references?: Json;
+          expires_at?: string | null;
+          feature_version?: string;
+          freshness_state?: string;
+          id?: string;
+          input_hash?: string;
+          output_hash?: string;
+          quality_state?: string;
+          result?: Json;
+          rule_version?: string;
+          source_count?: number;
+          source_period_end?: string;
+          source_period_start?: string;
+          subject_id?: string;
+          subject_type?: string;
+          supersedes_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "vehicle_health_assessments_company_id_fkey";
             columns: ["company_id"];
             isOneToOne: false;
             referencedRelation: "companies";
@@ -21252,6 +23008,14 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      fleet_intelligence_can_read: {
+        Args: { _company: string };
+        Returns: boolean;
+      };
+      fleet_intelligence_can_review: {
+        Args: { _company: string };
+        Returns: boolean;
+      };
       has_any_role: {
         Args: {
           _company_id: string;
@@ -22368,7 +24132,10 @@ export type Database = {
         | "brain_administrator"
         | "brain_analyst"
         | "brain_reviewer"
-        | "brain_service";
+        | "brain_service"
+        | "fleet_controller"
+        | "maintenance_manager"
+        | "maintenance_coordinator";
       business_type:
         | "logistics"
         | "trucking"
@@ -22800,6 +24567,9 @@ export const Constants = {
         "brain_analyst",
         "brain_reviewer",
         "brain_service",
+        "fleet_controller",
+        "maintenance_manager",
+        "maintenance_coordinator",
       ],
       business_type: [
         "logistics",

@@ -29,7 +29,7 @@ CREATE TABLE public.mobile_sync_queue (
   device_id UUID REFERENCES public.mobile_devices(id) ON DELETE CASCADE, entity_type TEXT NOT NULL, entity_id TEXT NOT NULL,
   operation TEXT NOT NULL CHECK(operation IN ('create','update','delete','upload')), payload JSONB NOT NULL, checksum TEXT NOT NULL,
   base_version BIGINT, state TEXT NOT NULL DEFAULT 'queued' CHECK(state IN ('queued','running','failed','succeeded','conflict')),
-  attempt INTEGER NOT NULL DEFAULT 0 CHECK(attempt>=0), next_retry_at TIMESTAMPTZ, phase22_sync_run_id UUID REFERENCES public.integration_sync_runs(id) ON DELETE SET NULL,
+  attempt INTEGER NOT NULL DEFAULT 0 CHECK(attempt>=0), next_retry_at TIMESTAMPTZ, phase22_sync_run_id UUID REFERENCES public.integration_sync_jobs(id) ON DELETE SET NULL,
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(), updated_at TIMESTAMPTZ NOT NULL DEFAULT now(), UNIQUE(company_id,user_id,device_id,entity_type,entity_id,operation,checksum)
 );
 
@@ -77,5 +77,5 @@ CREATE TRIGGER mobile_session_history_immutable BEFORE UPDATE OR DELETE ON publi
 CREATE INDEX mobile_queue_ready_idx ON public.mobile_sync_queue(company_id,user_id,state,next_retry_at);
 CREATE INDEX mobile_devices_active_idx ON public.mobile_devices(company_id,user_id,last_seen_at DESC) WHERE revoked_at IS NULL;
 
-COMMENT ON TABLE public.mobile_sync_queue IS 'Mobile durable queue adapted to Phase 22 integration_sync_runs; not a separate synchronization platform.';
+COMMENT ON TABLE public.mobile_sync_queue IS 'Mobile durable queue adapted to Phase 22 integration_sync_jobs; not a separate synchronization platform.';
 COMMENT ON COLUMN public.mobile_notification_preferences.production_provider_token IS 'Reserved for a future approved APNs/FCM phase; Phase 27 requires NULL.';
