@@ -204,3 +204,10 @@ export const RELIABILITY_COMMANDS = [
   { label: "View backup status", path: "/reliability", permission: "reliability_read" },
   { label: "Open runbook", path: "/reliability", permission: "reliability_read" },
 ] as const;
+
+export const SECURITY_COMMANDS = [
+  { label: "Open security overview", path: "/security", permission: "security_read" },
+  { label: "Review active sessions", path: "/security", permission: "security_read" },
+  { label: "Start access review", path: "/security", permission: "security_write" },
+  { label: "Review threat finding", path: "/security", permission: "security_write" },
+] as const;

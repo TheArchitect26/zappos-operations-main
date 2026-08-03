@@ -32,6 +32,7 @@ import {
   Sparkles,
   MessagesSquare,
   HeartPulse,
+  LockKeyhole,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -342,6 +343,20 @@ const ALL: NavItem[] = [
     to: "/reliability",
     icon: HeartPulse,
     roles: ["admin", "operations_manager", "executive", "managing_director", "viewer"],
+  },
+  {
+    label: "Security",
+    to: "/security",
+    icon: LockKeyhole,
+    roles: [
+      "admin",
+      "system_administrator",
+      "technical_administrator",
+      "compliance_manager",
+      "executive",
+      "managing_director",
+      "viewer",
+    ],
   },
   {
     label: "Zapp Connect",

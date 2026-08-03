@@ -57,3 +57,13 @@ export const RELIABILITY_COMMAND_CENTRE_SIGNALS = [
   "failed_deployment_or_required_rollback",
   "capacity_threshold",
 ] as const;
+
+export const SECURITY_COMMAND_CENTRE_SIGNALS = [
+  "critical_security_incident",
+  "expired_certificate_or_secret",
+  "dormant_admin",
+  "threat_alert",
+  "failed_logins",
+  "high_risk_session",
+  "access_review_due",
+] as const;

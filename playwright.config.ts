@@ -6,7 +6,8 @@ const stagingE2E =
   process.env.ZAPPOS_RUN_STAGING_E2E === "true" ||
   process.env.ZAPPOS_RUN_PHASE29_STAGING_E2E === "true" ||
   process.env.ZAPPOS_RUN_PHASE30_STAGING_E2E === "true" ||
-  process.env.ZAPPOS_RUN_PHASE31_STAGING_E2E === "true";
+  process.env.ZAPPOS_RUN_PHASE31_STAGING_E2E === "true" ||
+  process.env.ZAPPOS_RUN_PHASE32_STAGING_E2E === "true";
 
 const publicUse = {
   storageState: { cookies: [], origins: [] },
@@ -19,6 +20,7 @@ const stagingTests = [
   /phase29-authenticated-staging\.spec\.ts/,
   /phase30-authenticated-staging\.spec\.ts/,
   /phase31-authenticated-staging\.spec\.ts/,
+  /phase32-authenticated-staging\.spec\.ts/,
 ];
 
 export default defineConfig({

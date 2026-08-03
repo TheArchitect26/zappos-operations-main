@@ -195,3 +195,15 @@ export const RELIABILITY_METRIC_CODES = [
   "telemetry_availability",
   "capacity_trend",
 ] as const;
+
+export const SECURITY_METRIC_CODES = [
+  "security_score",
+  "mfa_adoption",
+  "threat_trend",
+  "dormant_accounts",
+  "session_count",
+  "access_review_completion",
+  "policy_violations",
+  "certificate_expiry",
+  "secret_rotation",
+] as const;

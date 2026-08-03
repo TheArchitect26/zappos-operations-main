@@ -35,6 +35,7 @@ import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authentica
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
 import { Route as AuthenticatedTrackingRouteImport } from './routes/_authenticated/tracking'
 import { Route as AuthenticatedSettingsRouteImport } from './routes/_authenticated/settings'
+import { Route as AuthenticatedSecurityRouteImport } from './routes/_authenticated/security'
 import { Route as AuthenticatedRouteIntelligenceRouteImport } from './routes/_authenticated/route-intelligence'
 import { Route as AuthenticatedReliabilityRouteImport } from './routes/_authenticated/reliability'
 import { Route as AuthenticatedProcurementRouteImport } from './routes/_authenticated/procurement'
@@ -196,6 +197,11 @@ const AuthenticatedTrackingRoute = AuthenticatedTrackingRouteImport.update({
 const AuthenticatedSettingsRoute = AuthenticatedSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSecurityRoute = AuthenticatedSecurityRouteImport.update({
+  id: '/security',
+  path: '/security',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedRouteIntelligenceRoute =
@@ -411,6 +417,7 @@ export interface FileRoutesByFullPath {
   '/procurement': typeof AuthenticatedProcurementRoute
   '/reliability': typeof AuthenticatedReliabilityRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
+  '/security': typeof AuthenticatedSecurityRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracking': typeof AuthenticatedTrackingRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
@@ -469,6 +476,7 @@ export interface FileRoutesByTo {
   '/procurement': typeof AuthenticatedProcurementRoute
   '/reliability': typeof AuthenticatedReliabilityRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
+  '/security': typeof AuthenticatedSecurityRoute
   '/settings': typeof AuthenticatedSettingsRoute
   '/tracking': typeof AuthenticatedTrackingRoute
   '/vehicles': typeof AuthenticatedVehiclesRoute
@@ -529,6 +537,7 @@ export interface FileRoutesById {
   '/_authenticated/procurement': typeof AuthenticatedProcurementRoute
   '/_authenticated/reliability': typeof AuthenticatedReliabilityRoute
   '/_authenticated/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
+  '/_authenticated/security': typeof AuthenticatedSecurityRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRoute
   '/_authenticated/tracking': typeof AuthenticatedTrackingRoute
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
@@ -589,6 +598,7 @@ export interface FileRouteTypes {
     | '/procurement'
     | '/reliability'
     | '/route-intelligence'
+    | '/security'
     | '/settings'
     | '/tracking'
     | '/vehicles'
@@ -647,6 +657,7 @@ export interface FileRouteTypes {
     | '/procurement'
     | '/reliability'
     | '/route-intelligence'
+    | '/security'
     | '/settings'
     | '/tracking'
     | '/vehicles'
@@ -706,6 +717,7 @@ export interface FileRouteTypes {
     | '/_authenticated/procurement'
     | '/_authenticated/reliability'
     | '/_authenticated/route-intelligence'
+    | '/_authenticated/security'
     | '/_authenticated/settings'
     | '/_authenticated/tracking'
     | '/_authenticated/vehicles'
@@ -923,6 +935,13 @@ declare module '@tanstack/react-router' {
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/security': {
+      id: '/_authenticated/security'
+      path: '/security'
+      fullPath: '/security'
+      preLoaderRoute: typeof AuthenticatedSecurityRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/route-intelligence': {
@@ -1195,6 +1214,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedProcurementRoute: typeof AuthenticatedProcurementRoute
   AuthenticatedReliabilityRoute: typeof AuthenticatedReliabilityRoute
   AuthenticatedRouteIntelligenceRoute: typeof AuthenticatedRouteIntelligenceRoute
+  AuthenticatedSecurityRoute: typeof AuthenticatedSecurityRoute
   AuthenticatedSettingsRoute: typeof AuthenticatedSettingsRoute
   AuthenticatedTrackingRoute: typeof AuthenticatedTrackingRoute
   AuthenticatedVehiclesRoute: typeof AuthenticatedVehiclesRoute
@@ -1232,6 +1252,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedProcurementRoute: AuthenticatedProcurementRoute,
   AuthenticatedReliabilityRoute: AuthenticatedReliabilityRoute,
   AuthenticatedRouteIntelligenceRoute: AuthenticatedRouteIntelligenceRoute,
+  AuthenticatedSecurityRoute: AuthenticatedSecurityRoute,
   AuthenticatedSettingsRoute: AuthenticatedSettingsRoute,
   AuthenticatedTrackingRoute: AuthenticatedTrackingRoute,
   AuthenticatedVehiclesRoute: AuthenticatedVehiclesRoute,
