@@ -102,5 +102,14 @@ describe("30-day 50-vehicle deterministic operational simulation", () => {
     expect(fleetIntelligenceSimulation.some((item) => item.trafficCondition === "congested")).toBe(
       true,
     );
+    expect(fleetIntelligenceSimulation.some((item) => item.diagnosticTroubleCodes.length > 0)).toBe(
+      true,
+    );
+    expect(fleetIntelligenceSimulation.some((item) => item.maintenanceRecurrence)).toBe(true);
+    expect(fleetIntelligenceSimulation.some((item) => item.workshopRevisit)).toBe(true);
+    expect(fleetIntelligenceSimulation.some((item) => item.routeDeviationKm > 0)).toBe(true);
+    expect(
+      fleetIntelligenceSimulation.every((item) => item.simulatedAt && item.engineHours > 0),
+    ).toBe(true);
   });
 });

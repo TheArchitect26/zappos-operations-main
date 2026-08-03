@@ -114,6 +114,7 @@ function CommandCentre() {
     brainCorrelations: [],
     brainOperationalAlerts: [],
     brainServiceHealth: [],
+    fleetRecommendations: [],
   });
   const [search, setSearch] = useState("");
   const [loading, setLoading] = useState(true);
@@ -174,6 +175,7 @@ function CommandCentre() {
         brainCorrelations,
         brainOperationalAlerts,
         brainServiceHealth,
+        fleetRecommendations,
       ] = await Promise.all([
         supabase
           .from("jobs")
@@ -321,6 +323,14 @@ function CommandCentre() {
           .eq("company_id", c)
           .order("checked_at", { ascending: false })
           .limit(25),
+        (supabase as any)
+          .from("fleet_intelligence_recommendations")
+          .select(
+            "id,title,domain,subject_type,subject_id,priority,risk_level,confidence,evidence_count,freshness,owner,status,source_record_type,source_record_id,created_at,snapshot_id",
+          )
+          .eq("company_id", c)
+          .order("created_at", { ascending: false })
+          .limit(25),
       ]);
       setData({
         jobs: jobs.data ?? [],
@@ -346,6 +356,7 @@ function CommandCentre() {
         brainCorrelations: brainCorrelations.data ?? [],
         brainOperationalAlerts: brainOperationalAlerts.data ?? [],
         brainServiceHealth: brainServiceHealth.data ?? [],
+        fleetRecommendations: fleetRecommendations.data ?? [],
       });
       setCollapsed(layout.data?.collapsed_widgets ?? []);
       setWidgetSizes(layout.data?.widget_sizes ?? {});
@@ -415,6 +426,13 @@ function CommandCentre() {
           title: x.title,
           timestamp: x.generated_at ?? x.created_at,
           priority: x.severity,
+        })),
+        data.fleetRecommendations.map((x: any) => ({
+          id: x.id,
+          source: "fleet-intelligence",
+          title: x.title,
+          timestamp: x.created_at,
+          priority: x.risk_level,
         })),
       ),
     [data],
@@ -656,6 +674,64 @@ function CommandCentre() {
         </p>
         <h1 className="text-3xl font-semibold">Fleet Command Centre</h1>
       </div>
+      {data.fleetRecommendations.length > 0 && (
+        <section aria-label="Fleet Intelligence priority cards">
+          <div className="mb-2 flex items-center justify-between gap-3">
+            <div>
+              <h2 className="font-semibold">Fleet Intelligence priority review</h2>
+              <p className="text-sm text-muted-foreground">
+                Advisory cards only; review continues in the owning workspace.
+              </p>
+            </div>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => navigate({ to: "/fleet-intelligence" })}
+            >
+              Open Fleet Intelligence
+            </Button>
+          </div>
+          <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {data.fleetRecommendations.map((item: any) => (
+              <Card key={item.id} className="p-3" data-testid="fleet-priority-card">
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="text-xs text-muted-foreground">
+                      {item.subject_type}: {item.subject_id ?? "fleet"}
+                    </p>
+                    <p className="font-medium">{item.title}</p>
+                  </div>
+                  <StatusBadge tone={priorityTone(item.risk_level)}>
+                    {item.priority || item.risk_level}
+                  </StatusBadge>
+                </div>
+                <dl className="mt-3 grid grid-cols-2 gap-1 text-xs">
+                  <dt className="text-muted-foreground">Confidence</dt>
+                  <dd>{item.confidence}%</dd>
+                  <dt className="text-muted-foreground">Evidence</dt>
+                  <dd>{item.evidence_count}</dd>
+                  <dt className="text-muted-foreground">Freshness</dt>
+                  <dd>{item.freshness}</dd>
+                  <dt className="text-muted-foreground">Domain</dt>
+                  <dd>{item.domain}</dd>
+                  <dt className="text-muted-foreground">Owner</dt>
+                  <dd>{item.owner}</dd>
+                  <dt className="text-muted-foreground">Review</dt>
+                  <dd>{item.status}</dd>
+                </dl>
+                {item.source_record_type && (
+                  <Link
+                    className="mt-3 inline-block text-xs text-primary underline"
+                    to="/fleet-intelligence"
+                  >
+                    Source: {item.source_record_type} {item.source_record_id}
+                  </Link>
+                )}
+              </Card>
+            ))}
+          </div>
+        </section>
+      )}
       <div className="relative">
         <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
         <Input

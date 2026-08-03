@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-test";
 
 test.describe("Phase 23B Brain intelligence boundary", () => {
   test("keeps feature, query, and governance intelligence panels behind /brain authentication", async ({

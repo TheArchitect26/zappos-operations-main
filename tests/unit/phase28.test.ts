@@ -11,6 +11,17 @@ import {
   routeIntelligence,
   vehicleHealthIntelligence,
   askFleetZip,
+  serviceDueEstimate,
+  maintenanceRecurrence,
+  fuelEfficiency,
+  fuelAnomaly,
+  idleRatio,
+  downtimeRate,
+  dataQualityScore,
+  confidenceAdjustment,
+  replacementReview,
+  nonCausalCorrelation,
+  fleetIntelligencePermission,
   type EvidenceRef,
 } from "@/lib/fleet-intelligence";
 
@@ -194,5 +205,121 @@ describe("Phase 28 fleet intelligence", () => {
     expect(response.state).toBe("available");
     expect(response.citations).toHaveLength(1);
     expect(response.advisoryOnly).toBe(true);
+  });
+
+  it("returns a labelled deterministic service estimate", () => {
+    const result = serviceDueEstimate({
+      currentOdometerKm: 14_000,
+      lastServiceOdometerKm: 0,
+      serviceIntervalKm: 15_000,
+      averageDailyKm: 250,
+      calculatedAt: "2026-08-01T00:00:00Z",
+    });
+    expect(result).toMatchObject({ state: "available", dueOdometerKm: 15_000, remainingKm: 1_000 });
+    expect(result.label).toContain("not a guaranteed mechanical prediction");
+    expect(
+      serviceDueEstimate({
+        currentOdometerKm: null,
+        lastServiceOdometerKm: 0,
+        serviceIntervalKm: 15_000,
+        averageDailyKm: 250,
+        calculatedAt: "2026-08-01T00:00:00Z",
+      }).state,
+    ).toBe("unavailable");
+  });
+
+  it("detects repeat and post-repair faults without claiming causation", () => {
+    const result = maintenanceRecurrence([
+      { faultCode: "P001", occurredAt: "2026-01-01T00:00:00Z", repairedAt: "2026-01-02T00:00:00Z" },
+      { faultCode: "P001", occurredAt: "2026-01-20T00:00:00Z" },
+    ]);
+    expect(result).toMatchObject({ recurrenceCount: 1, postRepairRecurrenceCount: 1 });
+    expect(
+      nonCausalCorrelation({
+        sharedPeriod: "July",
+        sharedEntity: "Depot A",
+        leftRecordIds: ["a"],
+        rightRecordIds: ["b"],
+        strength: 70,
+        unknowns: ["weather"],
+      }),
+    ).toMatchObject({ nonCausal: true });
+  });
+
+  it("handles fuel efficiency, anomalies, idling and downtime truthfully", () => {
+    expect(fuelEfficiency(100, 500)).toMatchObject({ kmPerLitre: 5, litresPer100Km: 20 });
+    expect(fuelEfficiency(-1, 500).state).toBe("invalid");
+    const anomaly = fuelAnomaly({
+      purchasedLitres: 150,
+      expectedLitres: 100,
+      distanceKm: 0,
+      movementExpected: false,
+    });
+    expect(anomaly.flags).toContain("Fuel anomaly requires investigation");
+    expect(anomaly.accusatory).toBe(false);
+    expect(idleRatio(20, 100)).toBe(20);
+    expect(downtimeRate(10, 100)).toBe(10);
+  });
+
+  it("reduces confidence for poor or stale data", () => {
+    const quality = dataQualityScore({
+      expectedFields: ["odometer", "fuel", "telemetry"],
+      presentFields: ["odometer"],
+      staleFields: ["odometer"],
+      invalidFields: ["fuel"],
+      duplicateRecords: 1,
+      unsupportedFields: [],
+    });
+    expect(quality.missing).toEqual(["fuel", "telemetry"]);
+    expect(confidenceAdjustment(95, quality.score, 200)).toBeLessThan(25);
+  });
+
+  it("keeps replacement review advisory and requires enough evidence", () => {
+    const base = {
+      vehicleId: "v1",
+      vehicleAgeYears: 12,
+      odometerKm: 420_000,
+      maintenanceEvents: 12,
+      breakdowns: 4,
+      downtimeDays: 40,
+      maintenanceCostPerKm: 4,
+      fuelEfficiencyVariancePercent: 25,
+      utilisationPercent: 20,
+      complianceConcerns: 2,
+      partsAvailabilityConcern: true,
+    };
+    expect(replacementReview({ ...base, evidence }).outcome).toBe("insufficient_evidence");
+    const result = replacementReview({
+      ...base,
+      evidence: [...evidence, { ...evidence[0]!, sourceId: "event-2" }],
+    });
+    expect(result.outcome).toBe("replacement_analysis_recommended");
+    expect(result.advisoryOnly).toBe(true);
+  });
+
+  it("enforces driver-own, customer, viewer and cost boundaries", () => {
+    expect(
+      fleetIntelligencePermission({ roles: ["driver"], userId: "u1", subjectDriverUserId: "u1" }),
+    ).toMatchObject({
+      canRead: true,
+      ownDriverOnly: true,
+      canReadCost: false,
+      canMutateSource: false,
+    });
+    expect(
+      fleetIntelligencePermission({ roles: ["driver"], userId: "u1", subjectDriverUserId: "u2" })
+        .canRead,
+    ).toBe(false);
+    expect(fleetIntelligencePermission({ roles: ["customer_user"], userId: "u1" }).canRead).toBe(
+      false,
+    );
+    expect(fleetIntelligencePermission({ roles: ["viewer"], userId: "u1" })).toMatchObject({
+      canRead: true,
+      readOnly: true,
+      canReadCost: false,
+    });
+    expect(
+      fleetIntelligencePermission({ roles: ["finance_manager"], userId: "u1" }).canReadCost,
+    ).toBe(true);
   });
 });

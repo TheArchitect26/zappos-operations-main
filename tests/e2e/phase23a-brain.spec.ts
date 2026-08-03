@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./public-test";
 
 test.describe("Phase 23A Brain workspace boundary", () => {
   test("does not expose the internal Brain workspace to an unauthenticated browser", async ({

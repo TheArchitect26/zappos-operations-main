@@ -1,5 +1,14 @@
 export type IntelligenceRisk = "low" | "medium" | "high" | "critical" | "unavailable";
 export type EvidenceQuality = "high" | "medium" | "low" | "insufficient";
+export type AssessmentStatus =
+  "calculated" | "partial" | "stale" | "invalid" | "under_review" | "superseded" | "archived";
+export type DriverScoreBand =
+  "excellent" | "good" | "monitor" | "coaching_recommended" | "insufficient_data";
+export type ReplacementReviewOutcome =
+  | "continue_monitoring"
+  | "maintenance_strategy_review"
+  | "replacement_analysis_recommended"
+  | "insufficient_evidence";
 
 export interface EvidenceRef {
   sourceType: string;
@@ -86,4 +95,34 @@ export interface RouteHistoryInput {
   departureHours: number[];
   congestionScores: number[];
   evidence: EvidenceRef[];
+}
+
+export interface DataQualityInput {
+  expectedFields: string[];
+  presentFields: string[];
+  staleFields: string[];
+  invalidFields: string[];
+  duplicateRecords: number;
+  unsupportedFields: string[];
+}
+
+export interface ReplacementReviewInput {
+  vehicleId: string;
+  vehicleAgeYears: number | null;
+  odometerKm: number | null;
+  maintenanceEvents: number;
+  breakdowns: number;
+  downtimeDays: number;
+  maintenanceCostPerKm: number | null;
+  fuelEfficiencyVariancePercent: number | null;
+  utilisationPercent: number | null;
+  complianceConcerns: number;
+  partsAvailabilityConcern: boolean | null;
+  evidence: EvidenceRef[];
+}
+
+export interface FleetPermissionContext {
+  roles: readonly string[];
+  userId: string;
+  subjectDriverUserId?: string | null;
 }

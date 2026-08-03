@@ -6,6 +6,9 @@ import type {
   IntelligenceRisk,
   RouteHistoryInput,
   VehicleHealthInput,
+  DataQualityInput,
+  ReplacementReviewInput,
+  FleetPermissionContext,
 } from "./types";
 
 const clamp = (value: number, minimum = 0, maximum = 100) =>
@@ -114,7 +117,11 @@ export function driverPerformanceIntelligence(input: DriverScoreInput) {
     return {
       driverId: input.driverId,
       score: null,
+      scoreBand: "insufficient_data" as const,
       quality: "insufficient" as const,
+      weightingVersion: "fleet-driver-score-v1",
+      explanation: "A score is unavailable because no authorised trip evidence exists.",
+      missingData: ["trip evidence"],
       recommendations: [],
     };
   const rate = (events: number, weight: number) =>
@@ -165,7 +172,28 @@ export function driverPerformanceIntelligence(input: DriverScoreInput) {
   return {
     driverId: input.driverId,
     score,
+    scoreBand:
+      score >= 90
+        ? ("excellent" as const)
+        : score >= 75
+          ? ("good" as const)
+          : score >= 60
+            ? ("monitor" as const)
+            : ("coaching_recommended" as const),
     quality: evidenceQuality(input.evidence.length, input.trips),
+    confidence: confidenceFor(input.evidence.length, input.trips),
+    weightingVersion: "fleet-driver-score-v1",
+    evidenceCount: input.evidence.length,
+    explanation: `The deterministic score combines safety event rates (70%) and positive route, fuel and vehicle-care factors (30%) across ${input.trips} trips.`,
+    missingData: [
+      ...(input.routeCompliancePercent === null ? ["route compliance"] : []),
+      ...(input.fuelEfficiencyPercent === null ? ["fuel efficiency"] : []),
+      ...(input.vehicleCarePercent === null ? ["vehicle care"] : []),
+    ],
+    positivePerformance:
+      score >= 75 ? ["Positive performance is reflected without fleet-wide ranking."] : [],
+    disputeGuidance:
+      "Submit feedback against the cited evidence; source records are not modified by a dispute.",
     metrics: {
       speeding: input.speedingEvents,
       harshBraking: input.harshBrakingEvents,
@@ -360,4 +388,327 @@ export function operationsBottlenecks(input: {
     .filter(([, value]) => typeof value === "number" && value > 15)
     .map(([metric, value]) => ({ metric, value, advisoryOnly: true }));
   return { metrics, bottlenecks };
+}
+
+export function serviceDueEstimate(input: {
+  currentOdometerKm: number | null;
+  lastServiceOdometerKm: number | null;
+  serviceIntervalKm: number | null;
+  averageDailyKm: number | null;
+  calculatedAt: string;
+}) {
+  const valid =
+    input.currentOdometerKm !== null &&
+    input.lastServiceOdometerKm !== null &&
+    input.serviceIntervalKm !== null &&
+    input.averageDailyKm !== null &&
+    input.currentOdometerKm >= 0 &&
+    input.lastServiceOdometerKm >= 0 &&
+    input.serviceIntervalKm > 0 &&
+    input.averageDailyKm >= 0;
+  if (!valid)
+    return {
+      state: "unavailable" as const,
+      reason: "Missing or invalid approved maintenance inputs",
+    };
+  const dueOdometerKm = input.lastServiceOdometerKm! + input.serviceIntervalKm!;
+  const remainingKm = dueOdometerKm - input.currentOdometerKm!;
+  const days =
+    input.averageDailyKm! > 0 ? Math.ceil(Math.max(0, remainingKm) / input.averageDailyKm!) : null;
+  return {
+    state: "available" as const,
+    dueOdometerKm,
+    remainingKm,
+    estimatedDueDate:
+      days === null
+        ? null
+        : new Date(new Date(input.calculatedAt).getTime() + days * 86_400_000).toISOString(),
+    forecastRangeDays: days === null ? null : [Math.max(0, days - 3), days + 3],
+    label: "Deterministic estimate — not a guaranteed mechanical prediction",
+    assumptions: [
+      "Approved service interval remains unchanged",
+      "Average daily distance remains representative",
+    ],
+  };
+}
+
+export function maintenanceRecurrence(
+  events: { faultCode: string; occurredAt: string; repairedAt?: string | null }[],
+  windowDays = 90,
+) {
+  const sorted = [...events].sort((a, b) => a.occurredAt.localeCompare(b.occurredAt));
+  const recurring = sorted.filter((event, index) =>
+    sorted
+      .slice(0, index)
+      .some(
+        (prior) =>
+          prior.faultCode === event.faultCode &&
+          new Date(event.occurredAt).getTime() - new Date(prior.occurredAt).getTime() <=
+            windowDays * 86_400_000,
+      ),
+  );
+  const postRepair = recurring.filter((event) =>
+    sorted.some(
+      (prior) =>
+        prior.faultCode === event.faultCode &&
+        prior.repairedAt &&
+        prior.repairedAt < event.occurredAt,
+    ),
+  );
+  return {
+    eventCount: events.length,
+    recurrenceCount: recurring.length,
+    postRepairRecurrenceCount: postRepair.length,
+    recurrenceRate: events.length ? clamp((recurring.length / events.length) * 100) : null,
+  };
+}
+
+export function breakdownFrequency(breakdowns: number, activeDays: number) {
+  return activeDays > 0 && breakdowns >= 0
+    ? { per30ActiveDays: (breakdowns / activeDays) * 30, available: true }
+    : { per30ActiveDays: null, available: false };
+}
+
+export function fuelEfficiency(litres: number, distanceKm: number) {
+  if (litres <= 0 || distanceKm <= 0)
+    return { state: "invalid" as const, kmPerLitre: null, litresPer100Km: null };
+  return {
+    state: "available" as const,
+    kmPerLitre: distanceKm / litres,
+    litresPer100Km: (litres / distanceKm) * 100,
+  };
+}
+
+export function fuelAnomaly(input: {
+  purchasedLitres: number;
+  expectedLitres: number;
+  distanceKm: number;
+  movementExpected: boolean;
+}) {
+  if (input.purchasedLitres < 0 || input.expectedLitres < 0 || input.distanceKm < 0)
+    return { state: "invalid" as const, flags: ["Impossible or invalid fuel reading"] };
+  const variancePercent =
+    input.expectedLitres > 0
+      ? ((input.purchasedLitres - input.expectedLitres) / input.expectedLitres) * 100
+      : null;
+  const flags = [
+    ...(variancePercent !== null && Math.abs(variancePercent) >= 15
+      ? ["Fuel anomaly requires investigation"]
+      : []),
+    ...(input.purchasedLitres > 0 && input.distanceKm === 0
+      ? ["Purchase without expected movement"]
+      : []),
+    ...(input.movementExpected && input.distanceKm > 0 && input.purchasedLitres === 0
+      ? ["Movement without corresponding fuel metadata"]
+      : []),
+  ];
+  return { state: "available" as const, variancePercent, flags, accusatory: false };
+}
+
+export function idleRatio(idleMinutes: number, engineMinutes: number) {
+  return idleMinutes >= 0 && engineMinutes > 0 && idleMinutes <= engineMinutes
+    ? (idleMinutes / engineMinutes) * 100
+    : null;
+}
+
+export function downtimeRate(downtimeHours: number, availableHours: number) {
+  return downtimeHours >= 0 && availableHours > 0
+    ? clamp((downtimeHours / availableHours) * 100)
+    : null;
+}
+
+export function dataQualityScore(input: DataQualityInput) {
+  const present = new Set(input.presentFields);
+  const missing = input.expectedFields.filter((field) => !present.has(field));
+  const penalty =
+    missing.length * 12 +
+    input.staleFields.length * 8 +
+    input.invalidFields.length * 20 +
+    Math.min(20, input.duplicateRecords * 5) +
+    input.unsupportedFields.length * 10;
+  const score = clamp(100 - penalty);
+  return {
+    score,
+    quality:
+      score >= 80
+        ? ("high" as const)
+        : score >= 55
+          ? ("medium" as const)
+          : score >= 30
+            ? ("low" as const)
+            : ("insufficient" as const),
+    missing,
+    warnings: [
+      ...input.staleFields.map((f) => `Stale ${f}`),
+      ...input.invalidFields.map((f) => `Invalid ${f}`),
+      ...input.unsupportedFields.map((f) => `Unsupported ${f}`),
+    ],
+  };
+}
+
+export function confidenceAdjustment(
+  baseConfidence: number,
+  qualityScore: number,
+  freshnessHours: number,
+) {
+  const freshnessFactor =
+    freshnessHours <= 24 ? 1 : freshnessHours <= 72 ? 0.8 : freshnessHours <= 168 ? 0.55 : 0.25;
+  return clamp(baseConfidence * (clamp(qualityScore) / 100) * freshnessFactor);
+}
+
+export function replacementReview(input: ReplacementReviewInput) {
+  const coverage = [
+    input.vehicleAgeYears,
+    input.odometerKm,
+    input.maintenanceCostPerKm,
+    input.fuelEfficiencyVariancePercent,
+    input.utilisationPercent,
+  ].filter((v) => v !== null).length;
+  if (coverage < 3 || input.evidence.length < 2)
+    return {
+      vehicleId: input.vehicleId,
+      outcome: "insufficient_evidence" as const,
+      score: null,
+      advisoryOnly: true,
+      missingEvidence: true,
+    };
+  const score = clamp(
+    (input.vehicleAgeYears ?? 0) * 4 +
+      (input.odometerKm ?? 0) / 10_000 +
+      input.maintenanceEvents * 3 +
+      input.breakdowns * 8 +
+      input.downtimeDays * 0.8 +
+      Math.max(0, input.fuelEfficiencyVariancePercent ?? 0) * 0.5 +
+      input.complianceConcerns * 8 +
+      (input.partsAvailabilityConcern ? 15 : 0) +
+      Math.max(0, 40 - (input.utilisationPercent ?? 40)) * 0.3,
+  );
+  return {
+    vehicleId: input.vehicleId,
+    score,
+    outcome:
+      score >= 70
+        ? ("replacement_analysis_recommended" as const)
+        : score >= 45
+          ? ("maintenance_strategy_review" as const)
+          : ("continue_monitoring" as const),
+    advisoryOnly: true,
+    prohibitedActions: [
+      "dispose_vehicle",
+      "decommission_vehicle",
+      "create_purchase_request",
+      "approve_capex",
+    ],
+  };
+}
+
+export function nonCausalCorrelation(input: {
+  sharedPeriod: string;
+  sharedEntity: string;
+  leftRecordIds: string[];
+  rightRecordIds: string[];
+  strength: number;
+  unknowns: string[];
+}) {
+  return {
+    ...input,
+    confidence: clamp(
+      input.strength * Math.min(1, (input.leftRecordIds.length + input.rightRecordIds.length) / 10),
+    ),
+    nonCausal: true,
+    label: "Correlation only — this does not establish causation",
+  };
+}
+
+export function fleetIntelligencePermission(context: FleetPermissionContext) {
+  const broad = [
+    "admin",
+    "executive",
+    "operations_manager",
+    "fleet_manager",
+    "fleet_controller",
+    "dispatcher",
+    "maintenance_manager",
+    "maintenance_coordinator",
+    "commercial_manager",
+    "finance_manager",
+    "compliance_manager",
+    "analyst",
+    "brain_analyst",
+    "brain_reviewer",
+    "viewer",
+  ];
+  const customer = context.roles.some((r) =>
+    ["customer", "customer_admin", "customer_user"].includes(r),
+  );
+  const ownDriverOnly =
+    context.roles.includes("driver") && context.subjectDriverUserId === context.userId;
+  const canRead = !customer && (ownDriverOnly || context.roles.some((r) => broad.includes(r)));
+  const canReadCost =
+    canRead &&
+    !ownDriverOnly &&
+    context.roles.some((r) =>
+      [
+        "admin",
+        "executive",
+        "commercial_manager",
+        "finance_manager",
+        "analyst",
+        "brain_analyst",
+      ].includes(r),
+    );
+  return {
+    canRead,
+    ownDriverOnly,
+    canReadCost,
+    readOnly: ownDriverOnly || context.roles.includes("viewer"),
+    canMutateSource: false,
+    canSubmitFeedback: ownDriverOnly,
+  };
+}
+
+export function priorityRank(input: {
+  severity: IntelligenceRisk;
+  confidence: number;
+  freshnessHours: number;
+  evidenceCount: number;
+}) {
+  const severity = { unavailable: 0, low: 20, medium: 45, high: 70, critical: 90 }[input.severity];
+  return clamp(
+    severity * 0.55 +
+      input.confidence * 0.25 +
+      Math.min(100, input.evidenceCount * 10) * 0.1 +
+      (input.freshnessHours <= 24 ? 100 : input.freshnessHours <= 72 ? 60 : 20) * 0.1,
+  );
+}
+
+export function fleetIntelligenceTrend(
+  rows: {
+    metricCode: string;
+    calculatedAt: string;
+    value: number | null;
+    quality: EvidenceQuality;
+    sourceCount: number;
+  }[],
+  metricCode: string,
+) {
+  const points = rows
+    .filter((row) => row.metricCode === metricCode && row.value !== null)
+    .sort((a, b) => a.calculatedAt.localeCompare(b.calculatedAt));
+  if (points.length < 2)
+    return {
+      state: "unavailable" as const,
+      points,
+      change: null,
+      reason: "At least two persisted assessments are required",
+    };
+  const first = points[0]!.value!;
+  const last = points[points.length - 1]!.value!;
+  return {
+    state: "available" as const,
+    points,
+    change: last - first,
+    sourceCount: points.reduce((sum, point) => sum + point.sourceCount, 0),
+    persistedOnly: true,
+  };
 }

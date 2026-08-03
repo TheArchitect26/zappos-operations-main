@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { FleetIntelligenceDashboard } from "@/components/fleet-intelligence/fleet-intelligence-dashboard";
 import { ErrorState, LoadingState } from "@/components/operational-state";
 import { useCompany } from "@/lib/company-context";
+import { useSession } from "@/lib/session";
 
 export const Route = createFileRoute("/_authenticated/fleet-intelligence")({
   head: () => ({ meta: [{ title: "Fleet Intelligence — ZappOS" }] }),
@@ -9,6 +10,7 @@ export const Route = createFileRoute("/_authenticated/fleet-intelligence")({
 });
 function FleetIntelligencePage() {
   const { activeCompany, roles, loading } = useCompany();
+  const { user } = useSession();
   if (loading)
     return (
       <div className="mx-auto max-w-7xl px-4 py-6">
@@ -28,12 +30,21 @@ function FleetIntelligencePage() {
     [
       "admin",
       "fleet_manager",
+      "fleet_controller",
       "dispatcher",
       "operations_manager",
+      "maintenance_manager",
+      "maintenance_coordinator",
+      "commercial_manager",
+      "finance_manager",
+      "compliance_manager",
       "executive",
       "managing_director",
       "analyst",
+      "brain_analyst",
+      "brain_reviewer",
       "viewer",
+      "driver",
     ].includes(role),
   );
   if (!allowed)
@@ -57,7 +68,11 @@ function FleetIntelligencePage() {
           intelligence. Brain recommends; people decide.
         </p>
       </div>
-      <FleetIntelligenceDashboard companyId={activeCompany.id} />
+      <FleetIntelligenceDashboard
+        companyId={activeCompany.id}
+        roles={roles}
+        userId={user?.id ?? ""}
+      />
     </main>
   );
 }
