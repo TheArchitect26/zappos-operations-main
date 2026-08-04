@@ -52,6 +52,7 @@ import { Route as AuthenticatedIncidentsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedHrRouteImport } from './routes/_authenticated/hr'
 import { Route as AuthenticatedHardwareReadinessRouteImport } from './routes/_authenticated/hardware-readiness'
 import { Route as AuthenticatedFleetIntelligenceRouteImport } from './routes/_authenticated/fleet-intelligence'
+import { Route as AuthenticatedFleetBoardRouteImport } from './routes/_authenticated/fleet-board'
 import { Route as AuthenticatedFieldDeploymentRouteImport } from './routes/_authenticated/field-deployment'
 import { Route as AuthenticatedDriversRouteImport } from './routes/_authenticated/drivers'
 import { Route as AuthenticatedDriverRouteImport } from './routes/_authenticated/driver'
@@ -72,6 +73,21 @@ import { Route as AuthenticatedTrackingReplayRouteImport } from './routes/_authe
 import { Route as AuthenticatedTrackingCustomerCareRouteImport } from './routes/_authenticated/tracking/customer-care'
 import { Route as AuthenticatedTrackingControlRouteImport } from './routes/_authenticated/tracking/control'
 import { Route as AuthenticatedMobileDriverRouteImport } from './routes/_authenticated/mobile/driver'
+import { Route as AuthenticatedFleetBoardWallRouteImport } from './routes/_authenticated/fleet-board/wall'
+import { Route as AuthenticatedFleetBoardTimelineRouteImport } from './routes/_authenticated/fleet-board/timeline'
+import { Route as AuthenticatedFleetBoardReplayRouteImport } from './routes/_authenticated/fleet-board/replay'
+import { Route as AuthenticatedFleetBoardLiveRouteImport } from './routes/_authenticated/fleet-board/live'
+import { Route as AuthenticatedFleetBoardHourlyRouteImport } from './routes/_authenticated/fleet-board/hourly'
+import { Route as AuthenticatedFleetBoardHandoversRouteImport } from './routes/_authenticated/fleet-board/handovers'
+import { Route as AuthenticatedFleetBoardCustomerCareRouteImport } from './routes/_authenticated/fleet-board/customer-care'
+import { Route as AuthenticatedDispatchWorkloadRouteImport } from './routes/_authenticated/dispatch/workload'
+import { Route as AuthenticatedDispatchRoutesRouteImport } from './routes/_authenticated/dispatch/routes'
+import { Route as AuthenticatedDispatchRecommendationsRouteImport } from './routes/_authenticated/dispatch/recommendations'
+import { Route as AuthenticatedDispatchPlanningRouteImport } from './routes/_authenticated/dispatch/planning'
+import { Route as AuthenticatedDispatchLiveRouteImport } from './routes/_authenticated/dispatch/live'
+import { Route as AuthenticatedDispatchHistoryRouteImport } from './routes/_authenticated/dispatch/history'
+import { Route as AuthenticatedDispatchExceptionsRouteImport } from './routes/_authenticated/dispatch/exceptions'
+import { Route as AuthenticatedDispatchEtaRouteImport } from './routes/_authenticated/dispatch/eta'
 import { Route as AuthenticatedBrainOperationsRouteImport } from './routes/_authenticated/brain/operations'
 import { Route as AuthenticatedBrainEvaluationRouteImport } from './routes/_authenticated/brain/evaluation'
 import { Route as AuthenticatedMobileDriverStopsRouteImport } from './routes/_authenticated/mobile/driver/stops'
@@ -307,6 +323,11 @@ const AuthenticatedFleetIntelligenceRoute =
     path: '/fleet-intelligence',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedFleetBoardRoute = AuthenticatedFleetBoardRouteImport.update({
+  id: '/fleet-board',
+  path: '/fleet-board',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedFieldDeploymentRoute =
   AuthenticatedFieldDeploymentRouteImport.update({
     id: '/field-deployment',
@@ -417,6 +438,96 @@ const AuthenticatedMobileDriverRoute =
     path: '/driver',
     getParentRoute: () => AuthenticatedMobileRoute,
   } as any)
+const AuthenticatedFleetBoardWallRoute =
+  AuthenticatedFleetBoardWallRouteImport.update({
+    id: '/wall',
+    path: '/wall',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedFleetBoardTimelineRoute =
+  AuthenticatedFleetBoardTimelineRouteImport.update({
+    id: '/timeline',
+    path: '/timeline',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedFleetBoardReplayRoute =
+  AuthenticatedFleetBoardReplayRouteImport.update({
+    id: '/replay',
+    path: '/replay',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedFleetBoardLiveRoute =
+  AuthenticatedFleetBoardLiveRouteImport.update({
+    id: '/live',
+    path: '/live',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedFleetBoardHourlyRoute =
+  AuthenticatedFleetBoardHourlyRouteImport.update({
+    id: '/hourly',
+    path: '/hourly',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedFleetBoardHandoversRoute =
+  AuthenticatedFleetBoardHandoversRouteImport.update({
+    id: '/handovers',
+    path: '/handovers',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedFleetBoardCustomerCareRoute =
+  AuthenticatedFleetBoardCustomerCareRouteImport.update({
+    id: '/customer-care',
+    path: '/customer-care',
+    getParentRoute: () => AuthenticatedFleetBoardRoute,
+  } as any)
+const AuthenticatedDispatchWorkloadRoute =
+  AuthenticatedDispatchWorkloadRouteImport.update({
+    id: '/workload',
+    path: '/workload',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchRoutesRoute =
+  AuthenticatedDispatchRoutesRouteImport.update({
+    id: '/routes',
+    path: '/routes',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchRecommendationsRoute =
+  AuthenticatedDispatchRecommendationsRouteImport.update({
+    id: '/recommendations',
+    path: '/recommendations',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchPlanningRoute =
+  AuthenticatedDispatchPlanningRouteImport.update({
+    id: '/planning',
+    path: '/planning',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchLiveRoute =
+  AuthenticatedDispatchLiveRouteImport.update({
+    id: '/live',
+    path: '/live',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchHistoryRoute =
+  AuthenticatedDispatchHistoryRouteImport.update({
+    id: '/history',
+    path: '/history',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchExceptionsRoute =
+  AuthenticatedDispatchExceptionsRouteImport.update({
+    id: '/exceptions',
+    path: '/exceptions',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
+const AuthenticatedDispatchEtaRoute =
+  AuthenticatedDispatchEtaRouteImport.update({
+    id: '/eta',
+    path: '/eta',
+    getParentRoute: () => AuthenticatedDispatchRoute,
+  } as any)
 const AuthenticatedBrainOperationsRoute =
   AuthenticatedBrainOperationsRouteImport.update({
     id: '/operations',
@@ -481,11 +592,12 @@ export interface FileRoutesByFullPath {
   '/crm': typeof AuthenticatedCrmRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/dispatch': typeof AuthenticatedDispatchRoute
+  '/dispatch': typeof AuthenticatedDispatchRouteWithChildren
   '/documents': typeof AuthenticatedDocumentsRoute
   '/driver': typeof AuthenticatedDriverRoute
   '/drivers': typeof AuthenticatedDriversRoute
   '/field-deployment': typeof AuthenticatedFieldDeploymentRoute
+  '/fleet-board': typeof AuthenticatedFleetBoardRouteWithChildren
   '/fleet-intelligence': typeof AuthenticatedFleetIntelligenceRoute
   '/hardware-readiness': typeof AuthenticatedHardwareReadinessRoute
   '/hr': typeof AuthenticatedHrRoute
@@ -524,6 +636,21 @@ export interface FileRoutesByFullPath {
   '/customer-portal/': typeof CustomerPortalIndexRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/brain/operations': typeof AuthenticatedBrainOperationsRoute
+  '/dispatch/eta': typeof AuthenticatedDispatchEtaRoute
+  '/dispatch/exceptions': typeof AuthenticatedDispatchExceptionsRoute
+  '/dispatch/history': typeof AuthenticatedDispatchHistoryRoute
+  '/dispatch/live': typeof AuthenticatedDispatchLiveRoute
+  '/dispatch/planning': typeof AuthenticatedDispatchPlanningRoute
+  '/dispatch/recommendations': typeof AuthenticatedDispatchRecommendationsRoute
+  '/dispatch/routes': typeof AuthenticatedDispatchRoutesRoute
+  '/dispatch/workload': typeof AuthenticatedDispatchWorkloadRoute
+  '/fleet-board/customer-care': typeof AuthenticatedFleetBoardCustomerCareRoute
+  '/fleet-board/handovers': typeof AuthenticatedFleetBoardHandoversRoute
+  '/fleet-board/hourly': typeof AuthenticatedFleetBoardHourlyRoute
+  '/fleet-board/live': typeof AuthenticatedFleetBoardLiveRoute
+  '/fleet-board/replay': typeof AuthenticatedFleetBoardReplayRoute
+  '/fleet-board/timeline': typeof AuthenticatedFleetBoardTimelineRoute
+  '/fleet-board/wall': typeof AuthenticatedFleetBoardWallRoute
   '/mobile/driver': typeof AuthenticatedMobileDriverRouteWithChildren
   '/tracking/control': typeof AuthenticatedTrackingControlRoute
   '/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
@@ -552,11 +679,12 @@ export interface FileRoutesByTo {
   '/customer-portal': typeof CustomerPortalIndexRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
-  '/dispatch': typeof AuthenticatedDispatchRoute
+  '/dispatch': typeof AuthenticatedDispatchRouteWithChildren
   '/documents': typeof AuthenticatedDocumentsRoute
   '/driver': typeof AuthenticatedDriverRoute
   '/drivers': typeof AuthenticatedDriversRoute
   '/field-deployment': typeof AuthenticatedFieldDeploymentRoute
+  '/fleet-board': typeof AuthenticatedFleetBoardRouteWithChildren
   '/fleet-intelligence': typeof AuthenticatedFleetIntelligenceRoute
   '/hardware-readiness': typeof AuthenticatedHardwareReadinessRoute
   '/hr': typeof AuthenticatedHrRoute
@@ -594,6 +722,21 @@ export interface FileRoutesByTo {
   '/share/$token': typeof ShareTokenRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/brain/operations': typeof AuthenticatedBrainOperationsRoute
+  '/dispatch/eta': typeof AuthenticatedDispatchEtaRoute
+  '/dispatch/exceptions': typeof AuthenticatedDispatchExceptionsRoute
+  '/dispatch/history': typeof AuthenticatedDispatchHistoryRoute
+  '/dispatch/live': typeof AuthenticatedDispatchLiveRoute
+  '/dispatch/planning': typeof AuthenticatedDispatchPlanningRoute
+  '/dispatch/recommendations': typeof AuthenticatedDispatchRecommendationsRoute
+  '/dispatch/routes': typeof AuthenticatedDispatchRoutesRoute
+  '/dispatch/workload': typeof AuthenticatedDispatchWorkloadRoute
+  '/fleet-board/customer-care': typeof AuthenticatedFleetBoardCustomerCareRoute
+  '/fleet-board/handovers': typeof AuthenticatedFleetBoardHandoversRoute
+  '/fleet-board/hourly': typeof AuthenticatedFleetBoardHourlyRoute
+  '/fleet-board/live': typeof AuthenticatedFleetBoardLiveRoute
+  '/fleet-board/replay': typeof AuthenticatedFleetBoardReplayRoute
+  '/fleet-board/timeline': typeof AuthenticatedFleetBoardTimelineRoute
+  '/fleet-board/wall': typeof AuthenticatedFleetBoardWallRoute
   '/mobile/driver': typeof AuthenticatedMobileDriverRouteWithChildren
   '/tracking/control': typeof AuthenticatedTrackingControlRoute
   '/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
@@ -625,11 +768,12 @@ export interface FileRoutesById {
   '/_authenticated/customer-portal': typeof AuthenticatedCustomerPortalRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
-  '/_authenticated/dispatch': typeof AuthenticatedDispatchRoute
+  '/_authenticated/dispatch': typeof AuthenticatedDispatchRouteWithChildren
   '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
   '/_authenticated/driver': typeof AuthenticatedDriverRoute
   '/_authenticated/drivers': typeof AuthenticatedDriversRoute
   '/_authenticated/field-deployment': typeof AuthenticatedFieldDeploymentRoute
+  '/_authenticated/fleet-board': typeof AuthenticatedFleetBoardRouteWithChildren
   '/_authenticated/fleet-intelligence': typeof AuthenticatedFleetIntelligenceRoute
   '/_authenticated/hardware-readiness': typeof AuthenticatedHardwareReadinessRoute
   '/_authenticated/hr': typeof AuthenticatedHrRoute
@@ -668,6 +812,21 @@ export interface FileRoutesById {
   '/customer-portal/': typeof CustomerPortalIndexRoute
   '/_authenticated/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/_authenticated/brain/operations': typeof AuthenticatedBrainOperationsRoute
+  '/_authenticated/dispatch/eta': typeof AuthenticatedDispatchEtaRoute
+  '/_authenticated/dispatch/exceptions': typeof AuthenticatedDispatchExceptionsRoute
+  '/_authenticated/dispatch/history': typeof AuthenticatedDispatchHistoryRoute
+  '/_authenticated/dispatch/live': typeof AuthenticatedDispatchLiveRoute
+  '/_authenticated/dispatch/planning': typeof AuthenticatedDispatchPlanningRoute
+  '/_authenticated/dispatch/recommendations': typeof AuthenticatedDispatchRecommendationsRoute
+  '/_authenticated/dispatch/routes': typeof AuthenticatedDispatchRoutesRoute
+  '/_authenticated/dispatch/workload': typeof AuthenticatedDispatchWorkloadRoute
+  '/_authenticated/fleet-board/customer-care': typeof AuthenticatedFleetBoardCustomerCareRoute
+  '/_authenticated/fleet-board/handovers': typeof AuthenticatedFleetBoardHandoversRoute
+  '/_authenticated/fleet-board/hourly': typeof AuthenticatedFleetBoardHourlyRoute
+  '/_authenticated/fleet-board/live': typeof AuthenticatedFleetBoardLiveRoute
+  '/_authenticated/fleet-board/replay': typeof AuthenticatedFleetBoardReplayRoute
+  '/_authenticated/fleet-board/timeline': typeof AuthenticatedFleetBoardTimelineRoute
+  '/_authenticated/fleet-board/wall': typeof AuthenticatedFleetBoardWallRoute
   '/_authenticated/mobile/driver': typeof AuthenticatedMobileDriverRouteWithChildren
   '/_authenticated/tracking/control': typeof AuthenticatedTrackingControlRoute
   '/_authenticated/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
@@ -703,6 +862,7 @@ export interface FileRouteTypes {
     | '/driver'
     | '/drivers'
     | '/field-deployment'
+    | '/fleet-board'
     | '/fleet-intelligence'
     | '/hardware-readiness'
     | '/hr'
@@ -741,6 +901,21 @@ export interface FileRouteTypes {
     | '/customer-portal/'
     | '/brain/evaluation'
     | '/brain/operations'
+    | '/dispatch/eta'
+    | '/dispatch/exceptions'
+    | '/dispatch/history'
+    | '/dispatch/live'
+    | '/dispatch/planning'
+    | '/dispatch/recommendations'
+    | '/dispatch/routes'
+    | '/dispatch/workload'
+    | '/fleet-board/customer-care'
+    | '/fleet-board/handovers'
+    | '/fleet-board/hourly'
+    | '/fleet-board/live'
+    | '/fleet-board/replay'
+    | '/fleet-board/timeline'
+    | '/fleet-board/wall'
     | '/mobile/driver'
     | '/tracking/control'
     | '/tracking/customer-care'
@@ -774,6 +949,7 @@ export interface FileRouteTypes {
     | '/driver'
     | '/drivers'
     | '/field-deployment'
+    | '/fleet-board'
     | '/fleet-intelligence'
     | '/hardware-readiness'
     | '/hr'
@@ -811,6 +987,21 @@ export interface FileRouteTypes {
     | '/share/$token'
     | '/brain/evaluation'
     | '/brain/operations'
+    | '/dispatch/eta'
+    | '/dispatch/exceptions'
+    | '/dispatch/history'
+    | '/dispatch/live'
+    | '/dispatch/planning'
+    | '/dispatch/recommendations'
+    | '/dispatch/routes'
+    | '/dispatch/workload'
+    | '/fleet-board/customer-care'
+    | '/fleet-board/handovers'
+    | '/fleet-board/hourly'
+    | '/fleet-board/live'
+    | '/fleet-board/replay'
+    | '/fleet-board/timeline'
+    | '/fleet-board/wall'
     | '/mobile/driver'
     | '/tracking/control'
     | '/tracking/customer-care'
@@ -846,6 +1037,7 @@ export interface FileRouteTypes {
     | '/_authenticated/driver'
     | '/_authenticated/drivers'
     | '/_authenticated/field-deployment'
+    | '/_authenticated/fleet-board'
     | '/_authenticated/fleet-intelligence'
     | '/_authenticated/hardware-readiness'
     | '/_authenticated/hr'
@@ -884,6 +1076,21 @@ export interface FileRouteTypes {
     | '/customer-portal/'
     | '/_authenticated/brain/evaluation'
     | '/_authenticated/brain/operations'
+    | '/_authenticated/dispatch/eta'
+    | '/_authenticated/dispatch/exceptions'
+    | '/_authenticated/dispatch/history'
+    | '/_authenticated/dispatch/live'
+    | '/_authenticated/dispatch/planning'
+    | '/_authenticated/dispatch/recommendations'
+    | '/_authenticated/dispatch/routes'
+    | '/_authenticated/dispatch/workload'
+    | '/_authenticated/fleet-board/customer-care'
+    | '/_authenticated/fleet-board/handovers'
+    | '/_authenticated/fleet-board/hourly'
+    | '/_authenticated/fleet-board/live'
+    | '/_authenticated/fleet-board/replay'
+    | '/_authenticated/fleet-board/timeline'
+    | '/_authenticated/fleet-board/wall'
     | '/_authenticated/mobile/driver'
     | '/_authenticated/tracking/control'
     | '/_authenticated/tracking/customer-care'
@@ -1212,6 +1419,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFleetIntelligenceRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/fleet-board': {
+      id: '/_authenticated/fleet-board'
+      path: '/fleet-board'
+      fullPath: '/fleet-board'
+      preLoaderRoute: typeof AuthenticatedFleetBoardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/field-deployment': {
       id: '/_authenticated/field-deployment'
       path: '/field-deployment'
@@ -1352,6 +1566,111 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedMobileDriverRouteImport
       parentRoute: typeof AuthenticatedMobileRoute
     }
+    '/_authenticated/fleet-board/wall': {
+      id: '/_authenticated/fleet-board/wall'
+      path: '/wall'
+      fullPath: '/fleet-board/wall'
+      preLoaderRoute: typeof AuthenticatedFleetBoardWallRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/fleet-board/timeline': {
+      id: '/_authenticated/fleet-board/timeline'
+      path: '/timeline'
+      fullPath: '/fleet-board/timeline'
+      preLoaderRoute: typeof AuthenticatedFleetBoardTimelineRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/fleet-board/replay': {
+      id: '/_authenticated/fleet-board/replay'
+      path: '/replay'
+      fullPath: '/fleet-board/replay'
+      preLoaderRoute: typeof AuthenticatedFleetBoardReplayRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/fleet-board/live': {
+      id: '/_authenticated/fleet-board/live'
+      path: '/live'
+      fullPath: '/fleet-board/live'
+      preLoaderRoute: typeof AuthenticatedFleetBoardLiveRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/fleet-board/hourly': {
+      id: '/_authenticated/fleet-board/hourly'
+      path: '/hourly'
+      fullPath: '/fleet-board/hourly'
+      preLoaderRoute: typeof AuthenticatedFleetBoardHourlyRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/fleet-board/handovers': {
+      id: '/_authenticated/fleet-board/handovers'
+      path: '/handovers'
+      fullPath: '/fleet-board/handovers'
+      preLoaderRoute: typeof AuthenticatedFleetBoardHandoversRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/fleet-board/customer-care': {
+      id: '/_authenticated/fleet-board/customer-care'
+      path: '/customer-care'
+      fullPath: '/fleet-board/customer-care'
+      preLoaderRoute: typeof AuthenticatedFleetBoardCustomerCareRouteImport
+      parentRoute: typeof AuthenticatedFleetBoardRoute
+    }
+    '/_authenticated/dispatch/workload': {
+      id: '/_authenticated/dispatch/workload'
+      path: '/workload'
+      fullPath: '/dispatch/workload'
+      preLoaderRoute: typeof AuthenticatedDispatchWorkloadRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/routes': {
+      id: '/_authenticated/dispatch/routes'
+      path: '/routes'
+      fullPath: '/dispatch/routes'
+      preLoaderRoute: typeof AuthenticatedDispatchRoutesRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/recommendations': {
+      id: '/_authenticated/dispatch/recommendations'
+      path: '/recommendations'
+      fullPath: '/dispatch/recommendations'
+      preLoaderRoute: typeof AuthenticatedDispatchRecommendationsRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/planning': {
+      id: '/_authenticated/dispatch/planning'
+      path: '/planning'
+      fullPath: '/dispatch/planning'
+      preLoaderRoute: typeof AuthenticatedDispatchPlanningRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/live': {
+      id: '/_authenticated/dispatch/live'
+      path: '/live'
+      fullPath: '/dispatch/live'
+      preLoaderRoute: typeof AuthenticatedDispatchLiveRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/history': {
+      id: '/_authenticated/dispatch/history'
+      path: '/history'
+      fullPath: '/dispatch/history'
+      preLoaderRoute: typeof AuthenticatedDispatchHistoryRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/exceptions': {
+      id: '/_authenticated/dispatch/exceptions'
+      path: '/exceptions'
+      fullPath: '/dispatch/exceptions'
+      preLoaderRoute: typeof AuthenticatedDispatchExceptionsRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
+    '/_authenticated/dispatch/eta': {
+      id: '/_authenticated/dispatch/eta'
+      path: '/eta'
+      fullPath: '/dispatch/eta'
+      preLoaderRoute: typeof AuthenticatedDispatchEtaRouteImport
+      parentRoute: typeof AuthenticatedDispatchRoute
+    }
     '/_authenticated/brain/operations': {
       id: '/_authenticated/brain/operations'
       path: '/operations'
@@ -1424,6 +1743,62 @@ const AuthenticatedBrainRouteChildren: AuthenticatedBrainRouteChildren = {
 const AuthenticatedBrainRouteWithChildren =
   AuthenticatedBrainRoute._addFileChildren(AuthenticatedBrainRouteChildren)
 
+interface AuthenticatedDispatchRouteChildren {
+  AuthenticatedDispatchEtaRoute: typeof AuthenticatedDispatchEtaRoute
+  AuthenticatedDispatchExceptionsRoute: typeof AuthenticatedDispatchExceptionsRoute
+  AuthenticatedDispatchHistoryRoute: typeof AuthenticatedDispatchHistoryRoute
+  AuthenticatedDispatchLiveRoute: typeof AuthenticatedDispatchLiveRoute
+  AuthenticatedDispatchPlanningRoute: typeof AuthenticatedDispatchPlanningRoute
+  AuthenticatedDispatchRecommendationsRoute: typeof AuthenticatedDispatchRecommendationsRoute
+  AuthenticatedDispatchRoutesRoute: typeof AuthenticatedDispatchRoutesRoute
+  AuthenticatedDispatchWorkloadRoute: typeof AuthenticatedDispatchWorkloadRoute
+}
+
+const AuthenticatedDispatchRouteChildren: AuthenticatedDispatchRouteChildren = {
+  AuthenticatedDispatchEtaRoute: AuthenticatedDispatchEtaRoute,
+  AuthenticatedDispatchExceptionsRoute: AuthenticatedDispatchExceptionsRoute,
+  AuthenticatedDispatchHistoryRoute: AuthenticatedDispatchHistoryRoute,
+  AuthenticatedDispatchLiveRoute: AuthenticatedDispatchLiveRoute,
+  AuthenticatedDispatchPlanningRoute: AuthenticatedDispatchPlanningRoute,
+  AuthenticatedDispatchRecommendationsRoute:
+    AuthenticatedDispatchRecommendationsRoute,
+  AuthenticatedDispatchRoutesRoute: AuthenticatedDispatchRoutesRoute,
+  AuthenticatedDispatchWorkloadRoute: AuthenticatedDispatchWorkloadRoute,
+}
+
+const AuthenticatedDispatchRouteWithChildren =
+  AuthenticatedDispatchRoute._addFileChildren(
+    AuthenticatedDispatchRouteChildren,
+  )
+
+interface AuthenticatedFleetBoardRouteChildren {
+  AuthenticatedFleetBoardCustomerCareRoute: typeof AuthenticatedFleetBoardCustomerCareRoute
+  AuthenticatedFleetBoardHandoversRoute: typeof AuthenticatedFleetBoardHandoversRoute
+  AuthenticatedFleetBoardHourlyRoute: typeof AuthenticatedFleetBoardHourlyRoute
+  AuthenticatedFleetBoardLiveRoute: typeof AuthenticatedFleetBoardLiveRoute
+  AuthenticatedFleetBoardReplayRoute: typeof AuthenticatedFleetBoardReplayRoute
+  AuthenticatedFleetBoardTimelineRoute: typeof AuthenticatedFleetBoardTimelineRoute
+  AuthenticatedFleetBoardWallRoute: typeof AuthenticatedFleetBoardWallRoute
+}
+
+const AuthenticatedFleetBoardRouteChildren: AuthenticatedFleetBoardRouteChildren =
+  {
+    AuthenticatedFleetBoardCustomerCareRoute:
+      AuthenticatedFleetBoardCustomerCareRoute,
+    AuthenticatedFleetBoardHandoversRoute:
+      AuthenticatedFleetBoardHandoversRoute,
+    AuthenticatedFleetBoardHourlyRoute: AuthenticatedFleetBoardHourlyRoute,
+    AuthenticatedFleetBoardLiveRoute: AuthenticatedFleetBoardLiveRoute,
+    AuthenticatedFleetBoardReplayRoute: AuthenticatedFleetBoardReplayRoute,
+    AuthenticatedFleetBoardTimelineRoute: AuthenticatedFleetBoardTimelineRoute,
+    AuthenticatedFleetBoardWallRoute: AuthenticatedFleetBoardWallRoute,
+  }
+
+const AuthenticatedFleetBoardRouteWithChildren =
+  AuthenticatedFleetBoardRoute._addFileChildren(
+    AuthenticatedFleetBoardRouteChildren,
+  )
+
 interface AuthenticatedMobileDriverRouteChildren {
   AuthenticatedMobileDriverIssuesRoute: typeof AuthenticatedMobileDriverIssuesRoute
   AuthenticatedMobileDriverMessagesRoute: typeof AuthenticatedMobileDriverMessagesRoute
@@ -1492,11 +1867,12 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedCustomerPortalRoute: typeof AuthenticatedCustomerPortalRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
-  AuthenticatedDispatchRoute: typeof AuthenticatedDispatchRoute
+  AuthenticatedDispatchRoute: typeof AuthenticatedDispatchRouteWithChildren
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
   AuthenticatedDriverRoute: typeof AuthenticatedDriverRoute
   AuthenticatedDriversRoute: typeof AuthenticatedDriversRoute
   AuthenticatedFieldDeploymentRoute: typeof AuthenticatedFieldDeploymentRoute
+  AuthenticatedFleetBoardRoute: typeof AuthenticatedFleetBoardRouteWithChildren
   AuthenticatedFleetIntelligenceRoute: typeof AuthenticatedFleetIntelligenceRoute
   AuthenticatedHardwareReadinessRoute: typeof AuthenticatedHardwareReadinessRoute
   AuthenticatedHrRoute: typeof AuthenticatedHrRoute
@@ -1531,11 +1907,12 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedCustomerPortalRoute: AuthenticatedCustomerPortalRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
-  AuthenticatedDispatchRoute: AuthenticatedDispatchRoute,
+  AuthenticatedDispatchRoute: AuthenticatedDispatchRouteWithChildren,
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
   AuthenticatedDriverRoute: AuthenticatedDriverRoute,
   AuthenticatedDriversRoute: AuthenticatedDriversRoute,
   AuthenticatedFieldDeploymentRoute: AuthenticatedFieldDeploymentRoute,
+  AuthenticatedFleetBoardRoute: AuthenticatedFleetBoardRouteWithChildren,
   AuthenticatedFleetIntelligenceRoute: AuthenticatedFleetIntelligenceRoute,
   AuthenticatedHardwareReadinessRoute: AuthenticatedHardwareReadinessRoute,
   AuthenticatedHrRoute: AuthenticatedHrRoute,

@@ -6,31 +6,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5";
   };
-  graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json;
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
   public: {
     Tables: {
       bi_alerts: {
@@ -10124,6 +10099,990 @@ export type Database = {
           },
         ];
       };
+      dispatch_audit_logs: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          metadata: Json;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_backhaul_assessments: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          demand: Json;
+          id: string;
+          job_id: string | null;
+          opportunity_type: string;
+          remaining_capacity: Json;
+          risks: Json;
+          vehicle_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          demand?: Json;
+          id?: string;
+          job_id?: string | null;
+          opportunity_type: string;
+          remaining_capacity?: Json;
+          risks?: Json;
+          vehicle_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          demand?: Json;
+          id?: string;
+          job_id?: string | null;
+          opportunity_type?: string;
+          remaining_capacity?: Json;
+          risks?: Json;
+          vehicle_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_backhaul_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_candidate_assessments: {
+        Row: {
+          candidate_id: string;
+          candidate_type: string;
+          company_id: string;
+          created_at: string;
+          eligibility: Json;
+          evidence: Json;
+          freshness: Json;
+          id: string;
+          input_hash: string | null;
+          job_id: string | null;
+          score: Json;
+        };
+        Insert: {
+          candidate_id: string;
+          candidate_type: string;
+          company_id: string;
+          created_at?: string;
+          eligibility?: Json;
+          evidence?: Json;
+          freshness?: Json;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          score?: Json;
+        };
+        Update: {
+          candidate_id?: string;
+          candidate_type?: string;
+          company_id?: string;
+          created_at?: string;
+          eligibility?: Json;
+          evidence?: Json;
+          freshness?: Json;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          score?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_candidate_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_candidate_scores: {
+        Row: {
+          assessment_id: string | null;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          id: string;
+          missing_data: Json;
+          normalised_factors: Json;
+          raw_factors: Json;
+          risk_penalties: Json;
+          score: number | null;
+          score_version: string;
+          weighting_version: string;
+        };
+        Insert: {
+          assessment_id?: string | null;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          id?: string;
+          missing_data?: Json;
+          normalised_factors?: Json;
+          raw_factors?: Json;
+          risk_penalties?: Json;
+          score?: number | null;
+          score_version: string;
+          weighting_version: string;
+        };
+        Update: {
+          assessment_id?: string | null;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          id?: string;
+          missing_data?: Json;
+          normalised_factors?: Json;
+          raw_factors?: Json;
+          risk_penalties?: Json;
+          score?: number | null;
+          score_version?: string;
+          weighting_version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_candidate_scores_assessment_id_fkey";
+            columns: ["assessment_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_candidate_assessments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_candidate_scores_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_capacity_assessments: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          id: string;
+          job_id: string | null;
+          missing_data: Json;
+          remaining_capacity: Json;
+          used_capacity: Json;
+          utilisation: number | null;
+          vehicle_id: string | null;
+          violated_constraints: Json;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          remaining_capacity?: Json;
+          used_capacity?: Json;
+          utilisation?: number | null;
+          vehicle_id?: string | null;
+          violated_constraints?: Json;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          remaining_capacity?: Json;
+          used_capacity?: Json;
+          utilisation?: number | null;
+          vehicle_id?: string | null;
+          violated_constraints?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_capacity_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_configuration_versions: {
+        Row: {
+          changed_by: string | null;
+          company_id: string;
+          created_at: string;
+          id: string;
+          lifecycle: string;
+          policy: Json;
+          scoring_weights: Json;
+          version: string;
+        };
+        Insert: {
+          changed_by?: string | null;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          policy?: Json;
+          scoring_weights?: Json;
+          version: string;
+        };
+        Update: {
+          changed_by?: string | null;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          policy?: Json;
+          scoring_weights?: Json;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_configuration_versions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_consolidation_assessments: {
+        Row: {
+          company_id: string;
+          comparison: Json;
+          confidence: string;
+          constraints: Json;
+          created_at: string;
+          id: string;
+          job_ids: string[];
+          proposed_trip: Json;
+          risks: Json;
+        };
+        Insert: {
+          company_id: string;
+          comparison?: Json;
+          confidence: string;
+          constraints?: Json;
+          created_at?: string;
+          id?: string;
+          job_ids: string[];
+          proposed_trip?: Json;
+          risks?: Json;
+        };
+        Update: {
+          company_id?: string;
+          comparison?: Json;
+          confidence?: string;
+          constraints?: Json;
+          created_at?: string;
+          id?: string;
+          job_ids?: string[];
+          proposed_trip?: Json;
+          risks?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_consolidation_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_customer_impact_assessments: {
+        Row: {
+          affected_customers: string[];
+          affected_shipments: string[];
+          communication_required: boolean;
+          company_id: string;
+          created_at: string;
+          customer_safe_summary: string | null;
+          delivery_window_risk: boolean;
+          downstream_stop_impact: number;
+          eta_change_minutes: number | null;
+          id: string;
+          job_id: string | null;
+          recommendation_id: string | null;
+          sla_risk: boolean;
+        };
+        Insert: {
+          affected_customers?: string[];
+          affected_shipments?: string[];
+          communication_required?: boolean;
+          company_id: string;
+          created_at?: string;
+          customer_safe_summary?: string | null;
+          delivery_window_risk?: boolean;
+          downstream_stop_impact?: number;
+          eta_change_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          recommendation_id?: string | null;
+          sla_risk?: boolean;
+        };
+        Update: {
+          affected_customers?: string[];
+          affected_shipments?: string[];
+          communication_required?: boolean;
+          company_id?: string;
+          created_at?: string;
+          customer_safe_summary?: string | null;
+          delivery_window_risk?: boolean;
+          downstream_stop_impact?: number;
+          eta_change_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          recommendation_id?: string | null;
+          sla_risk?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_customer_impact_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_delay_assessments: {
+        Row: {
+          affected_jobs: string[];
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          customer_impact: Json;
+          delay_type: string;
+          detected_at: string;
+          duration_minutes: number;
+          evidence: Json;
+          id: string;
+          job_id: string | null;
+          recommended_response: string | null;
+          severity: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          affected_jobs?: string[];
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          customer_impact?: Json;
+          delay_type: string;
+          detected_at: string;
+          duration_minutes?: number;
+          evidence?: Json;
+          id?: string;
+          job_id?: string | null;
+          recommended_response?: string | null;
+          severity: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          affected_jobs?: string[];
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          customer_impact?: Json;
+          delay_type?: string;
+          detected_at?: string;
+          duration_minutes?: number;
+          evidence?: Json;
+          id?: string;
+          job_id?: string | null;
+          recommended_response?: string | null;
+          severity?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_delay_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_depot_readiness_assessments: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          depot_id: string | null;
+          dock: Json;
+          estimated_loading_minutes: number | null;
+          failures: Json;
+          id: string;
+          inventory: Json;
+          job_id: string | null;
+          queue_length: number | null;
+          ready: boolean;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          depot_id?: string | null;
+          dock?: Json;
+          estimated_loading_minutes?: number | null;
+          failures?: Json;
+          id?: string;
+          inventory?: Json;
+          job_id?: string | null;
+          queue_length?: number | null;
+          ready: boolean;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          depot_id?: string | null;
+          dock?: Json;
+          estimated_loading_minutes?: number | null;
+          failures?: Json;
+          id?: string;
+          inventory?: Json;
+          job_id?: string | null;
+          queue_length?: number | null;
+          ready?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_depot_readiness_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_driver_hours_assessments: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          driver_id: string | null;
+          driving_minutes: number | null;
+          duty_minutes: number | null;
+          eligible: boolean;
+          freshness: Json;
+          id: string;
+          job_id: string | null;
+          next_required_rest_minutes: number | null;
+          policy_version: string;
+          remaining_driving_minutes: number | null;
+          remaining_duty_minutes: number | null;
+          shift_start: string | null;
+          violations: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          driver_id?: string | null;
+          driving_minutes?: number | null;
+          duty_minutes?: number | null;
+          eligible: boolean;
+          freshness?: Json;
+          id?: string;
+          job_id?: string | null;
+          next_required_rest_minutes?: number | null;
+          policy_version: string;
+          remaining_driving_minutes?: number | null;
+          remaining_duty_minutes?: number | null;
+          shift_start?: string | null;
+          violations?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          driver_id?: string | null;
+          driving_minutes?: number | null;
+          duty_minutes?: number | null;
+          eligible?: boolean;
+          freshness?: Json;
+          id?: string;
+          job_id?: string | null;
+          next_required_rest_minutes?: number | null;
+          policy_version?: string;
+          remaining_driving_minutes?: number | null;
+          remaining_duty_minutes?: number | null;
+          shift_start?: string | null;
+          violations?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_driver_hours_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_eligibility_results: {
+        Row: {
+          candidate_id: string;
+          candidate_type: string;
+          checks: Json;
+          company_id: string;
+          created_at: string;
+          eligible: boolean;
+          id: string;
+          job_id: string | null;
+          missing_data: Json;
+          rejection_reasons: Json;
+        };
+        Insert: {
+          candidate_id: string;
+          candidate_type: string;
+          checks?: Json;
+          company_id: string;
+          created_at?: string;
+          eligible: boolean;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          rejection_reasons?: Json;
+        };
+        Update: {
+          candidate_id?: string;
+          candidate_type?: string;
+          checks?: Json;
+          company_id?: string;
+          created_at?: string;
+          eligible?: boolean;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          rejection_reasons?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_eligibility_results_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_eta_assessments: {
+        Row: {
+          assumptions: Json;
+          calculated_at: string;
+          company_id: string;
+          confidence: string;
+          delay_factors: Json;
+          eta: string | null;
+          eta_range_minutes: number | null;
+          id: string;
+          job_id: string | null;
+          missing_inputs: Json;
+          model_version: string;
+          primary_factors: Json;
+          source_inputs: Json;
+          trip_id: string | null;
+        };
+        Insert: {
+          assumptions?: Json;
+          calculated_at?: string;
+          company_id: string;
+          confidence: string;
+          delay_factors?: Json;
+          eta?: string | null;
+          eta_range_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          missing_inputs?: Json;
+          model_version?: string;
+          primary_factors?: Json;
+          source_inputs?: Json;
+          trip_id?: string | null;
+        };
+        Update: {
+          assumptions?: Json;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: string;
+          delay_factors?: Json;
+          eta?: string | null;
+          eta_range_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          missing_inputs?: Json;
+          model_version?: string;
+          primary_factors?: Json;
+          source_inputs?: Json;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_eta_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_eta_outcomes: {
+        Row: {
+          absolute_error_minutes: number | null;
+          actual_arrival: string | null;
+          company_id: string;
+          confidence_band_minutes: number | null;
+          created_at: string;
+          customer_id: string | null;
+          data_quality: Json;
+          depot_id: string | null;
+          direction: string | null;
+          eta_assessment_id: string;
+          id: string;
+          predicted_eta: string;
+          route_id: string | null;
+          vehicle_class: string | null;
+        };
+        Insert: {
+          absolute_error_minutes?: number | null;
+          actual_arrival?: string | null;
+          company_id: string;
+          confidence_band_minutes?: number | null;
+          created_at?: string;
+          customer_id?: string | null;
+          data_quality?: Json;
+          depot_id?: string | null;
+          direction?: string | null;
+          eta_assessment_id: string;
+          id?: string;
+          predicted_eta: string;
+          route_id?: string | null;
+          vehicle_class?: string | null;
+        };
+        Update: {
+          absolute_error_minutes?: number | null;
+          actual_arrival?: string | null;
+          company_id?: string;
+          confidence_band_minutes?: number | null;
+          created_at?: string;
+          customer_id?: string | null;
+          data_quality?: Json;
+          depot_id?: string | null;
+          direction?: string | null;
+          eta_assessment_id?: string;
+          id?: string;
+          predicted_eta?: string;
+          route_id?: string | null;
+          vehicle_class?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_eta_outcomes_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_eta_outcomes_eta_assessment_id_fkey";
+            columns: ["eta_assessment_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_eta_assessments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_recommendation_decisions: {
+        Row: {
+          company_id: string;
+          decided_at: string;
+          decided_by: string;
+          decision: string;
+          evidence_viewed: Json;
+          id: string;
+          modified_values: Json;
+          reason: string | null;
+          recommendation_id: string;
+          resulting_record: Json;
+        };
+        Insert: {
+          company_id: string;
+          decided_at?: string;
+          decided_by?: string;
+          decision: string;
+          evidence_viewed?: Json;
+          id?: string;
+          modified_values?: Json;
+          reason?: string | null;
+          recommendation_id: string;
+          resulting_record?: Json;
+        };
+        Update: {
+          company_id?: string;
+          decided_at?: string;
+          decided_by?: string;
+          decision?: string;
+          evidence_viewed?: Json;
+          id?: string;
+          modified_values?: Json;
+          reason?: string | null;
+          recommendation_id?: string;
+          resulting_record?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_recommendation_decisions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_recommendation_decisions_recommendation_id_fkey";
+            columns: ["recommendation_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_recommendations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_recommendations: {
+        Row: {
+          candidate_list: Json;
+          company_id: string;
+          evidence: Json;
+          expires_at: string | null;
+          feature_versions: Json;
+          generated_at: string;
+          id: string;
+          input_hash: string | null;
+          job_id: string | null;
+          output_hash: string | null;
+          recommendation_type: string;
+          rule_versions: Json;
+          scoring_configuration: Json;
+          status: string;
+        };
+        Insert: {
+          candidate_list?: Json;
+          company_id: string;
+          evidence?: Json;
+          expires_at?: string | null;
+          feature_versions?: Json;
+          generated_at?: string;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          output_hash?: string | null;
+          recommendation_type: string;
+          rule_versions?: Json;
+          scoring_configuration?: Json;
+          status?: string;
+        };
+        Update: {
+          candidate_list?: Json;
+          company_id?: string;
+          evidence?: Json;
+          expires_at?: string | null;
+          feature_versions?: Json;
+          generated_at?: string;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          output_hash?: string | null;
+          recommendation_type?: string;
+          rule_versions?: Json;
+          scoring_configuration?: Json;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_recommendations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_simulation_results: {
+        Row: {
+          affected_jobs: string[];
+          assumptions: Json;
+          capacity_changes: Json;
+          company_id: string;
+          customer_impact: Json;
+          eta_changes: Json;
+          id: string;
+          run_id: string;
+          unresolved_constraints: Json;
+        };
+        Insert: {
+          affected_jobs?: string[];
+          assumptions?: Json;
+          capacity_changes?: Json;
+          company_id: string;
+          customer_impact?: Json;
+          eta_changes?: Json;
+          id?: string;
+          run_id: string;
+          unresolved_constraints?: Json;
+        };
+        Update: {
+          affected_jobs?: string[];
+          assumptions?: Json;
+          capacity_changes?: Json;
+          company_id?: string;
+          customer_impact?: Json;
+          eta_changes?: Json;
+          id?: string;
+          run_id?: string;
+          unresolved_constraints?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_simulation_results_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_simulation_results_run_id_fkey";
+            columns: ["run_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_simulation_runs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_simulation_runs: {
+        Row: {
+          company_id: string;
+          completed_at: string | null;
+          id: string;
+          inputs: Json;
+          scenario: string;
+          started_at: string;
+          started_by: string;
+          state_unchanged: boolean;
+        };
+        Insert: {
+          company_id: string;
+          completed_at?: string | null;
+          id?: string;
+          inputs?: Json;
+          scenario: string;
+          started_at?: string;
+          started_by?: string;
+          state_unchanged?: boolean;
+        };
+        Update: {
+          company_id?: string;
+          completed_at?: string | null;
+          id?: string;
+          inputs?: Json;
+          scenario?: string;
+          started_at?: string;
+          started_by?: string;
+          state_unchanged?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_simulation_runs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_stop_sequence_assessments: {
+        Row: {
+          company_id: string;
+          comparison: Json;
+          confidence: string;
+          constraints: Json;
+          created_at: string;
+          current_sequence: Json;
+          id: string;
+          proposed_sequence: Json;
+          trip_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          comparison?: Json;
+          confidence: string;
+          constraints?: Json;
+          created_at?: string;
+          current_sequence: Json;
+          id?: string;
+          proposed_sequence: Json;
+          trip_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          comparison?: Json;
+          confidence?: string;
+          constraints?: Json;
+          created_at?: string;
+          current_sequence?: Json;
+          id?: string;
+          proposed_sequence?: Json;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_stop_sequence_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       dispatcher_audit_log: {
         Row: {
           action: string;
@@ -12164,6 +13123,79 @@ export type Database = {
           },
         ];
       };
+      fleet_handover_reports: {
+        Row: {
+          company_id: string;
+          generated_at: string;
+          id: string;
+          period_end: string;
+          period_start: string;
+          source_event_ids: string[];
+          summary: Json;
+        };
+        Insert: {
+          company_id: string;
+          generated_at?: string;
+          id?: string;
+          period_end: string;
+          period_start: string;
+          source_event_ids?: string[];
+          summary?: Json;
+        };
+        Update: {
+          company_id?: string;
+          generated_at?: string;
+          id?: string;
+          period_end?: string;
+          period_start?: string;
+          source_event_ids?: string[];
+          summary?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_handover_reports_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_hourly_board_snapshots: {
+        Row: {
+          company_id: string;
+          generated_at: string;
+          hour_start: string;
+          id: string;
+          summary: Json;
+          vehicle_rows: Json;
+        };
+        Insert: {
+          company_id: string;
+          generated_at?: string;
+          hour_start: string;
+          id?: string;
+          summary?: Json;
+          vehicle_rows?: Json;
+        };
+        Update: {
+          company_id?: string;
+          generated_at?: string;
+          hour_start?: string;
+          id?: string;
+          summary?: Json;
+          vehicle_rows?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_hourly_board_snapshots_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       fleet_intelligence_audit_logs: {
         Row: {
           actor_id: string | null;
@@ -12696,6 +13728,109 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "fleet_planning_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_timeline_events: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          driver_id: string | null;
+          event_type: string;
+          evidence: Json;
+          freshness: string;
+          generated: boolean;
+          id: string;
+          occurred_at: string;
+          operational_label: string;
+          severity: string;
+          source: string;
+          trip_id: string | null;
+          vehicle_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          driver_id?: string | null;
+          event_type: string;
+          evidence?: Json;
+          freshness: string;
+          generated?: boolean;
+          id?: string;
+          occurred_at: string;
+          operational_label: string;
+          severity?: string;
+          source: string;
+          trip_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          driver_id?: string | null;
+          event_type?: string;
+          evidence?: Json;
+          freshness?: string;
+          generated?: boolean;
+          id?: string;
+          occurred_at?: string;
+          operational_label?: string;
+          severity?: string;
+          source?: string;
+          trip_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_timeline_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_timeline_metrics: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          dimensions: Json;
+          id: string;
+          metric_date: string;
+          metric_name: string;
+          quality: Json;
+          value: number | null;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          dimensions?: Json;
+          id?: string;
+          metric_date: string;
+          metric_name: string;
+          quality?: Json;
+          value?: number | null;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          dimensions?: Json;
+          id?: string;
+          metric_date?: string;
+          metric_name?: string;
+          quality?: Json;
+          value?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_timeline_metrics_company_id_fkey";
             columns: ["company_id"];
             isOneToOne: false;
             referencedRelation: "companies";
@@ -28861,6 +29996,8 @@ export type Database = {
         }[];
       };
       digits_only: { Args: { _value: string }; Returns: string };
+      dispatch36_read: { Args: { c: string }; Returns: boolean };
+      dispatch36_write: { Args: { c: string }; Returns: boolean };
       driver_complete_after_pod: {
         Args: { _job_id: string };
         Returns: {
@@ -29343,6 +30480,8 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      fleet_board365_read: { Args: { c: string }; Returns: boolean };
+      fleet_board365_write: { Args: { c: string }; Returns: boolean };
       fleet_intelligence_can_read: {
         Args: { _company: string };
         Returns: boolean;
@@ -30526,7 +31665,8 @@ export type Database = {
         | "brain_service"
         | "fleet_controller"
         | "maintenance_manager"
-        | "maintenance_coordinator";
+        | "maintenance_coordinator"
+        | "route_planner";
       business_type:
         | "logistics"
         | "trucking"
@@ -30907,9 +32047,6 @@ export type CompositeTypes<
     : never;
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       app_role: [
@@ -30961,6 +32098,7 @@ export const Constants = {
         "fleet_controller",
         "maintenance_manager",
         "maintenance_coordinator",
+        "route_planner",
       ],
       business_type: [
         "logistics",
