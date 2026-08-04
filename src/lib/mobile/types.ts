@@ -19,6 +19,10 @@ export interface MobileQueueItem<T = unknown> {
   maximumAttempts: number;
   nextRetryAt: string | null;
   state: MobileSyncState;
+  priority?: "safety" | "trip" | "pod" | "message" | "gps" | "photo" | "analytics";
+  dependencyId?: string | null;
+  lastError?: string | null;
+  serverAcknowledgedAt?: string | null;
   createdAt: string;
   updatedAt: string;
 }

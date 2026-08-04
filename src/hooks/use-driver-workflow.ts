@@ -88,16 +88,44 @@ export function useDriverWorkflow() {
       action === "start"
         ? await queryLocationPermission().catch(() => "unsupported" as const)
         : null;
-    const { error: err } = await supabase.rpc("driver_transition_job", {
+    const installationId = getInstallationId();
+    const deviceInstallationId =
+      /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(
+        installationId,
+      )
+        ? installationId
+        : null;
+    console.info("phase35.trip_start.invoke", { jobId, action, deviceInstallationId });
+    const { data: transitioned, error: err } = await supabase.rpc("driver_transition_job", {
       _job_id: jobId,
       _action: action,
-      _device_installation_id: action === "start" ? getInstallationId() : null,
+      _device_installation_id: action === "start" ? deviceInstallationId : null,
       _app_version: action === "start" ? "phase4-web" : undefined,
       _device_platform: action === "start" ? getDevicePlatform() : undefined,
       _location_permission_state: permission,
     });
     if (err) throw err;
+    console.info("phase35.trip_start.response", {
+      jobId,
+      action,
+      status: transitioned?.status,
+      startedAt: transitioned?.started_at,
+    });
+    if (
+      action === "start" &&
+      (transitioned?.status !== "in_progress" || !transitioned.started_at)
+    ) {
+      throw new Error("Trip start was not acknowledged by the server");
+    }
     await fetch();
+    if (action === "start") {
+      const refreshed = jobs.find((job) => job.id === jobId);
+      console.info("phase35.trip_start.refetch", {
+        jobId,
+        status: refreshed?.status,
+        startedAt: refreshed?.started_at,
+      });
+    }
   };
 
   const saveNotes = async (jobId: string, notes: string) => {
@@ -177,6 +205,112 @@ export function useDriverWorkflow() {
     }
   };
 
+  const queueServerItem = async (input: {
+    operation: string;
+    payload?: Record<string, unknown>;
+    priority?: string;
+    idempotencyKey: string;
+  }) => {
+    if (!activeCompany || !driver || !user) throw new Error("Driver context unavailable");
+    console.info("phase35.queue.click", {
+      operation: input.operation,
+      jobId: currentJob?.id,
+      driverId: driver.id,
+    });
+    const { data: device, error: deviceError } = await supabase
+      .from("driver_app_devices")
+      .select("id")
+      .eq("company_id", activeCompany.id)
+      .eq("driver_id", driver.id)
+      .is("revoked_at", null)
+      .maybeSingle();
+    if (deviceError) throw deviceError;
+    if (!device) throw new Error("No registered driver device");
+    const { data: session, error: sessionError } = await supabase
+      .from("driver_navigation_sessions")
+      .select("id")
+      .eq("company_id", activeCompany.id)
+      .eq("driver_id", driver.id)
+      .eq("state", "active")
+      .order("started_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (sessionError) throw sessionError;
+    if (!session) throw new Error("No active navigation session");
+    const job = currentJob;
+    if (!job) throw new Error("No assigned job");
+    console.info("phase35.queue.invoke", {
+      operation: input.operation,
+      jobId: job.id,
+      deviceId: device.id,
+      sessionId: session.id,
+    });
+    const { data: queueRow, error: queueError } = await supabase.rpc("driver_queue_enqueue", {
+      _company_id: activeCompany.id,
+      _driver_id: driver.id,
+      _device_id: device.id,
+      _session_id: session.id,
+      _entity: "job",
+      _entity_id: job.id,
+      _operation: input.operation,
+      _priority: input.priority ?? (input.operation === "pod_submit" ? "pod" : "trip"),
+      _payload: (input.payload ?? {}) as never,
+      _checksum: JSON.stringify(input.payload ?? {}),
+      _idempotency_key: input.idempotencyKey,
+    });
+    if (queueError) throw queueError;
+    if (!queueRow) throw new Error("Queue boundary returned no persisted row");
+    console.info("phase35.queue.persisted", {
+      operation: input.operation,
+      queueId: queueRow.id,
+      state: queueRow.state,
+    });
+    return queueRow;
+  };
+
+  const syncServerQueue = async () => {
+    if (!activeCompany || !driver) throw new Error("Driver context unavailable");
+    const { data: device, error: deviceError } = await supabase
+      .from("driver_app_devices")
+      .select("id")
+      .eq("company_id", activeCompany.id)
+      .eq("driver_id", driver.id)
+      .is("revoked_at", null)
+      .maybeSingle();
+    if (deviceError) throw deviceError;
+    if (!device) throw new Error("No registered driver device");
+    const { data: session } = await supabase
+      .from("driver_navigation_sessions")
+      .select("id")
+      .eq("company_id", activeCompany.id)
+      .eq("driver_id", driver.id)
+      .eq("state", "active")
+      .order("started_at", { ascending: false })
+      .limit(1)
+      .maybeSingle();
+    if (!session) throw new Error("No active navigation session");
+    const { data: claimed, error: claimError } = await supabase.rpc("driver_queue_claim", {
+      _company_id: activeCompany.id,
+      _driver_id: driver.id,
+      _device_id: device.id,
+      _session_id: session.id,
+      _batch_size: 20,
+      _lease_seconds: 120,
+    });
+    if (claimError) throw claimError;
+    for (const item of claimed ?? []) {
+      const { error } = await supabase.rpc("driver_queue_process_claim", { _queue_id: item.id });
+      if (error) throw error;
+    }
+    const { data: summary, error: summaryError } = await supabase.rpc("driver_queue_summary", {
+      _company_id: activeCompany.id,
+      _driver_id: driver.id,
+    });
+    if (summaryError) throw summaryError;
+    await fetch();
+    return summary as { pending: number; failed: number; conflicted: number; all_synced: boolean };
+  };
+
   return {
     driver,
     jobs,
@@ -189,5 +323,7 @@ export function useDriverWorkflow() {
     saveNotes,
     failJob,
     submitProof,
+    queueServerItem,
+    syncServerQueue,
   };
 }
