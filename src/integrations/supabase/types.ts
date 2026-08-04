@@ -6,31 +6,6 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5";
   };
-  graphql_public: {
-    Tables: {
-      [_ in never]: never;
-    };
-    Views: {
-      [_ in never]: never;
-    };
-    Functions: {
-      graphql: {
-        Args: {
-          extensions?: Json;
-          operationName?: string;
-          query?: string;
-          variables?: Json;
-        };
-        Returns: Json;
-      };
-    };
-    Enums: {
-      [_ in never]: never;
-    };
-    CompositeTypes: {
-      [_ in never]: never;
-    };
-  };
   public: {
     Tables: {
       bi_alerts: {
@@ -10124,6 +10099,990 @@ export type Database = {
           },
         ];
       };
+      dispatch_audit_logs: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          metadata: Json;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_backhaul_assessments: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          demand: Json;
+          id: string;
+          job_id: string | null;
+          opportunity_type: string;
+          remaining_capacity: Json;
+          risks: Json;
+          vehicle_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          demand?: Json;
+          id?: string;
+          job_id?: string | null;
+          opportunity_type: string;
+          remaining_capacity?: Json;
+          risks?: Json;
+          vehicle_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          demand?: Json;
+          id?: string;
+          job_id?: string | null;
+          opportunity_type?: string;
+          remaining_capacity?: Json;
+          risks?: Json;
+          vehicle_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_backhaul_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_candidate_assessments: {
+        Row: {
+          candidate_id: string;
+          candidate_type: string;
+          company_id: string;
+          created_at: string;
+          eligibility: Json;
+          evidence: Json;
+          freshness: Json;
+          id: string;
+          input_hash: string | null;
+          job_id: string | null;
+          score: Json;
+        };
+        Insert: {
+          candidate_id: string;
+          candidate_type: string;
+          company_id: string;
+          created_at?: string;
+          eligibility?: Json;
+          evidence?: Json;
+          freshness?: Json;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          score?: Json;
+        };
+        Update: {
+          candidate_id?: string;
+          candidate_type?: string;
+          company_id?: string;
+          created_at?: string;
+          eligibility?: Json;
+          evidence?: Json;
+          freshness?: Json;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          score?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_candidate_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_candidate_scores: {
+        Row: {
+          assessment_id: string | null;
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          id: string;
+          missing_data: Json;
+          normalised_factors: Json;
+          raw_factors: Json;
+          risk_penalties: Json;
+          score: number | null;
+          score_version: string;
+          weighting_version: string;
+        };
+        Insert: {
+          assessment_id?: string | null;
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          id?: string;
+          missing_data?: Json;
+          normalised_factors?: Json;
+          raw_factors?: Json;
+          risk_penalties?: Json;
+          score?: number | null;
+          score_version: string;
+          weighting_version: string;
+        };
+        Update: {
+          assessment_id?: string | null;
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          id?: string;
+          missing_data?: Json;
+          normalised_factors?: Json;
+          raw_factors?: Json;
+          risk_penalties?: Json;
+          score?: number | null;
+          score_version?: string;
+          weighting_version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_candidate_scores_assessment_id_fkey";
+            columns: ["assessment_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_candidate_assessments";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_candidate_scores_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_capacity_assessments: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          id: string;
+          job_id: string | null;
+          missing_data: Json;
+          remaining_capacity: Json;
+          used_capacity: Json;
+          utilisation: number | null;
+          vehicle_id: string | null;
+          violated_constraints: Json;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          remaining_capacity?: Json;
+          used_capacity?: Json;
+          utilisation?: number | null;
+          vehicle_id?: string | null;
+          violated_constraints?: Json;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          remaining_capacity?: Json;
+          used_capacity?: Json;
+          utilisation?: number | null;
+          vehicle_id?: string | null;
+          violated_constraints?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_capacity_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_configuration_versions: {
+        Row: {
+          changed_by: string | null;
+          company_id: string;
+          created_at: string;
+          id: string;
+          lifecycle: string;
+          policy: Json;
+          scoring_weights: Json;
+          version: string;
+        };
+        Insert: {
+          changed_by?: string | null;
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          policy?: Json;
+          scoring_weights?: Json;
+          version: string;
+        };
+        Update: {
+          changed_by?: string | null;
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          lifecycle?: string;
+          policy?: Json;
+          scoring_weights?: Json;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_configuration_versions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_consolidation_assessments: {
+        Row: {
+          company_id: string;
+          comparison: Json;
+          confidence: string;
+          constraints: Json;
+          created_at: string;
+          id: string;
+          job_ids: string[];
+          proposed_trip: Json;
+          risks: Json;
+        };
+        Insert: {
+          company_id: string;
+          comparison?: Json;
+          confidence: string;
+          constraints?: Json;
+          created_at?: string;
+          id?: string;
+          job_ids: string[];
+          proposed_trip?: Json;
+          risks?: Json;
+        };
+        Update: {
+          company_id?: string;
+          comparison?: Json;
+          confidence?: string;
+          constraints?: Json;
+          created_at?: string;
+          id?: string;
+          job_ids?: string[];
+          proposed_trip?: Json;
+          risks?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_consolidation_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_customer_impact_assessments: {
+        Row: {
+          affected_customers: string[];
+          affected_shipments: string[];
+          communication_required: boolean;
+          company_id: string;
+          created_at: string;
+          customer_safe_summary: string | null;
+          delivery_window_risk: boolean;
+          downstream_stop_impact: number;
+          eta_change_minutes: number | null;
+          id: string;
+          job_id: string | null;
+          recommendation_id: string | null;
+          sla_risk: boolean;
+        };
+        Insert: {
+          affected_customers?: string[];
+          affected_shipments?: string[];
+          communication_required?: boolean;
+          company_id: string;
+          created_at?: string;
+          customer_safe_summary?: string | null;
+          delivery_window_risk?: boolean;
+          downstream_stop_impact?: number;
+          eta_change_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          recommendation_id?: string | null;
+          sla_risk?: boolean;
+        };
+        Update: {
+          affected_customers?: string[];
+          affected_shipments?: string[];
+          communication_required?: boolean;
+          company_id?: string;
+          created_at?: string;
+          customer_safe_summary?: string | null;
+          delivery_window_risk?: boolean;
+          downstream_stop_impact?: number;
+          eta_change_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          recommendation_id?: string | null;
+          sla_risk?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_customer_impact_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_delay_assessments: {
+        Row: {
+          affected_jobs: string[];
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          customer_impact: Json;
+          delay_type: string;
+          detected_at: string;
+          duration_minutes: number;
+          evidence: Json;
+          id: string;
+          job_id: string | null;
+          recommended_response: string | null;
+          severity: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          affected_jobs?: string[];
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          customer_impact?: Json;
+          delay_type: string;
+          detected_at: string;
+          duration_minutes?: number;
+          evidence?: Json;
+          id?: string;
+          job_id?: string | null;
+          recommended_response?: string | null;
+          severity: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          affected_jobs?: string[];
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          customer_impact?: Json;
+          delay_type?: string;
+          detected_at?: string;
+          duration_minutes?: number;
+          evidence?: Json;
+          id?: string;
+          job_id?: string | null;
+          recommended_response?: string | null;
+          severity?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_delay_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_depot_readiness_assessments: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          depot_id: string | null;
+          dock: Json;
+          estimated_loading_minutes: number | null;
+          failures: Json;
+          id: string;
+          inventory: Json;
+          job_id: string | null;
+          queue_length: number | null;
+          ready: boolean;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          depot_id?: string | null;
+          dock?: Json;
+          estimated_loading_minutes?: number | null;
+          failures?: Json;
+          id?: string;
+          inventory?: Json;
+          job_id?: string | null;
+          queue_length?: number | null;
+          ready: boolean;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          depot_id?: string | null;
+          dock?: Json;
+          estimated_loading_minutes?: number | null;
+          failures?: Json;
+          id?: string;
+          inventory?: Json;
+          job_id?: string | null;
+          queue_length?: number | null;
+          ready?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_depot_readiness_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_driver_hours_assessments: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          driver_id: string | null;
+          driving_minutes: number | null;
+          duty_minutes: number | null;
+          eligible: boolean;
+          freshness: Json;
+          id: string;
+          job_id: string | null;
+          next_required_rest_minutes: number | null;
+          policy_version: string;
+          remaining_driving_minutes: number | null;
+          remaining_duty_minutes: number | null;
+          shift_start: string | null;
+          violations: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          driver_id?: string | null;
+          driving_minutes?: number | null;
+          duty_minutes?: number | null;
+          eligible: boolean;
+          freshness?: Json;
+          id?: string;
+          job_id?: string | null;
+          next_required_rest_minutes?: number | null;
+          policy_version: string;
+          remaining_driving_minutes?: number | null;
+          remaining_duty_minutes?: number | null;
+          shift_start?: string | null;
+          violations?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          driver_id?: string | null;
+          driving_minutes?: number | null;
+          duty_minutes?: number | null;
+          eligible?: boolean;
+          freshness?: Json;
+          id?: string;
+          job_id?: string | null;
+          next_required_rest_minutes?: number | null;
+          policy_version?: string;
+          remaining_driving_minutes?: number | null;
+          remaining_duty_minutes?: number | null;
+          shift_start?: string | null;
+          violations?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_driver_hours_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_eligibility_results: {
+        Row: {
+          candidate_id: string;
+          candidate_type: string;
+          checks: Json;
+          company_id: string;
+          created_at: string;
+          eligible: boolean;
+          id: string;
+          job_id: string | null;
+          missing_data: Json;
+          rejection_reasons: Json;
+        };
+        Insert: {
+          candidate_id: string;
+          candidate_type: string;
+          checks?: Json;
+          company_id: string;
+          created_at?: string;
+          eligible: boolean;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          rejection_reasons?: Json;
+        };
+        Update: {
+          candidate_id?: string;
+          candidate_type?: string;
+          checks?: Json;
+          company_id?: string;
+          created_at?: string;
+          eligible?: boolean;
+          id?: string;
+          job_id?: string | null;
+          missing_data?: Json;
+          rejection_reasons?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_eligibility_results_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_eta_assessments: {
+        Row: {
+          assumptions: Json;
+          calculated_at: string;
+          company_id: string;
+          confidence: string;
+          delay_factors: Json;
+          eta: string | null;
+          eta_range_minutes: number | null;
+          id: string;
+          job_id: string | null;
+          missing_inputs: Json;
+          model_version: string;
+          primary_factors: Json;
+          source_inputs: Json;
+          trip_id: string | null;
+        };
+        Insert: {
+          assumptions?: Json;
+          calculated_at?: string;
+          company_id: string;
+          confidence: string;
+          delay_factors?: Json;
+          eta?: string | null;
+          eta_range_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          missing_inputs?: Json;
+          model_version?: string;
+          primary_factors?: Json;
+          source_inputs?: Json;
+          trip_id?: string | null;
+        };
+        Update: {
+          assumptions?: Json;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: string;
+          delay_factors?: Json;
+          eta?: string | null;
+          eta_range_minutes?: number | null;
+          id?: string;
+          job_id?: string | null;
+          missing_inputs?: Json;
+          model_version?: string;
+          primary_factors?: Json;
+          source_inputs?: Json;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_eta_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_eta_outcomes: {
+        Row: {
+          absolute_error_minutes: number | null;
+          actual_arrival: string | null;
+          company_id: string;
+          confidence_band_minutes: number | null;
+          created_at: string;
+          customer_id: string | null;
+          data_quality: Json;
+          depot_id: string | null;
+          direction: string | null;
+          eta_assessment_id: string;
+          id: string;
+          predicted_eta: string;
+          route_id: string | null;
+          vehicle_class: string | null;
+        };
+        Insert: {
+          absolute_error_minutes?: number | null;
+          actual_arrival?: string | null;
+          company_id: string;
+          confidence_band_minutes?: number | null;
+          created_at?: string;
+          customer_id?: string | null;
+          data_quality?: Json;
+          depot_id?: string | null;
+          direction?: string | null;
+          eta_assessment_id: string;
+          id?: string;
+          predicted_eta: string;
+          route_id?: string | null;
+          vehicle_class?: string | null;
+        };
+        Update: {
+          absolute_error_minutes?: number | null;
+          actual_arrival?: string | null;
+          company_id?: string;
+          confidence_band_minutes?: number | null;
+          created_at?: string;
+          customer_id?: string | null;
+          data_quality?: Json;
+          depot_id?: string | null;
+          direction?: string | null;
+          eta_assessment_id?: string;
+          id?: string;
+          predicted_eta?: string;
+          route_id?: string | null;
+          vehicle_class?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_eta_outcomes_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_eta_outcomes_eta_assessment_id_fkey";
+            columns: ["eta_assessment_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_eta_assessments";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_recommendation_decisions: {
+        Row: {
+          company_id: string;
+          decided_at: string;
+          decided_by: string;
+          decision: string;
+          evidence_viewed: Json;
+          id: string;
+          modified_values: Json;
+          reason: string | null;
+          recommendation_id: string;
+          resulting_record: Json;
+        };
+        Insert: {
+          company_id: string;
+          decided_at?: string;
+          decided_by?: string;
+          decision: string;
+          evidence_viewed?: Json;
+          id?: string;
+          modified_values?: Json;
+          reason?: string | null;
+          recommendation_id: string;
+          resulting_record?: Json;
+        };
+        Update: {
+          company_id?: string;
+          decided_at?: string;
+          decided_by?: string;
+          decision?: string;
+          evidence_viewed?: Json;
+          id?: string;
+          modified_values?: Json;
+          reason?: string | null;
+          recommendation_id?: string;
+          resulting_record?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_recommendation_decisions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_recommendation_decisions_recommendation_id_fkey";
+            columns: ["recommendation_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_recommendations";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_recommendations: {
+        Row: {
+          candidate_list: Json;
+          company_id: string;
+          evidence: Json;
+          expires_at: string | null;
+          feature_versions: Json;
+          generated_at: string;
+          id: string;
+          input_hash: string | null;
+          job_id: string | null;
+          output_hash: string | null;
+          recommendation_type: string;
+          rule_versions: Json;
+          scoring_configuration: Json;
+          status: string;
+        };
+        Insert: {
+          candidate_list?: Json;
+          company_id: string;
+          evidence?: Json;
+          expires_at?: string | null;
+          feature_versions?: Json;
+          generated_at?: string;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          output_hash?: string | null;
+          recommendation_type: string;
+          rule_versions?: Json;
+          scoring_configuration?: Json;
+          status?: string;
+        };
+        Update: {
+          candidate_list?: Json;
+          company_id?: string;
+          evidence?: Json;
+          expires_at?: string | null;
+          feature_versions?: Json;
+          generated_at?: string;
+          id?: string;
+          input_hash?: string | null;
+          job_id?: string | null;
+          output_hash?: string | null;
+          recommendation_type?: string;
+          rule_versions?: Json;
+          scoring_configuration?: Json;
+          status?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_recommendations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_simulation_results: {
+        Row: {
+          affected_jobs: string[];
+          assumptions: Json;
+          capacity_changes: Json;
+          company_id: string;
+          customer_impact: Json;
+          eta_changes: Json;
+          id: string;
+          run_id: string;
+          unresolved_constraints: Json;
+        };
+        Insert: {
+          affected_jobs?: string[];
+          assumptions?: Json;
+          capacity_changes?: Json;
+          company_id: string;
+          customer_impact?: Json;
+          eta_changes?: Json;
+          id?: string;
+          run_id: string;
+          unresolved_constraints?: Json;
+        };
+        Update: {
+          affected_jobs?: string[];
+          assumptions?: Json;
+          capacity_changes?: Json;
+          company_id?: string;
+          customer_impact?: Json;
+          eta_changes?: Json;
+          id?: string;
+          run_id?: string;
+          unresolved_constraints?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_simulation_results_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "dispatch_simulation_results_run_id_fkey";
+            columns: ["run_id"];
+            isOneToOne: false;
+            referencedRelation: "dispatch_simulation_runs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_simulation_runs: {
+        Row: {
+          company_id: string;
+          completed_at: string | null;
+          id: string;
+          inputs: Json;
+          scenario: string;
+          started_at: string;
+          started_by: string;
+          state_unchanged: boolean;
+        };
+        Insert: {
+          company_id: string;
+          completed_at?: string | null;
+          id?: string;
+          inputs?: Json;
+          scenario: string;
+          started_at?: string;
+          started_by?: string;
+          state_unchanged?: boolean;
+        };
+        Update: {
+          company_id?: string;
+          completed_at?: string | null;
+          id?: string;
+          inputs?: Json;
+          scenario?: string;
+          started_at?: string;
+          started_by?: string;
+          state_unchanged?: boolean;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_simulation_runs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      dispatch_stop_sequence_assessments: {
+        Row: {
+          company_id: string;
+          comparison: Json;
+          confidence: string;
+          constraints: Json;
+          created_at: string;
+          current_sequence: Json;
+          id: string;
+          proposed_sequence: Json;
+          trip_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          comparison?: Json;
+          confidence: string;
+          constraints?: Json;
+          created_at?: string;
+          current_sequence: Json;
+          id?: string;
+          proposed_sequence: Json;
+          trip_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          comparison?: Json;
+          confidence?: string;
+          constraints?: Json;
+          created_at?: string;
+          current_sequence?: Json;
+          id?: string;
+          proposed_sequence?: Json;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "dispatch_stop_sequence_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       dispatcher_audit_log: {
         Row: {
           action: string;
@@ -10247,6 +11206,581 @@ export type Database = {
           },
         ];
       };
+      driver_app_devices: {
+        Row: {
+          app_version: string | null;
+          company_id: string;
+          created_at: string;
+          device_id: string;
+          driver_id: string;
+          id: string;
+          last_seen_at: string | null;
+          revoked_at: string | null;
+        };
+        Insert: {
+          app_version?: string | null;
+          company_id: string;
+          created_at?: string;
+          device_id: string;
+          driver_id: string;
+          id?: string;
+          last_seen_at?: string | null;
+          revoked_at?: string | null;
+        };
+        Update: {
+          app_version?: string | null;
+          company_id?: string;
+          created_at?: string;
+          device_id?: string;
+          driver_id?: string;
+          id?: string;
+          last_seen_at?: string | null;
+          revoked_at?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_app_devices_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_app_devices_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_app_health: {
+        Row: {
+          app_version: string | null;
+          battery_percent: number | null;
+          captured_at: string;
+          company_id: string;
+          device_id: string | null;
+          driver_id: string;
+          gps_state: string | null;
+          id: string;
+          network_state: string | null;
+          queue_size: number;
+          route_pack_version: number | null;
+          storage_available_bytes: number | null;
+        };
+        Insert: {
+          app_version?: string | null;
+          battery_percent?: number | null;
+          captured_at?: string;
+          company_id: string;
+          device_id?: string | null;
+          driver_id: string;
+          gps_state?: string | null;
+          id?: string;
+          network_state?: string | null;
+          queue_size?: number;
+          route_pack_version?: number | null;
+          storage_available_bytes?: number | null;
+        };
+        Update: {
+          app_version?: string | null;
+          battery_percent?: number | null;
+          captured_at?: string;
+          company_id?: string;
+          device_id?: string | null;
+          driver_id?: string;
+          gps_state?: string | null;
+          id?: string;
+          network_state?: string | null;
+          queue_size?: number;
+          route_pack_version?: number | null;
+          storage_available_bytes?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_app_health_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_app_health_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_app_devices";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_app_health_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_audit_logs: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          created_at: string;
+          driver_id: string | null;
+          entity_id: string | null;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          metadata: Json;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          driver_id?: string | null;
+          entity_id?: string | null;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          driver_id?: string | null;
+          entity_id?: string | null;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_audit_logs_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_emergency_events: {
+        Row: {
+          accuracy_metres: number | null;
+          company_id: string;
+          created_at: string;
+          driver_id: string;
+          id: string;
+          kind: string;
+          last_known_at: string | null;
+          latitude: number | null;
+          longitude: number | null;
+          metadata: Json;
+          provider_confirmation: string | null;
+          severity: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          accuracy_metres?: number | null;
+          company_id: string;
+          created_at?: string;
+          driver_id: string;
+          id?: string;
+          kind: string;
+          last_known_at?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          metadata?: Json;
+          provider_confirmation?: string | null;
+          severity?: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          accuracy_metres?: number | null;
+          company_id?: string;
+          created_at?: string;
+          driver_id?: string;
+          id?: string;
+          kind?: string;
+          last_known_at?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          metadata?: Json;
+          provider_confirmation?: string | null;
+          severity?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_emergency_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_emergency_events_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_issue_reports: {
+        Row: {
+          captured_at: string;
+          company_id: string;
+          customer_impact: boolean;
+          description: string | null;
+          driver_id: string;
+          id: string;
+          issue_type: string;
+          job_id: string | null;
+          latitude: number | null;
+          longitude: number | null;
+          metadata: Json;
+          severity: string;
+          sync_state: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          captured_at?: string;
+          company_id: string;
+          customer_impact?: boolean;
+          description?: string | null;
+          driver_id: string;
+          id?: string;
+          issue_type: string;
+          job_id?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          metadata?: Json;
+          severity?: string;
+          sync_state?: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          captured_at?: string;
+          company_id?: string;
+          customer_impact?: boolean;
+          description?: string | null;
+          driver_id?: string;
+          id?: string;
+          issue_type?: string;
+          job_id?: string | null;
+          latitude?: number | null;
+          longitude?: number | null;
+          metadata?: Json;
+          severity?: string;
+          sync_state?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_issue_reports_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_issue_reports_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_navigation_instructions: {
+        Row: {
+          bearing: number | null;
+          company_id: string;
+          confidence: number | null;
+          distance_metres: number | null;
+          id: string;
+          instruction_type: string;
+          latitude: number | null;
+          longitude: number | null;
+          metadata: Json;
+          provider_version: string | null;
+          road_name: string | null;
+          route_pack_version_id: string;
+          sequence: number;
+          source_provider: string | null;
+          spoken_text: string | null;
+        };
+        Insert: {
+          bearing?: number | null;
+          company_id: string;
+          confidence?: number | null;
+          distance_metres?: number | null;
+          id?: string;
+          instruction_type: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          metadata?: Json;
+          provider_version?: string | null;
+          road_name?: string | null;
+          route_pack_version_id: string;
+          sequence: number;
+          source_provider?: string | null;
+          spoken_text?: string | null;
+        };
+        Update: {
+          bearing?: number | null;
+          company_id?: string;
+          confidence?: number | null;
+          distance_metres?: number | null;
+          id?: string;
+          instruction_type?: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          metadata?: Json;
+          provider_version?: string | null;
+          road_name?: string | null;
+          route_pack_version_id?: string;
+          sequence?: number;
+          source_provider?: string | null;
+          spoken_text?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_navigation_instructions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_navigation_instructions_route_pack_version_id_fkey";
+            columns: ["route_pack_version_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_route_pack_versions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_navigation_sessions: {
+        Row: {
+          company_id: string;
+          driver_id: string;
+          ended_at: string | null;
+          gps_state: string;
+          id: string;
+          last_known_at: string | null;
+          last_known_lat: number | null;
+          last_known_lng: number | null;
+          metadata: Json;
+          route_pack_version_id: string | null;
+          started_at: string;
+          state: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          driver_id: string;
+          ended_at?: string | null;
+          gps_state?: string;
+          id?: string;
+          last_known_at?: string | null;
+          last_known_lat?: number | null;
+          last_known_lng?: number | null;
+          metadata?: Json;
+          route_pack_version_id?: string | null;
+          started_at?: string;
+          state?: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          driver_id?: string;
+          ended_at?: string | null;
+          gps_state?: string;
+          id?: string;
+          last_known_at?: string | null;
+          last_known_lat?: number | null;
+          last_known_lng?: number | null;
+          metadata?: Json;
+          route_pack_version_id?: string | null;
+          started_at?: string;
+          state?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_navigation_sessions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_navigation_sessions_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_offline_queue_items: {
+        Row: {
+          acknowledged_at: string | null;
+          attempt: number;
+          checksum: string;
+          claim_expires_at: string | null;
+          claimed_at: string | null;
+          company_id: string;
+          created_at: string;
+          dependency_id: string | null;
+          device_id: string | null;
+          driver_id: string;
+          entity: string;
+          entity_id: string;
+          id: string;
+          idempotency_key: string | null;
+          last_error: string | null;
+          next_retry_at: string | null;
+          operation: string;
+          payload: Json;
+          priority: string;
+          session_id: string | null;
+          state: string;
+          updated_at: string;
+        };
+        Insert: {
+          acknowledged_at?: string | null;
+          attempt?: number;
+          checksum: string;
+          claim_expires_at?: string | null;
+          claimed_at?: string | null;
+          company_id: string;
+          created_at?: string;
+          dependency_id?: string | null;
+          device_id?: string | null;
+          driver_id: string;
+          entity: string;
+          entity_id: string;
+          id?: string;
+          idempotency_key?: string | null;
+          last_error?: string | null;
+          next_retry_at?: string | null;
+          operation: string;
+          payload?: Json;
+          priority: string;
+          session_id?: string | null;
+          state?: string;
+          updated_at?: string;
+        };
+        Update: {
+          acknowledged_at?: string | null;
+          attempt?: number;
+          checksum?: string;
+          claim_expires_at?: string | null;
+          claimed_at?: string | null;
+          company_id?: string;
+          created_at?: string;
+          dependency_id?: string | null;
+          device_id?: string | null;
+          driver_id?: string;
+          entity?: string;
+          entity_id?: string;
+          id?: string;
+          idempotency_key?: string | null;
+          last_error?: string | null;
+          next_retry_at?: string | null;
+          operation?: string;
+          payload?: Json;
+          priority?: string;
+          session_id?: string | null;
+          state?: string;
+          updated_at?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_offline_queue_items_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_offline_queue_items_device_id_fkey";
+            columns: ["device_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_app_devices";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_offline_queue_items_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_offline_queue_items_session_id_fkey";
+            columns: ["session_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_navigation_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_offline_regions: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          expires_at: string | null;
+          id: string;
+          metadata: Json;
+          name: string;
+          provider_reference: string | null;
+          region_type: string;
+          tile_state: string;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          expires_at?: string | null;
+          id?: string;
+          metadata?: Json;
+          name: string;
+          provider_reference?: string | null;
+          region_type: string;
+          tile_state?: string;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          expires_at?: string | null;
+          id?: string;
+          metadata?: Json;
+          name?: string;
+          provider_reference?: string | null;
+          region_type?: string;
+          tile_state?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_offline_regions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       driver_performance_assessments: {
         Row: {
           assessment_status: string;
@@ -10326,6 +11860,397 @@ export type Database = {
             columns: ["company_id"];
             isOneToOne: false;
             referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_roadside_requests: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          dispatcher_acknowledged_at: string | null;
+          driver_id: string;
+          id: string;
+          issue_type: string;
+          location: Json;
+          mobility_status: string | null;
+          safety_status: string | null;
+          state: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          dispatcher_acknowledged_at?: string | null;
+          driver_id: string;
+          id?: string;
+          issue_type: string;
+          location?: Json;
+          mobility_status?: string | null;
+          safety_status?: string | null;
+          state?: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          dispatcher_acknowledged_at?: string | null;
+          driver_id?: string;
+          id?: string;
+          issue_type?: string;
+          location?: Json;
+          mobility_status?: string | null;
+          safety_status?: string | null;
+          state?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_roadside_requests_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_roadside_requests_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_route_pack_versions: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          destination: Json;
+          id: string;
+          instructions: Json;
+          integrity_hash: string | null;
+          metadata: Json;
+          route_geometry: Json;
+          route_pack_id: string;
+          stops: Json;
+          version: number;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          destination?: Json;
+          id?: string;
+          instructions?: Json;
+          integrity_hash?: string | null;
+          metadata?: Json;
+          route_geometry?: Json;
+          route_pack_id: string;
+          stops?: Json;
+          version: number;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          destination?: Json;
+          id?: string;
+          instructions?: Json;
+          integrity_hash?: string | null;
+          metadata?: Json;
+          route_geometry?: Json;
+          route_pack_id?: string;
+          stops?: Json;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_route_pack_versions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_route_pack_versions_route_pack_id_fkey";
+            columns: ["route_pack_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_route_packs";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_route_packs: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          downloaded_bytes: number;
+          driver_id: string | null;
+          expected_bytes: number;
+          expires_at: string | null;
+          id: string;
+          integrity_hash: string | null;
+          metadata: Json;
+          provider_reference: string | null;
+          state: string;
+          trip_id: string | null;
+          updated_at: string;
+          version: number;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          downloaded_bytes?: number;
+          driver_id?: string | null;
+          expected_bytes?: number;
+          expires_at?: string | null;
+          id?: string;
+          integrity_hash?: string | null;
+          metadata?: Json;
+          provider_reference?: string | null;
+          state?: string;
+          trip_id?: string | null;
+          updated_at?: string;
+          version?: number;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          downloaded_bytes?: number;
+          driver_id?: string | null;
+          expected_bytes?: number;
+          expires_at?: string | null;
+          id?: string;
+          integrity_hash?: string | null;
+          metadata?: Json;
+          provider_reference?: string | null;
+          state?: string;
+          trip_id?: string | null;
+          updated_at?: string;
+          version?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_route_packs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_route_packs_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_security_events: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          driver_id: string | null;
+          event_type: string;
+          id: string;
+          metadata: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          driver_id?: string | null;
+          event_type: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          driver_id?: string | null;
+          event_type?: string;
+          id?: string;
+          metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_security_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_security_events_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_stop_actions: {
+        Row: {
+          action: string;
+          captured_at: string;
+          company_id: string;
+          driver_id: string;
+          evidence_source: string;
+          id: string;
+          idempotency_key: string;
+          payload: Json;
+          stop_reference: string;
+          trip_id: string | null;
+        };
+        Insert: {
+          action: string;
+          captured_at?: string;
+          company_id: string;
+          driver_id: string;
+          evidence_source?: string;
+          id?: string;
+          idempotency_key: string;
+          payload?: Json;
+          stop_reference: string;
+          trip_id?: string | null;
+        };
+        Update: {
+          action?: string;
+          captured_at?: string;
+          company_id?: string;
+          driver_id?: string;
+          evidence_source?: string;
+          id?: string;
+          idempotency_key?: string;
+          payload?: Json;
+          stop_reference?: string;
+          trip_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_stop_actions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_stop_actions_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_sync_conflicts: {
+        Row: {
+          company_id: string;
+          conflict_type: string;
+          created_at: string;
+          driver_id: string;
+          id: string;
+          local_state: Json;
+          queue_item_id: string | null;
+          resolved_at: string | null;
+          server_state: Json;
+          state: string;
+        };
+        Insert: {
+          company_id: string;
+          conflict_type: string;
+          created_at?: string;
+          driver_id: string;
+          id?: string;
+          local_state?: Json;
+          queue_item_id?: string | null;
+          resolved_at?: string | null;
+          server_state?: Json;
+          state?: string;
+        };
+        Update: {
+          company_id?: string;
+          conflict_type?: string;
+          created_at?: string;
+          driver_id?: string;
+          id?: string;
+          local_state?: Json;
+          queue_item_id?: string | null;
+          resolved_at?: string | null;
+          server_state?: Json;
+          state?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_sync_conflicts_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_sync_conflicts_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_sync_conflicts_queue_item_id_fkey";
+            columns: ["queue_item_id"];
+            isOneToOne: false;
+            referencedRelation: "driver_offline_queue_items";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      driver_sync_runs: {
+        Row: {
+          company_id: string;
+          completed_at: string | null;
+          conflict_count: number;
+          driver_id: string;
+          failed_count: number;
+          id: string;
+          queued_count: number;
+          started_at: string;
+          state: string;
+          succeeded_count: number;
+        };
+        Insert: {
+          company_id: string;
+          completed_at?: string | null;
+          conflict_count?: number;
+          driver_id: string;
+          failed_count?: number;
+          id?: string;
+          queued_count?: number;
+          started_at?: string;
+          state?: string;
+          succeeded_count?: number;
+        };
+        Update: {
+          company_id?: string;
+          completed_at?: string | null;
+          conflict_count?: number;
+          driver_id?: string;
+          failed_count?: number;
+          id?: string;
+          queued_count?: number;
+          started_at?: string;
+          state?: string;
+          succeeded_count?: number;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "driver_sync_runs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "driver_sync_runs_driver_id_fkey";
+            columns: ["driver_id"];
+            isOneToOne: false;
+            referencedRelation: "drivers";
             referencedColumns: ["id"];
           },
         ];
@@ -11198,6 +13123,79 @@ export type Database = {
           },
         ];
       };
+      fleet_handover_reports: {
+        Row: {
+          company_id: string;
+          generated_at: string;
+          id: string;
+          period_end: string;
+          period_start: string;
+          source_event_ids: string[];
+          summary: Json;
+        };
+        Insert: {
+          company_id: string;
+          generated_at?: string;
+          id?: string;
+          period_end: string;
+          period_start: string;
+          source_event_ids?: string[];
+          summary?: Json;
+        };
+        Update: {
+          company_id?: string;
+          generated_at?: string;
+          id?: string;
+          period_end?: string;
+          period_start?: string;
+          source_event_ids?: string[];
+          summary?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_handover_reports_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_hourly_board_snapshots: {
+        Row: {
+          company_id: string;
+          generated_at: string;
+          hour_start: string;
+          id: string;
+          summary: Json;
+          vehicle_rows: Json;
+        };
+        Insert: {
+          company_id: string;
+          generated_at?: string;
+          hour_start: string;
+          id?: string;
+          summary?: Json;
+          vehicle_rows?: Json;
+        };
+        Update: {
+          company_id?: string;
+          generated_at?: string;
+          hour_start?: string;
+          id?: string;
+          summary?: Json;
+          vehicle_rows?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_hourly_board_snapshots_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       fleet_intelligence_audit_logs: {
         Row: {
           actor_id: string | null;
@@ -11730,6 +13728,109 @@ export type Database = {
         Relationships: [
           {
             foreignKeyName: "fleet_planning_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_timeline_events: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          driver_id: string | null;
+          event_type: string;
+          evidence: Json;
+          freshness: string;
+          generated: boolean;
+          id: string;
+          occurred_at: string;
+          operational_label: string;
+          severity: string;
+          source: string;
+          trip_id: string | null;
+          vehicle_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          driver_id?: string | null;
+          event_type: string;
+          evidence?: Json;
+          freshness: string;
+          generated?: boolean;
+          id?: string;
+          occurred_at: string;
+          operational_label: string;
+          severity?: string;
+          source: string;
+          trip_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          driver_id?: string | null;
+          event_type?: string;
+          evidence?: Json;
+          freshness?: string;
+          generated?: boolean;
+          id?: string;
+          occurred_at?: string;
+          operational_label?: string;
+          severity?: string;
+          source?: string;
+          trip_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_timeline_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      fleet_timeline_metrics: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          dimensions: Json;
+          id: string;
+          metric_date: string;
+          metric_name: string;
+          quality: Json;
+          value: number | null;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          dimensions?: Json;
+          id?: string;
+          metric_date: string;
+          metric_name: string;
+          quality?: Json;
+          value?: number | null;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          dimensions?: Json;
+          id?: string;
+          metric_date?: string;
+          metric_name?: string;
+          quality?: Json;
+          value?: number | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "fleet_timeline_metrics_company_id_fkey";
             columns: ["company_id"];
             isOneToOne: false;
             referencedRelation: "companies";
@@ -21509,6 +23610,936 @@ export type Database = {
           },
         ];
       };
+      tracking_alert_acknowledgements: {
+        Row: {
+          acknowledged_at: string;
+          acknowledged_by: string;
+          alert_id: string;
+          company_id: string;
+          id: string;
+          note: string | null;
+        };
+        Insert: {
+          acknowledged_at?: string;
+          acknowledged_by?: string;
+          alert_id: string;
+          company_id: string;
+          id?: string;
+          note?: string | null;
+        };
+        Update: {
+          acknowledged_at?: string;
+          acknowledged_by?: string;
+          alert_id?: string;
+          company_id?: string;
+          id?: string;
+          note?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_alert_acknowledgements_alert_id_fkey";
+            columns: ["alert_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_alerts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_alert_acknowledgements_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_alerts: {
+        Row: {
+          alert_type: string;
+          company_id: string;
+          created_at: string;
+          customer_impact: boolean;
+          escalation_state: string;
+          id: string;
+          owner_id: string | null;
+          priority: string;
+          resolution_note: string | null;
+          resolved_at: string | null;
+          source_evidence: Json;
+          status: string;
+          tracking_session_id: string | null;
+          vehicle_id: string | null;
+        };
+        Insert: {
+          alert_type: string;
+          company_id: string;
+          created_at?: string;
+          customer_impact?: boolean;
+          escalation_state?: string;
+          id?: string;
+          owner_id?: string | null;
+          priority: string;
+          resolution_note?: string | null;
+          resolved_at?: string | null;
+          source_evidence?: Json;
+          status?: string;
+          tracking_session_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Update: {
+          alert_type?: string;
+          company_id?: string;
+          created_at?: string;
+          customer_impact?: boolean;
+          escalation_state?: string;
+          id?: string;
+          owner_id?: string | null;
+          priority?: string;
+          resolution_note?: string | null;
+          resolved_at?: string | null;
+          source_evidence?: Json;
+          status?: string;
+          tracking_session_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_alerts_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_alerts_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_alerts_vehicle_id_fkey";
+            columns: ["vehicle_id"];
+            isOneToOne: false;
+            referencedRelation: "vehicles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_audit_logs: {
+        Row: {
+          actor_id: string | null;
+          company_id: string;
+          created_at: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id: string;
+          safe_metadata: Json;
+        };
+        Insert: {
+          actor_id?: string | null;
+          company_id: string;
+          created_at?: string;
+          entity_id: string;
+          entity_type: string;
+          event_type: string;
+          id?: string;
+          safe_metadata?: Json;
+        };
+        Update: {
+          actor_id?: string | null;
+          company_id?: string;
+          created_at?: string;
+          entity_id?: string;
+          entity_type?: string;
+          event_type?: string;
+          id?: string;
+          safe_metadata?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_customer_updates: {
+        Row: {
+          communication_status: string;
+          company_id: string;
+          customer_id: string;
+          delay_reason: string | null;
+          eta: string | null;
+          eta_confidence: string;
+          general_area: string | null;
+          id: string;
+          last_tracking_update: string | null;
+          next_milestone: string | null;
+          pod_state: string | null;
+          prepared_at: string;
+          prepared_by: string;
+          provider_confirmation_reference: string | null;
+          shipment_id: string | null;
+          status: string;
+          tracking_session_id: string | null;
+        };
+        Insert: {
+          communication_status?: string;
+          company_id: string;
+          customer_id: string;
+          delay_reason?: string | null;
+          eta?: string | null;
+          eta_confidence: string;
+          general_area?: string | null;
+          id?: string;
+          last_tracking_update?: string | null;
+          next_milestone?: string | null;
+          pod_state?: string | null;
+          prepared_at?: string;
+          prepared_by?: string;
+          provider_confirmation_reference?: string | null;
+          shipment_id?: string | null;
+          status: string;
+          tracking_session_id?: string | null;
+        };
+        Update: {
+          communication_status?: string;
+          company_id?: string;
+          customer_id?: string;
+          delay_reason?: string | null;
+          eta?: string | null;
+          eta_confidence?: string;
+          general_area?: string | null;
+          id?: string;
+          last_tracking_update?: string | null;
+          next_milestone?: string | null;
+          pod_state?: string | null;
+          prepared_at?: string;
+          prepared_by?: string;
+          provider_confirmation_reference?: string | null;
+          shipment_id?: string | null;
+          status?: string;
+          tracking_session_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_customer_updates_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_customer_updates_customer_id_fkey";
+            columns: ["customer_id"];
+            isOneToOne: false;
+            referencedRelation: "customers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_customer_updates_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_customer_visibility_policies: {
+        Row: {
+          approved_by: string | null;
+          cargo_sensitivity: string | null;
+          company_id: string;
+          created_at: string;
+          customer_id: string;
+          delay_minutes: number;
+          effective_at: string;
+          expires_at: string | null;
+          id: string;
+          policy_source: string;
+          shipment_id: string | null;
+          vehicle_id: string | null;
+          visibility_mode: string;
+        };
+        Insert: {
+          approved_by?: string | null;
+          cargo_sensitivity?: string | null;
+          company_id: string;
+          created_at?: string;
+          customer_id: string;
+          delay_minutes?: number;
+          effective_at: string;
+          expires_at?: string | null;
+          id?: string;
+          policy_source: string;
+          shipment_id?: string | null;
+          vehicle_id?: string | null;
+          visibility_mode: string;
+        };
+        Update: {
+          approved_by?: string | null;
+          cargo_sensitivity?: string | null;
+          company_id?: string;
+          created_at?: string;
+          customer_id?: string;
+          delay_minutes?: number;
+          effective_at?: string;
+          expires_at?: string | null;
+          id?: string;
+          policy_source?: string;
+          shipment_id?: string | null;
+          vehicle_id?: string | null;
+          visibility_mode?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_customer_visibility_policies_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_customer_visibility_policies_customer_id_fkey";
+            columns: ["customer_id"];
+            isOneToOne: false;
+            referencedRelation: "customers";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_customer_visibility_policies_vehicle_id_fkey";
+            columns: ["vehicle_id"];
+            isOneToOne: false;
+            referencedRelation: "vehicles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_data_quality_events: {
+        Row: {
+          company_id: string;
+          detected_at: string;
+          event_type: string;
+          id: string;
+          quality_impact: number;
+          safe_metadata: Json;
+          severity: string;
+          telemetry_point_id: string | null;
+          tracking_session_id: string | null;
+        };
+        Insert: {
+          company_id: string;
+          detected_at?: string;
+          event_type: string;
+          id?: string;
+          quality_impact: number;
+          safe_metadata?: Json;
+          severity: string;
+          telemetry_point_id?: string | null;
+          tracking_session_id?: string | null;
+        };
+        Update: {
+          company_id?: string;
+          detected_at?: string;
+          event_type?: string;
+          id?: string;
+          quality_impact?: number;
+          safe_metadata?: Json;
+          severity?: string;
+          telemetry_point_id?: string | null;
+          tracking_session_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_data_quality_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_data_quality_events_telemetry_point_id_fkey";
+            columns: ["telemetry_point_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_telemetry_points";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_data_quality_events_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_eta_assessments: {
+        Row: {
+          assumptions: Json;
+          calculated_at: string;
+          company_id: string;
+          confidence: string;
+          confidence_band_minutes: number | null;
+          contributing_factors: Json;
+          eta: string | null;
+          evidence_references: Json;
+          freshness_state: string;
+          id: string;
+          missing_inputs: Json;
+          source_period: Json;
+          tracking_session_id: string;
+        };
+        Insert: {
+          assumptions?: Json;
+          calculated_at?: string;
+          company_id: string;
+          confidence: string;
+          confidence_band_minutes?: number | null;
+          contributing_factors?: Json;
+          eta?: string | null;
+          evidence_references?: Json;
+          freshness_state: string;
+          id?: string;
+          missing_inputs?: Json;
+          source_period?: Json;
+          tracking_session_id: string;
+        };
+        Update: {
+          assumptions?: Json;
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: string;
+          confidence_band_minutes?: number | null;
+          contributing_factors?: Json;
+          eta?: string | null;
+          evidence_references?: Json;
+          freshness_state?: string;
+          id?: string;
+          missing_inputs?: Json;
+          source_period?: Json;
+          tracking_session_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_eta_assessments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_eta_assessments_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_geofence_events: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          customer_safe: boolean;
+          event_type: string;
+          evidence_references: Json;
+          geofence_id: string;
+          id: string;
+          latitude: number | null;
+          longitude: number | null;
+          occurred_at: string;
+          tracking_session_id: string | null;
+          vehicle_id: string;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          customer_safe?: boolean;
+          event_type: string;
+          evidence_references?: Json;
+          geofence_id: string;
+          id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          occurred_at: string;
+          tracking_session_id?: string | null;
+          vehicle_id: string;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          customer_safe?: boolean;
+          event_type?: string;
+          evidence_references?: Json;
+          geofence_id?: string;
+          id?: string;
+          latitude?: number | null;
+          longitude?: number | null;
+          occurred_at?: string;
+          tracking_session_id?: string | null;
+          vehicle_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_geofence_events_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_geofence_events_geofence_id_fkey";
+            columns: ["geofence_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_geofences";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_geofence_events_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_geofence_events_vehicle_id_fkey";
+            columns: ["vehicle_id"];
+            isOneToOne: false;
+            referencedRelation: "vehicles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_geofences: {
+        Row: {
+          active: boolean;
+          center_latitude: number | null;
+          center_longitude: number | null;
+          company_id: string;
+          created_at: string;
+          customer_safe: boolean;
+          geofence_type: string;
+          id: string;
+          name: string;
+          polygon_geojson: Json | null;
+          radius_meters: number | null;
+          shape_type: string;
+        };
+        Insert: {
+          active?: boolean;
+          center_latitude?: number | null;
+          center_longitude?: number | null;
+          company_id: string;
+          created_at?: string;
+          customer_safe?: boolean;
+          geofence_type: string;
+          id?: string;
+          name: string;
+          polygon_geojson?: Json | null;
+          radius_meters?: number | null;
+          shape_type: string;
+        };
+        Update: {
+          active?: boolean;
+          center_latitude?: number | null;
+          center_longitude?: number | null;
+          company_id?: string;
+          created_at?: string;
+          customer_safe?: boolean;
+          geofence_type?: string;
+          id?: string;
+          name?: string;
+          polygon_geojson?: Json | null;
+          radius_meters?: number | null;
+          shape_type?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_geofences_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_hourly_checks: {
+        Row: {
+          acknowledged_at: string | null;
+          checked_at: string;
+          checked_by: string;
+          company_id: string;
+          customer_safe_summary: string | null;
+          evidence_references: Json;
+          follow_up_due_at: string | null;
+          id: string;
+          internal_note: string | null;
+          owner_id: string | null;
+          shipment_id: string | null;
+          status: string;
+          tracking_session_id: string | null;
+          vehicle_id: string | null;
+        };
+        Insert: {
+          acknowledged_at?: string | null;
+          checked_at: string;
+          checked_by?: string;
+          company_id: string;
+          customer_safe_summary?: string | null;
+          evidence_references?: Json;
+          follow_up_due_at?: string | null;
+          id?: string;
+          internal_note?: string | null;
+          owner_id?: string | null;
+          shipment_id?: string | null;
+          status: string;
+          tracking_session_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Update: {
+          acknowledged_at?: string | null;
+          checked_at?: string;
+          checked_by?: string;
+          company_id?: string;
+          customer_safe_summary?: string | null;
+          evidence_references?: Json;
+          follow_up_due_at?: string | null;
+          id?: string;
+          internal_note?: string | null;
+          owner_id?: string | null;
+          shipment_id?: string | null;
+          status?: string;
+          tracking_session_id?: string | null;
+          vehicle_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_hourly_checks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_hourly_checks_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_hourly_checks_vehicle_id_fkey";
+            columns: ["vehicle_id"];
+            isOneToOne: false;
+            referencedRelation: "vehicles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_map_match_records: {
+        Row: {
+          company_id: string;
+          id: string;
+          matched_at: string;
+          matched_latitude: number | null;
+          matched_longitude: number | null;
+          provider: string;
+          provider_version: string | null;
+          raw_latitude: number;
+          raw_longitude: number;
+          road_confidence: number | null;
+          telemetry_point_id: string;
+        };
+        Insert: {
+          company_id: string;
+          id?: string;
+          matched_at?: string;
+          matched_latitude?: number | null;
+          matched_longitude?: number | null;
+          provider: string;
+          provider_version?: string | null;
+          raw_latitude: number;
+          raw_longitude: number;
+          road_confidence?: number | null;
+          telemetry_point_id: string;
+        };
+        Update: {
+          company_id?: string;
+          id?: string;
+          matched_at?: string;
+          matched_latitude?: number | null;
+          matched_longitude?: number | null;
+          provider?: string;
+          provider_version?: string | null;
+          raw_latitude?: number;
+          raw_longitude?: number;
+          road_confidence?: number | null;
+          telemetry_point_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_map_match_records_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_map_match_records_telemetry_point_id_fkey";
+            columns: ["telemetry_point_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_telemetry_points";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_map_provider_configs: {
+        Row: {
+          active: boolean;
+          capabilities: Json;
+          changed_at: string;
+          changed_by: string | null;
+          company_id: string;
+          environment: string;
+          id: string;
+          offline_regions_state: string;
+          provider: string;
+          style_reference: string | null;
+          tile_reference: string | null;
+        };
+        Insert: {
+          active?: boolean;
+          capabilities?: Json;
+          changed_at?: string;
+          changed_by?: string | null;
+          company_id: string;
+          environment: string;
+          id?: string;
+          offline_regions_state?: string;
+          provider: string;
+          style_reference?: string | null;
+          tile_reference?: string | null;
+        };
+        Update: {
+          active?: boolean;
+          capabilities?: Json;
+          changed_at?: string;
+          changed_by?: string | null;
+          company_id?: string;
+          environment?: string;
+          id?: string;
+          offline_regions_state?: string;
+          provider?: string;
+          style_reference?: string | null;
+          tile_reference?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_map_provider_configs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_operational_settings: {
+        Row: {
+          cluster_threshold: number;
+          company_id: string;
+          customer_care_check_minutes: number;
+          customer_delay_minutes: number;
+          customer_location_mode: string;
+          default_map_view: Json;
+          deviation_duration_seconds: number;
+          dwell_threshold_seconds: number;
+          eta_refresh_seconds: number;
+          id: string;
+          live_seconds: number;
+          offline_seconds: number;
+          recent_seconds: number;
+          route_deviation_meters: number;
+          timezone: string;
+          tracking_refresh_seconds: number;
+          updated_at: string;
+          updated_by: string | null;
+          wall_rotation_seconds: number;
+          working_hours: Json;
+        };
+        Insert: {
+          cluster_threshold?: number;
+          company_id: string;
+          customer_care_check_minutes?: number;
+          customer_delay_minutes?: number;
+          customer_location_mode?: string;
+          default_map_view?: Json;
+          deviation_duration_seconds?: number;
+          dwell_threshold_seconds?: number;
+          eta_refresh_seconds?: number;
+          id?: string;
+          live_seconds?: number;
+          offline_seconds?: number;
+          recent_seconds?: number;
+          route_deviation_meters?: number;
+          timezone?: string;
+          tracking_refresh_seconds?: number;
+          updated_at?: string;
+          updated_by?: string | null;
+          wall_rotation_seconds?: number;
+          working_hours?: Json;
+        };
+        Update: {
+          cluster_threshold?: number;
+          company_id?: string;
+          customer_care_check_minutes?: number;
+          customer_delay_minutes?: number;
+          customer_location_mode?: string;
+          default_map_view?: Json;
+          deviation_duration_seconds?: number;
+          dwell_threshold_seconds?: number;
+          eta_refresh_seconds?: number;
+          id?: string;
+          live_seconds?: number;
+          offline_seconds?: number;
+          recent_seconds?: number;
+          route_deviation_meters?: number;
+          timezone?: string;
+          tracking_refresh_seconds?: number;
+          updated_at?: string;
+          updated_by?: string | null;
+          wall_rotation_seconds?: number;
+          working_hours?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_operational_settings_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: true;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_replay_sessions: {
+        Row: {
+          company_id: string;
+          gap_count: number;
+          id: string;
+          opened_at: string;
+          opened_by: string;
+          range_end: string;
+          range_start: string;
+          telemetry_point_count: number;
+          tracking_session_id: string;
+        };
+        Insert: {
+          company_id: string;
+          gap_count?: number;
+          id?: string;
+          opened_at?: string;
+          opened_by?: string;
+          range_end: string;
+          range_start: string;
+          telemetry_point_count?: number;
+          tracking_session_id: string;
+        };
+        Update: {
+          company_id?: string;
+          gap_count?: number;
+          id?: string;
+          opened_at?: string;
+          opened_by?: string;
+          range_end?: string;
+          range_start?: string;
+          telemetry_point_count?: number;
+          tracking_session_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_replay_sessions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_replay_sessions_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_route_deviations: {
+        Row: {
+          company_id: string;
+          confidence: string;
+          created_at: string;
+          current_state: string;
+          deviation_type: string;
+          distance_meters: number | null;
+          duration_seconds: number;
+          evidence_references: Json;
+          first_detected_at: string;
+          id: string;
+          possible_explanations: Json;
+          recommended_human_review: boolean;
+          tracking_session_id: string;
+        };
+        Insert: {
+          company_id: string;
+          confidence: string;
+          created_at?: string;
+          current_state: string;
+          deviation_type: string;
+          distance_meters?: number | null;
+          duration_seconds?: number;
+          evidence_references?: Json;
+          first_detected_at: string;
+          id?: string;
+          possible_explanations?: Json;
+          recommended_human_review?: boolean;
+          tracking_session_id: string;
+        };
+        Update: {
+          company_id?: string;
+          confidence?: string;
+          created_at?: string;
+          current_state?: string;
+          deviation_type?: string;
+          distance_meters?: number | null;
+          duration_seconds?: number;
+          evidence_references?: Json;
+          first_detected_at?: string;
+          id?: string;
+          possible_explanations?: Json;
+          recommended_human_review?: boolean;
+          tracking_session_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_route_deviations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_route_deviations_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       tracking_sessions: {
         Row: {
           app_version: string | null;
@@ -21792,6 +24823,148 @@ export type Database = {
           },
           {
             foreignKeyName: "tracking_telemetry_points_vehicle_id_fkey";
+            columns: ["vehicle_id"];
+            isOneToOne: false;
+            referencedRelation: "vehicles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_trip_progress: {
+        Row: {
+          calculated_at: string;
+          company_id: string;
+          completed_distance_km: number | null;
+          completed_stops: number;
+          current_segment: string | null;
+          current_stop_id: string | null;
+          delay_seconds: number | null;
+          dwell_seconds: number | null;
+          id: string;
+          next_stop_id: string | null;
+          planned_distance_km: number | null;
+          remaining_distance_km: number | null;
+          remaining_stops: number;
+          source_references: Json;
+          tracking_session_id: string;
+        };
+        Insert: {
+          calculated_at?: string;
+          company_id: string;
+          completed_distance_km?: number | null;
+          completed_stops?: number;
+          current_segment?: string | null;
+          current_stop_id?: string | null;
+          delay_seconds?: number | null;
+          dwell_seconds?: number | null;
+          id?: string;
+          next_stop_id?: string | null;
+          planned_distance_km?: number | null;
+          remaining_distance_km?: number | null;
+          remaining_stops?: number;
+          source_references?: Json;
+          tracking_session_id: string;
+        };
+        Update: {
+          calculated_at?: string;
+          company_id?: string;
+          completed_distance_km?: number | null;
+          completed_stops?: number;
+          current_segment?: string | null;
+          current_stop_id?: string | null;
+          delay_seconds?: number | null;
+          dwell_seconds?: number | null;
+          id?: string;
+          next_stop_id?: string | null;
+          planned_distance_km?: number | null;
+          remaining_distance_km?: number | null;
+          remaining_stops?: number;
+          source_references?: Json;
+          tracking_session_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_trip_progress_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_trip_progress_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      tracking_vehicle_states: {
+        Row: {
+          calculated_at: string;
+          company_id: string;
+          confidence: string;
+          derived_state: string;
+          device_timestamp: string | null;
+          evidence_references: Json;
+          freshness_state: string;
+          id: string;
+          quality_score: number | null;
+          received_at: string | null;
+          source: string;
+          source_state: string | null;
+          tracking_session_id: string | null;
+          vehicle_id: string;
+        };
+        Insert: {
+          calculated_at?: string;
+          company_id: string;
+          confidence: string;
+          derived_state: string;
+          device_timestamp?: string | null;
+          evidence_references?: Json;
+          freshness_state: string;
+          id?: string;
+          quality_score?: number | null;
+          received_at?: string | null;
+          source: string;
+          source_state?: string | null;
+          tracking_session_id?: string | null;
+          vehicle_id: string;
+        };
+        Update: {
+          calculated_at?: string;
+          company_id?: string;
+          confidence?: string;
+          derived_state?: string;
+          device_timestamp?: string | null;
+          evidence_references?: Json;
+          freshness_state?: string;
+          id?: string;
+          quality_score?: number | null;
+          received_at?: string | null;
+          source?: string;
+          source_state?: string | null;
+          tracking_session_id?: string | null;
+          vehicle_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "tracking_vehicle_states_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_vehicle_states_tracking_session_id_fkey";
+            columns: ["tracking_session_id"];
+            isOneToOne: false;
+            referencedRelation: "tracking_sessions";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "tracking_vehicle_states_vehicle_id_fkey";
             columns: ["vehicle_id"];
             isOneToOne: false;
             referencedRelation: "vehicles";
@@ -26823,6 +29996,88 @@ export type Database = {
         }[];
       };
       digits_only: { Args: { _value: string }; Returns: string };
+      dispatch36_read: { Args: { c: string }; Returns: boolean };
+      dispatch36_write: { Args: { c: string }; Returns: boolean };
+      driver_complete_after_pod: {
+        Args: { _job_id: string };
+        Returns: {
+          accepted_at: string | null;
+          arrived_at: string | null;
+          company_id: string;
+          completed_at: string | null;
+          created_at: string;
+          created_by: string | null;
+          customer_branch_id: string | null;
+          customer_id: string | null;
+          description: string | null;
+          driver_id: string | null;
+          dropoff_location: string | null;
+          failed_at: string | null;
+          failure_reason: string | null;
+          id: string;
+          notes: string | null;
+          pickup_location: string | null;
+          priority: Database["public"]["Enums"]["job_priority"];
+          proof_lat: number | null;
+          proof_lng: number | null;
+          proof_notes: string | null;
+          proof_photo_url: string | null;
+          proof_recipient_name: string | null;
+          proof_signature_url: string | null;
+          reference: string;
+          scheduled_at: string | null;
+          started_at: string | null;
+          status: Database["public"]["Enums"]["job_status"];
+          updated_at: string;
+          vehicle_id: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "jobs";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      driver_depart_after_pod: {
+        Args: { _job_id: string };
+        Returns: {
+          accepted_at: string | null;
+          arrived_at: string | null;
+          company_id: string;
+          completed_at: string | null;
+          created_at: string;
+          created_by: string | null;
+          customer_branch_id: string | null;
+          customer_id: string | null;
+          description: string | null;
+          driver_id: string | null;
+          dropoff_location: string | null;
+          failed_at: string | null;
+          failure_reason: string | null;
+          id: string;
+          notes: string | null;
+          pickup_location: string | null;
+          priority: Database["public"]["Enums"]["job_priority"];
+          proof_lat: number | null;
+          proof_lng: number | null;
+          proof_notes: string | null;
+          proof_photo_url: string | null;
+          proof_recipient_name: string | null;
+          proof_signature_url: string | null;
+          reference: string;
+          scheduled_at: string | null;
+          started_at: string | null;
+          status: Database["public"]["Enums"]["job_status"];
+          updated_at: string;
+          vehicle_id: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "jobs";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       driver_fail_job: {
         Args: { _job_id: string; _notes?: string; _reason: string };
         Returns: {
@@ -26859,6 +30114,159 @@ export type Database = {
         SetofOptions: {
           from: "*";
           to: "jobs";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      driver_queue_claim: {
+        Args: {
+          _batch_size?: number;
+          _company_id: string;
+          _device_id: string;
+          _driver_id: string;
+          _lease_seconds?: number;
+          _session_id: string;
+        };
+        Returns: {
+          acknowledged_at: string | null;
+          attempt: number;
+          checksum: string;
+          claim_expires_at: string | null;
+          claimed_at: string | null;
+          company_id: string;
+          created_at: string;
+          dependency_id: string | null;
+          device_id: string | null;
+          driver_id: string;
+          entity: string;
+          entity_id: string;
+          id: string;
+          idempotency_key: string | null;
+          last_error: string | null;
+          next_retry_at: string | null;
+          operation: string;
+          payload: Json;
+          priority: string;
+          session_id: string | null;
+          state: string;
+          updated_at: string;
+        }[];
+        SetofOptions: {
+          from: "*";
+          to: "driver_offline_queue_items";
+          isOneToOne: false;
+          isSetofReturn: true;
+        };
+      };
+      driver_queue_enqueue: {
+        Args: {
+          _checksum: string;
+          _company_id: string;
+          _dependency_id?: string;
+          _device_id: string;
+          _driver_id: string;
+          _entity: string;
+          _entity_id: string;
+          _idempotency_key: string;
+          _operation: string;
+          _payload: Json;
+          _priority: string;
+          _session_id: string;
+        };
+        Returns: {
+          acknowledged_at: string | null;
+          attempt: number;
+          checksum: string;
+          claim_expires_at: string | null;
+          claimed_at: string | null;
+          company_id: string;
+          created_at: string;
+          dependency_id: string | null;
+          device_id: string | null;
+          driver_id: string;
+          entity: string;
+          entity_id: string;
+          id: string;
+          idempotency_key: string | null;
+          last_error: string | null;
+          next_retry_at: string | null;
+          operation: string;
+          payload: Json;
+          priority: string;
+          session_id: string | null;
+          state: string;
+          updated_at: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "driver_offline_queue_items";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      driver_queue_process_claim: {
+        Args: { _queue_id: string };
+        Returns: {
+          acknowledged_at: string | null;
+          attempt: number;
+          checksum: string;
+          claim_expires_at: string | null;
+          claimed_at: string | null;
+          company_id: string;
+          created_at: string;
+          dependency_id: string | null;
+          device_id: string | null;
+          driver_id: string;
+          entity: string;
+          entity_id: string;
+          id: string;
+          idempotency_key: string | null;
+          last_error: string | null;
+          next_retry_at: string | null;
+          operation: string;
+          payload: Json;
+          priority: string;
+          session_id: string | null;
+          state: string;
+          updated_at: string;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "driver_offline_queue_items";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
+      driver_queue_summary: {
+        Args: { _company_id: string; _driver_id: string };
+        Returns: Json;
+      };
+      driver_submit_pod_for_review: {
+        Args: {
+          _job_id: string;
+          _notes?: string;
+          _photo_url?: string;
+          _recipient_name: string;
+          _signature_url?: string;
+        };
+        Returns: {
+          company_id: string;
+          completed_at: string;
+          created_at: string;
+          created_by: string | null;
+          customer_visible: boolean;
+          driver_id: string | null;
+          finalized_at: string | null;
+          id: string;
+          job_id: string;
+          notes: string | null;
+          photo_url: string | null;
+          recipient_name: string;
+          signature_url: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "job_proofs";
           isOneToOne: true;
           isSetofReturn: false;
         };
@@ -26991,6 +30399,23 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      driver35_read: {
+        Args: { _company_id: string; _driver_id?: string };
+        Returns: boolean;
+      };
+      driver35_validate_device: {
+        Args: {
+          _company_id: string;
+          _device_id: string;
+          _driver_id: string;
+          _session_id?: string;
+        };
+        Returns: boolean;
+      };
+      driver35_write: {
+        Args: { _company_id: string; _driver_id: string };
+        Returns: boolean;
+      };
       ensure_driver_tracking_session: {
         Args: {
           _app_version?: string;
@@ -27055,6 +30480,8 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      fleet_board365_read: { Args: { c: string }; Returns: boolean };
+      fleet_board365_write: { Args: { c: string }; Returns: boolean };
       fleet_intelligence_can_read: {
         Args: { _company: string };
         Returns: boolean;
@@ -27660,6 +31087,30 @@ export type Database = {
         Args: { p_incident: string; p_resolution: string };
         Returns: undefined;
       };
+      review_driver_pod: {
+        Args: { _decision: string; _proof_id: string };
+        Returns: {
+          company_id: string;
+          completed_at: string;
+          created_at: string;
+          created_by: string | null;
+          customer_visible: boolean;
+          driver_id: string | null;
+          finalized_at: string | null;
+          id: string;
+          job_id: string;
+          notes: string | null;
+          photo_url: string | null;
+          recipient_name: string;
+          signature_url: string | null;
+        };
+        SetofOptions: {
+          from: "*";
+          to: "job_proofs";
+          isOneToOne: true;
+          isSetofReturn: false;
+        };
+      };
       revoke_shipment_share_link: {
         Args: { p_link_id: string };
         Returns: undefined;
@@ -27721,6 +31172,20 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      tracking34_customer_locations: {
+        Args: never;
+        Returns: {
+          device_timestamp: string;
+          freshness_state: string;
+          general_area: string;
+          latitude: number;
+          longitude: number;
+          vehicle_id: string;
+          visibility_mode: string;
+        }[];
+      };
+      tracking34_internal_read: { Args: { c: string }; Returns: boolean };
+      tracking34_internal_write: { Args: { c: string }; Returns: boolean };
       transition_device_fitment_job: {
         Args: {
           _company_id: string;
@@ -28200,7 +31665,8 @@ export type Database = {
         | "brain_service"
         | "fleet_controller"
         | "maintenance_manager"
-        | "maintenance_coordinator";
+        | "maintenance_coordinator"
+        | "route_planner";
       business_type:
         | "logistics"
         | "trucking"
@@ -28581,9 +32047,6 @@ export type CompositeTypes<
     : never;
 
 export const Constants = {
-  graphql_public: {
-    Enums: {},
-  },
   public: {
     Enums: {
       app_role: [
@@ -28635,6 +32098,7 @@ export const Constants = {
         "fleet_controller",
         "maintenance_manager",
         "maintenance_coordinator",
+        "route_planner",
       ],
       business_type: [
         "logistics",

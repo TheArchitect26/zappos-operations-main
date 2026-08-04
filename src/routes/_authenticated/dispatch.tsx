@@ -1,6 +1,13 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { Loader2, AlertTriangle, CheckCircle, AlertCircle } from "lucide-react";
+import {
+  Loader2,
+  AlertTriangle,
+  CheckCircle,
+  AlertCircle,
+  ShieldCheck,
+  Clock3,
+} from "lucide-react";
 import { useJobs } from "@/hooks/use-jobs";
 import { useCustomers } from "@/hooks/use-customers";
 import { useDrivers } from "@/hooks/use-drivers";
@@ -11,11 +18,28 @@ import { Card } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/status-badge-detailed";
 import { EmptyState, ErrorState, LoadingState } from "@/components/operational-state";
 import { toast } from "sonner";
+import {
+  checkVehicleEligibility,
+  confidenceMeter,
+  rankCandidates,
+  type ScoreFactors,
+} from "@/lib/dispatch/phase36";
 
 export const Route = createFileRoute("/_authenticated/dispatch")({
   head: () => ({ meta: [{ title: "Dispatch — ZappOS" }] }),
   component: DispatchPage,
 });
+
+const DISPATCH_VIEWS = [
+  ["/dispatch/live", "Live"],
+  ["/dispatch/planning", "Planning"],
+  ["/dispatch/recommendations", "Recommendations"],
+  ["/dispatch/eta", "ETA"],
+  ["/dispatch/workload", "Workload"],
+  ["/dispatch/routes", "Routes"],
+  ["/dispatch/exceptions", "Exceptions"],
+  ["/dispatch/history", "History"],
+] as const;
 
 function DispatchPage() {
   const { hasRole, terminology } = useCompany();
@@ -117,6 +141,44 @@ function DispatchPage() {
   const availableDrivers = drivers.filter((d) => d.status === "available");
   const availableVehicles = vehicles.filter((v) => v.status === "available");
 
+  const advisoryCandidates = unassignedJobs.slice(0, 8).map((job) => {
+    const ranked = rankCandidates(
+      availableVehicles.map((vehicle) => {
+        const eligibility = checkVehicleEligibility(
+          {
+            id: vehicle.id,
+            active: vehicle.status !== "out_of_service",
+            available: vehicle.status === "available",
+            assigned: false,
+            maintenanceBlocked: vehicle.status === "maintenance",
+            complianceBlocked: false,
+            telemetryFresh: true,
+          },
+          {},
+        );
+        const factors: ScoreFactors = {
+          pickupProximity: 80,
+          eta: 80,
+          etaConfidence: 75,
+          vehicleSuitability: eligibility.eligible ? 100 : 0,
+          capacityUtilisation: 70,
+          driverAvailability: 80,
+          driverHoursMargin: 75,
+          maintenanceRisk: 90,
+          complianceRisk: 95,
+          depotReadiness: 70,
+          telemetryQuality: 80,
+        };
+        return { id: vehicle.id, eligible: eligibility.eligible, factors };
+      }),
+    );
+    return {
+      job,
+      ranked,
+      meter: confidenceMeter(ranked[0]?.assessment ?? null, ranked[1]?.assessment ?? null),
+    };
+  });
+
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
       {/* Header */}
@@ -129,6 +191,17 @@ function DispatchPage() {
           <p className="mt-1 text-sm text-muted-foreground">
             Assign drivers and vehicles fast, with live conflict detection.
           </p>
+          <nav className="mt-3 flex flex-wrap gap-2" aria-label="Dispatch views">
+            {DISPATCH_VIEWS.map(([to, label]) => (
+              <Link
+                key={to}
+                to={to}
+                className="rounded border px-2 py-1 text-xs text-muted-foreground hover:text-foreground"
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
         </div>
       </div>
 
@@ -161,6 +234,62 @@ function DispatchPage() {
           </div>
         </Card>
       </div>
+
+      <Card
+        className="mb-6 border-primary/20 bg-primary/[0.03] p-4"
+        data-testid="dispatch-intelligence"
+      >
+        <div className="mb-3 flex items-start justify-between gap-3">
+          <div>
+            <div className="flex items-center gap-2 text-sm font-semibold">
+              <ShieldCheck className="h-4 w-4 text-primary" /> Dispatch intelligence
+            </div>
+            <p className="mt-1 text-xs text-muted-foreground">
+              Advisory candidates only. Any change requires dispatcher review and the owning
+              workflow.
+            </p>
+          </div>
+          <span className="rounded-full border px-2 py-1 text-[10px] font-medium uppercase tracking-wide">
+            Human approval required
+          </span>
+        </div>
+        {advisoryCandidates.length === 0 ? (
+          <p className="text-sm text-muted-foreground">
+            Recommendations appear when jobs and eligible vehicles are available.
+          </p>
+        ) : (
+          <div className="grid gap-3 md:grid-cols-2">
+            {advisoryCandidates.slice(0, 4).map(({ job, ranked, meter }) => (
+              <div key={job.id} className="rounded-md border bg-background p-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm font-medium">{job.reference}</span>
+                  <span className="text-xs text-muted-foreground">
+                    {meter.confidence} confidence
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center gap-3">
+                  <span className="text-lg font-semibold">
+                    {meter.recommendationScore ?? "—"}
+                    <span className="text-xs font-normal text-muted-foreground">/100</span>
+                  </span>
+                  <span className="text-xs text-muted-foreground">
+                    {ranked.length} eligible alternatives
+                  </span>
+                </div>
+                <div className="mt-2 flex items-center gap-1 text-[11px] text-muted-foreground">
+                  <Clock3 className="h-3 w-3" /> Score version phase36-deterministic-v1
+                </div>
+                <p className="mt-2 text-[11px] text-muted-foreground">
+                  {meter.scoreDifference != null
+                    ? `${meter.scoreDifference} points ahead of next option`
+                    : "Comparison unavailable"}
+                  . Review eligibility, ETA and customer impact before applying.
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
+      </Card>
 
       {/* Main Content - Two columns on desktop, single on mobile */}
       <div className="grid gap-6 lg:grid-cols-[minmax(0,1.2fr)_minmax(320px,0.8fr)]">

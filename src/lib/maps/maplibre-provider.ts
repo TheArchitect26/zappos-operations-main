@@ -6,10 +6,22 @@ type MapLibreMarker = import("maplibre-gl").Marker;
 
 export class MapLibreProvider implements ZappMapProvider {
   providerId = "maplibre";
-  capabilities = { markers: true, observedTrace: true, fitBounds: true };
+  capabilities = {
+    markers: true,
+    clustering: true,
+    routeLines: true,
+    geofences: true,
+    replay: true,
+    observedTrace: true,
+    fitBounds: true,
+    offlineRegions: "not_configured" as const,
+  };
   private map: MapLibreMap | null = null;
   private maplibre: MapLibreModule | null = null;
   private markers = new Map<string, MapLibreMarker>();
+  private latestCoordinates: Array<[number, number]> = [];
+  private clusteredSelection: ((id: string) => void) | null = null;
+  private clusterHandlersInstalled = false;
 
   async initialize(
     container: HTMLElement,
@@ -40,10 +52,21 @@ export class MapLibreProvider implements ZappMapProvider {
     this.markers.clear();
     this.map?.remove();
     this.map = null;
+    this.latestCoordinates = [];
+    this.clusteredSelection = null;
+    this.clusterHandlersInstalled = false;
   }
 
   updateActiveVehicleMarkers(markers: VehicleMarker[], onSelect: (id: string) => void) {
     if (!this.map || !this.maplibre) return;
+    this.latestCoordinates = markers.map((marker) => [marker.longitude, marker.latitude]);
+    if (markers.length >= 50) {
+      this.markers.forEach((marker) => marker.remove());
+      this.markers.clear();
+      this.updateClusterLayer(markers, onSelect);
+      return;
+    }
+    this.clearClusterLayer();
     const activeIds = new Set(markers.map((marker) => marker.id));
     for (const [id, marker] of this.markers) {
       if (!activeIds.has(id)) {
@@ -71,6 +94,82 @@ export class MapLibreProvider implements ZappMapProvider {
         .addTo(this.map);
       this.markers.set(marker.id, next);
     }
+  }
+
+  private updateClusterLayer(markers: VehicleMarker[], onSelect: (id: string) => void) {
+    if (!this.map) return;
+    this.clusteredSelection = onSelect;
+    const data = {
+      type: "FeatureCollection" as const,
+      features: markers.map((marker) => ({
+        type: "Feature" as const,
+        geometry: {
+          type: "Point" as const,
+          coordinates: [marker.longitude, marker.latitude],
+        },
+        properties: { id: marker.id, registration: marker.registration },
+      })),
+    };
+    const existing = this.map.getSource("active-vehicle-clusters") as
+      { setData: (next: unknown) => void } | undefined;
+    if (existing) {
+      existing.setData(data);
+      return;
+    }
+    this.map.addSource("active-vehicle-clusters", {
+      type: "geojson",
+      data,
+      cluster: true,
+      clusterMaxZoom: 14,
+      clusterRadius: 48,
+    });
+    this.map.addLayer({
+      id: "vehicle-clusters",
+      type: "circle",
+      source: "active-vehicle-clusters",
+      filter: ["has", "point_count"],
+      paint: {
+        "circle-color": "#2563eb",
+        "circle-radius": ["step", ["get", "point_count"], 18, 100, 24, 250, 30],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2,
+      },
+    });
+    this.map.addLayer({
+      id: "vehicle-cluster-count",
+      type: "symbol",
+      source: "active-vehicle-clusters",
+      filter: ["has", "point_count"],
+      layout: { "text-field": ["get", "point_count_abbreviated"], "text-size": 12 },
+      paint: { "text-color": "#ffffff" },
+    });
+    this.map.addLayer({
+      id: "unclustered-vehicles",
+      type: "circle",
+      source: "active-vehicle-clusters",
+      filter: ["!", ["has", "point_count"]],
+      paint: {
+        "circle-color": "#2563eb",
+        "circle-radius": 7,
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 2,
+      },
+    });
+    if (!this.clusterHandlersInstalled) {
+      this.map.on("click", "unclustered-vehicles", (event) => {
+        const id = event.features?.[0]?.properties?.id;
+        if (typeof id === "string") this.clusteredSelection?.(id);
+      });
+      this.clusterHandlersInstalled = true;
+    }
+  }
+
+  private clearClusterLayer() {
+    if (!this.map) return;
+    for (const id of ["vehicle-cluster-count", "vehicle-clusters", "unclustered-vehicles"])
+      if (this.map.getLayer(id)) this.map.removeLayer(id);
+    if (this.map.getSource("active-vehicle-clusters"))
+      this.map.removeSource("active-vehicle-clusters");
   }
 
   renderObservedTrace(trace: ObservedTraceLine | null) {
@@ -114,11 +213,7 @@ export class MapLibreProvider implements ZappMapProvider {
 
   fitBounds() {
     if (!this.map || !this.maplibre) return;
-    const coordinates: Array<[number, number]> = [];
-    for (const marker of this.markers.values()) {
-      const lngLat = marker.getLngLat();
-      coordinates.push([lngLat.lng, lngLat.lat]);
-    }
+    const coordinates = this.latestCoordinates;
     if (coordinates.length === 0) return;
     const bounds = coordinates.reduce(
       (next, coordinate) => next.extend(coordinate),

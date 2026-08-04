@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { MobilePlatform } from "@/components/mobile/mobile-platform";
 import { ErrorState, LoadingState } from "@/components/operational-state";
 import { useCompany } from "@/lib/company-context";
@@ -9,7 +9,9 @@ export const Route = createFileRoute("/_authenticated/mobile")({
 });
 
 function MobilePage() {
+  const location = useLocation();
   const { activeCompany, roles, loading } = useCompany();
+  if (location.pathname !== "/mobile") return <Outlet />;
   if (loading)
     return (
       <div className="mx-auto max-w-5xl px-4 py-6">

@@ -234,3 +234,15 @@ export const OPERATIONS_INTELLIGENCE_COMMANDS = [
     permission: "operations_intelligence_analyse",
   },
 ] as const;
+
+export const LIVE_TRACKING_COMMANDS = [
+  { label: "Find vehicle or shipment", path: "/tracking", permission: "tracking_read" },
+  { label: "Open tracking control", path: "/tracking/control", permission: "tracking_read" },
+  {
+    label: "Open hourly fleet tracker",
+    path: "/tracking/customer-care",
+    permission: "tracking_customer_care",
+  },
+  { label: "Open route replay", path: "/tracking/replay", permission: "tracking_replay" },
+  { label: "Open tracking wall", path: "/tracking/wall", permission: "tracking_read" },
+] as const;

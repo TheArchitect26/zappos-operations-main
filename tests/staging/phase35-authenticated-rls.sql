@@ -1,0 +1,17 @@
+BEGIN;
+CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
+SELECT extensions.plan(10);
+CREATE TEMP TABLE phase35_fixture AS SELECT (SELECT company_id FROM public.user_roles WHERE role='admin' LIMIT 1) company_id, (SELECT user_id FROM public.user_roles WHERE role='admin' LIMIT 1) admin_user, (SELECT id FROM public.drivers WHERE user_id=(SELECT user_id FROM public.user_roles WHERE role='admin' LIMIT 1) LIMIT 1) driver_id;
+GRANT SELECT ON phase35_fixture TO authenticated;
+SELECT extensions.ok((SELECT company_id IS NOT NULL FROM phase35_fixture),'staging company exists');
+SELECT extensions.ok((SELECT count(*) FROM pg_tables WHERE schemaname='public' AND tablename='driver_route_packs')=1,'route pack table exists');
+SELECT extensions.ok((SELECT count(*) FROM pg_tables WHERE schemaname='public' AND tablename='driver_offline_queue_items')=1,'offline queue table exists');
+SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE schemaname='public' AND tablename LIKE 'driver_%')>=16,'driver RLS policies exist');
+SELECT extensions.ok(has_table_privilege('authenticated','public.driver_route_packs','SELECT'),'authenticated route pack read privilege');
+SELECT extensions.ok(NOT has_table_privilege('anon','public.driver_route_packs','SELECT'),'anonymous denied');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.driver_route_packs','UPDATE'),'route packs cannot be updated directly');
+SELECT extensions.ok(position('append-only' in lower(pg_get_functiondef('public.driver35_immutable()'::regprocedure)))>0,'driver evidence immutability trigger exists');
+SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='driver_offline_queue_items' AND cmd='INSERT')=1,'offline queue insert policy exists');
+SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='driver_app_devices' AND cmd='INSERT')=1,'device ownership insert policy exists');
+SELECT * FROM extensions.finish();
+ROLLBACK;

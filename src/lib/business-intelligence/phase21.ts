@@ -218,3 +218,20 @@ export const OPERATIONS_INTELLIGENCE_METRIC_CODES = [
   "bottleneck_count",
   "executive_priority",
 ] as const;
+
+/** Persisted Phase 34 metrics consumed by the existing BI builder. */
+export const LIVE_TRACKING_METRIC_CODES = [
+  "active_vehicles",
+  "movement_state_distribution",
+  "offline_rate",
+  "stale_rate",
+  "eta_accuracy",
+  "delay_rate",
+  "route_deviation_rate",
+  "geofence_dwell",
+  "average_stop_duration",
+  "customer_update_compliance",
+  "hourly_tracker_completion",
+  "telemetry_quality",
+  "device_availability",
+] as const;

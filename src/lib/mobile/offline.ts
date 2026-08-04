@@ -115,10 +115,24 @@ export class MobileOfflineEngine {
 
   async markSucceeded(id: string) {
     const items = await this.items();
+    const acknowledgedAt = new Date().toISOString();
+    const target = items.find((item) => item.id === id);
     await this.storage.set(
       QUEUE_KEY,
-      items.filter((item) => item.id !== id),
+      items.map((item) =>
+        item.id === id
+          ? {
+              ...item,
+              state: "succeeded",
+              serverAcknowledgedAt: acknowledgedAt,
+              updatedAt: acknowledgedAt,
+            }
+          : item,
+      ),
     );
+    return target
+      ? { ...target, state: "succeeded" as const, serverAcknowledgedAt: acknowledgedAt }
+      : null;
   }
 
   async markConflict(id: string) {
@@ -133,11 +147,32 @@ export class MobileOfflineEngine {
 
   async ready(environment: SyncEnvironment, now = new Date()) {
     if (!canSynchronize(environment)) return [];
-    return (await this.items()).filter(
+    const ready = (await this.items()).filter(
       (item) =>
         item.state === "queued" ||
         (item.state === "failed" && item.nextRetryAt !== null && new Date(item.nextRetryAt) <= now),
     );
+    const rank = (item: MobileQueueItem) =>
+      ({ safety: 0, trip: 1, pod: 2, message: 3, gps: 4, photo: 5, analytics: 6 })[
+        item.priority ?? "analytics"
+      ];
+    return ready.sort(
+      (a, b) =>
+        rank(a) - rank(b) ||
+        (a.dependencyId ? 1 : 0) - (b.dependencyId ? 1 : 0) ||
+        a.createdAt.localeCompare(b.createdAt),
+    );
+  }
+
+  async summary() {
+    const items = await this.items();
+    return {
+      pending: items.filter((item) => ["queued", "failed"].includes(item.state)).length,
+      conflicts: items.filter((item) => item.state === "conflict").length,
+      failed: items.filter((item) => item.state === "failed").length,
+      acknowledged: items.filter((item) => item.state === "succeeded").length,
+      allSynced: items.length === 0 || items.every((item) => item.state === "succeeded"),
+    };
   }
 
   async saveDraft<T>(companyId: string, userId: string, kind: string, id: string, value: T) {

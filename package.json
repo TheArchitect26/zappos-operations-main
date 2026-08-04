@@ -21,6 +21,7 @@
     "test:simulation:security": "vitest run tests/simulation/security.test.ts",
     "test:simulation:performance": "vitest run tests/simulation/performance.test.ts",
     "test:simulation:report": "vitest run tests/simulation/report.test.ts --reporter=verbose",
+    "verify:types": "node scripts/verify-supabase-types.mjs",
     "format": "prettier --write ."
   },
   "dependencies": {

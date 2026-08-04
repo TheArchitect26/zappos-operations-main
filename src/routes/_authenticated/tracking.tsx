@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import type { ComponentType } from "react";
 import {
@@ -46,11 +46,17 @@ import { Button } from "@/components/ui/button";
 import { EmptyState, ErrorState, LoadingState } from "@/components/operational-state";
 import { StatusBadge } from "@/components/ui/status-badge-detailed";
 import type { Database } from "@/integrations/supabase/types";
+import { TrackingPlatformNav } from "@/components/tracking/tracking-platform-workspace";
 
 export const Route = createFileRoute("/_authenticated/tracking")({
   head: () => ({ meta: [{ title: "Tracking — ZappOS" }] }),
-  component: TrackingPage,
+  component: TrackingRoute,
 });
+
+function TrackingRoute() {
+  const location = useLocation();
+  return location.pathname === "/tracking" ? <TrackingPage /> : <Outlet />;
+}
 
 type Vehicle = Database["public"]["Tables"]["vehicles"]["Row"];
 type Driver = Database["public"]["Tables"]["drivers"]["Row"];
@@ -268,7 +274,18 @@ function TrackingPage() {
     latestTelemetryAt: null,
   });
 
-  const canReadHealth = hasAnyRole(["admin", "fleet_manager", "dispatcher", "viewer"]);
+  const canReadHealth = hasAnyRole([
+    "admin",
+    "fleet_controller",
+    "fleet_manager",
+    "dispatcher",
+    "operations_manager",
+    "customer_care",
+    "supervisor",
+    "executive",
+    "managing_director",
+    "viewer",
+  ]);
   const activeCompanyId = activeCompany?.id;
 
   const logDispatcherAction = useCallback(
@@ -874,6 +891,8 @@ function TrackingPage() {
           predictions.
         </p>
       </div>
+
+      <TrackingPlatformNav />
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         <Metric icon={Radio} label="Active trips" value={activeSessions.length} />
