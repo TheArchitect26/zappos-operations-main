@@ -22,7 +22,7 @@ function CustomerSettingsPage() {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      setPreferences(await portalApi.module("preferences"));
+      setPreferences(await portalApi.visibilityPreferences());
       setLoading(false);
     };
     void load();
@@ -30,7 +30,7 @@ function CustomerSettingsPage() {
 
   const save = async () => {
     if (!session?.user?.id || !preferences) return;
-    await portalApi.action("update_preferences", preferences);
+    await portalApi.visibilityAction("update_preferences", preferences);
   };
 
   return (
@@ -51,17 +51,18 @@ function CustomerSettingsPage() {
         <Card className="border-white/10 bg-slate-900/70 p-5">
           <div className="flex items-center gap-2">
             <SettingsIcon className="h-4 w-4 text-slate-400" />
-            <p className="font-medium text-white">Email-ready notifications</p>
+            <p className="font-medium text-white">Proactive delivery notifications</p>
           </div>
           <p className="mt-2 text-sm text-slate-400">
-            Preferences are stored only. Email delivery is not configured in this portal.
+            Channels execute only through configured Zapp Connect providers. A preference never
+            counts as a delivered notification.
           </p>
           <div className="mt-4 space-y-3">
             {[
-              ["shipment_updates", "Shipment updates"],
-              ["delivery_updates", "Delivery"],
-              ["delay_updates", "Delay updates"],
-              ["proof_updates", "Proof available"],
+              ["appointment_reminders", "Appointment reminders"],
+              ["delivery_reminders", "Delivery reminders"],
+              ["pod_available", "POD available"],
+              ["support_updates", "Support updates"],
             ].map(([key, label]) => (
               <label key={key} className="flex items-center justify-between text-sm text-slate-200">
                 <span>{label}</span>

@@ -49,4 +49,12 @@ export default tseslint.config(
     },
   },
   eslintPluginPrettier,
+  {
+    // Supabase owns this generated artifact. Keep parsing/type-aware ESLint
+    // coverage, but do not require generator output to match repository prose formatting.
+    files: ["src/integrations/supabase/types.ts"],
+    rules: {
+      "prettier/prettier": "off",
+    },
+  },
 );

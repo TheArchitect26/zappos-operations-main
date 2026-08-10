@@ -2,7 +2,11 @@ import { Card } from "@/components/ui/card";
 import { supabase } from "@/integrations/supabase/client";
 import { useEffect, useState } from "react";
 export function YardSubview({ title }: { title: string }) {
-  const [latest, setLatest] = useState<{ state: string; registration: string; freshness: string } | null>(null);
+  const [latest, setLatest] = useState<{
+    state: string;
+    registration: string;
+    freshness: string;
+  } | null>(null);
   useEffect(() => {
     let active = true;
     void supabase
@@ -20,7 +24,9 @@ export function YardSubview({ title }: { title: string }) {
           freshness: String(payload.occurred_at ?? data.created_at),
         });
       });
-    return () => { active = false; };
+    return () => {
+      active = false;
+    };
   }, []);
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 lg:px-8">
@@ -46,8 +52,12 @@ export function YardSubview({ title }: { title: string }) {
         </div>
         {latest ? (
           <div className="mt-4 rounded border p-3" data-testid="yard-persisted-state">
-            <p className="text-xs uppercase text-muted-foreground">Latest authorised yard evidence</p>
-            <p className="mt-1 font-medium">{latest.registration}: {latest.state}</p>
+            <p className="text-xs uppercase text-muted-foreground">
+              Latest authorised yard evidence
+            </p>
+            <p className="mt-1 font-medium">
+              {latest.registration}: {latest.state}
+            </p>
             <p className="mt-1 text-xs text-muted-foreground">Freshness: {latest.freshness}</p>
           </div>
         ) : null}

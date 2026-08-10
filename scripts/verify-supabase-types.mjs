@@ -53,10 +53,20 @@ const required = [
   "yard_driver_instructions",
   "yard_handover_reports",
   "yard_audit_logs",
+  "customer_delivery_preferences",
+  "customer_eta_change_events",
+  "customer_delivery_windows",
+  "customer_milestone_preferences",
+  "customer_safe_exception_mappings",
+  "customer_tracking_link_records",
+  "customer_delivery_feedback",
+  "customer_delivery_issue_requests",
+  "customer_experience_metrics",
+  "customer_audit_logs",
 ];
 const missing = required.filter((name) => !types.includes(`${name}:`));
 if (missing.length) {
   console.error(`Generated Supabase types are missing: ${missing.join(", ")}`);
   process.exit(1);
 }
-console.log(`Supabase type coverage OK (${required.length} Phase 36/36.5/37 tables).`);
+console.log(`Supabase type coverage OK (${required.length} Phase 36/36.5/37/38 tables).`);

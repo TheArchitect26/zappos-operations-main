@@ -13,21 +13,21 @@ function CustomerDashboard() {
   const [dashboard, setDashboard] = useState<any>(null);
   useEffect(() => {
     if (!session?.user.id) return;
-    void portalApi.dashboard().then(setDashboard);
+    void portalApi.visibilityDashboard().then(setDashboard);
   }, [session?.user.id]);
   const cards = [
     ["Active shipments", dashboard?.active_shipments ?? 0],
     ["Deliveries today", dashboard?.deliveries_today ?? 0],
-    ["Vehicles en route", dashboard?.en_route ?? 0],
-    ["Delayed shipments", dashboard?.delayed ?? 0],
-    ["Completed deliveries", dashboard?.completed ?? 0],
-    ["Outstanding invoices", dashboard?.outstanding_invoices ?? 0],
-    ["POD awaiting review", dashboard?.pod_awaiting_review ?? 0],
-    ["Active quotes", dashboard?.active_quotes ?? 0],
-    ["Support tickets", dashboard?.support_tickets ?? 0],
-    ["Notifications", dashboard?.notifications ?? 0],
+    ["Delayed shipments", dashboard?.delayed_shipments ?? 0],
+    ["Arriving soon", dashboard?.arriving_soon ?? 0],
+    ["Awaiting your action", dashboard?.awaiting_customer_action ?? 0],
+    ["PODs available", dashboard?.pods_available ?? 0],
+    ["Open support requests", dashboard?.open_support_requests ?? 0],
+    ["New messages", dashboard?.new_messages ?? 0],
+    ["Upcoming appointments", dashboard?.upcoming_appointments ?? 0],
+    ["Recent deliveries", dashboard?.recent_deliveries?.length ?? 0],
   ];
-  const jobs = dashboard?.recent_shipments ?? [];
+  const jobs = dashboard?.recent_deliveries ?? [];
   return (
     <div className="space-y-5">
       <div>

@@ -63,9 +63,7 @@ describe("Phase 37 deterministic in-process performance", () => {
       readiness: 100 - (index % 25),
     }));
     const before = structuredClone(docks);
-    const { result, elapsedMs } = measured("100 dock recommendation", () =>
-      recommendDock(docks),
-    );
+    const { result, elapsedMs } = measured("100 dock recommendation", () => recommendDock(docks));
     expect(result.length).toBeGreaterThan(0);
     expect(docks).toEqual(before);
     expect(elapsedMs).toBeLessThan(100);

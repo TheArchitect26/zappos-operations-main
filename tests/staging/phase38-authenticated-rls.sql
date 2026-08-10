@@ -1,0 +1,32 @@
+BEGIN;
+CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
+SELECT extensions.plan(25);
+
+SELECT extensions.is((SELECT count(*)::integer FROM pg_tables WHERE schemaname='public' AND tablename LIKE 'customer_%' AND tablename IN ('customer_delivery_preferences','customer_eta_change_events','customer_delivery_windows','customer_milestone_preferences','customer_safe_exception_mappings','customer_tracking_link_records','customer_delivery_feedback','customer_delivery_issue_requests','customer_experience_metrics','customer_audit_logs')),10,'Phase 38 tables exist');
+SELECT extensions.ok(NOT EXISTS(SELECT 1 FROM pg_class c JOIN pg_namespace n ON n.oid=c.relnamespace WHERE n.nspname='public' AND c.relname IN ('customer_delivery_preferences','customer_eta_change_events','customer_delivery_windows','customer_milestone_preferences','customer_safe_exception_mappings','customer_tracking_link_records','customer_delivery_feedback','customer_delivery_issue_requests','customer_experience_metrics','customer_audit_logs') AND NOT c.relrowsecurity),'all Phase 38 tables have RLS');
+SELECT extensions.is((SELECT count(*)::integer FROM pg_policies WHERE schemaname='public' AND tablename IN ('customer_delivery_preferences','customer_eta_change_events','customer_delivery_windows','customer_milestone_preferences','customer_safe_exception_mappings','customer_tracking_link_records','customer_delivery_feedback','customer_delivery_issue_requests','customer_experience_metrics','customer_audit_logs')),19,'the reviewed Phase 38 policy set exists');
+SELECT extensions.ok(NOT EXISTS(SELECT 1 FROM information_schema.table_privileges WHERE table_schema='public' AND table_name LIKE 'customer_%' AND table_name IN ('customer_delivery_preferences','customer_eta_change_events','customer_delivery_windows','customer_milestone_preferences','customer_safe_exception_mappings','customer_tracking_link_records','customer_delivery_feedback','customer_delivery_issue_requests','customer_experience_metrics','customer_audit_logs') AND grantee IN ('PUBLIC','anon')),'PUBLIC and anon table grants denied');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.customer_eta_change_events','INSERT,UPDATE,DELETE'),'raw ETA evidence cannot be mutated directly');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.customer_delivery_windows','INSERT,UPDATE,DELETE'),'delivery windows cannot be mutated directly');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.customer_audit_logs','INSERT,UPDATE,DELETE'),'audit history cannot be mutated directly');
+SELECT extensions.ok((SELECT count(*) FROM pg_trigger WHERE tgname LIKE 'customer_eta_change_events_immutable')=1,'ETA history is immutable');
+SELECT extensions.ok((SELECT count(*) FROM pg_trigger WHERE tgname LIKE 'customer_delivery_windows_immutable')=1,'window evidence is immutable');
+SELECT extensions.ok((SELECT count(*) FROM pg_trigger WHERE tgname LIKE 'customer_audit_logs_immutable')=1,'audit history is immutable');
+SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='customer_eta_change_events' AND policyname LIKE '%customer_read')=0,'raw internal ETA reasons have no customer table policy');
+SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='customer_delivery_preferences' AND qual LIKE '%auth.uid%')=1,'preferences are user scoped');
+SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='customer_delivery_feedback' AND qual LIKE '%auth.uid%')=1,'feedback is user scoped');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_dashboard()','EXECUTE'),'dashboard projection is authenticated');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_shipments(integer,integer)','EXECUTE'),'bounded shipment projection is authenticated');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_shipment(uuid)','EXECUTE'),'shipment projection is authenticated');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_preferences()','EXECUTE'),'preference projection is authenticated');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_analytics()','EXECUTE'),'analytics projection is authenticated');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_action(text,jsonb)','EXECUTE'),'controlled action boundary is authenticated');
+SELECT extensions.ok(has_function_privilege('authenticated','public.portal38_zip_answer(text)','EXECUTE'),'ZIP boundary is authenticated');
+SELECT extensions.ok(NOT has_function_privilege('anon','public.portal38_shipment(uuid)','EXECUTE'),'anonymous shipment access denied');
+SELECT extensions.ok(NOT has_function_privilege('anon','public.portal38_action(text,jsonb)','EXECUTE'),'anonymous actions denied');
+SELECT extensions.ok(NOT EXISTS(SELECT 1 FROM pg_policies WHERE tablename='customer_tracking_link_records' AND cmd IN ('INSERT','UPDATE','DELETE')),'tracking links require controlled RPC');
+SELECT extensions.ok((SELECT count(*) FROM pg_proc WHERE proname='portal38_customer_care' AND prosecdef)=1,'Customer Care handoff is server-authorized');
+SELECT extensions.ok((SELECT rolbypassrls FROM pg_roles WHERE rolname='service_role'),'service role remains the intentional server-only bypass');
+
+SELECT * FROM extensions.finish();
+ROLLBACK;

@@ -544,8 +544,7 @@ export function transformYardReplay<T extends { occurredAt: string; sequence: nu
   events: readonly T[],
 ) {
   return [...events].sort(
-    (a, b) =>
-      Date.parse(a.occurredAt) - Date.parse(b.occurredAt) || a.sequence - b.sequence,
+    (a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt) || a.sequence - b.sequence,
   );
 }
 

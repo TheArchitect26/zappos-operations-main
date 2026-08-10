@@ -18,19 +18,25 @@ import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as CustomerPortalIndexRouteImport } from './routes/customer-portal/index'
 import { Route as ShareTokenRouteImport } from './routes/share/$token'
+import { Route as CustomerPortalTrackingRouteImport } from './routes/customer-portal/tracking'
 import { Route as CustomerPortalShipmentsRouteImport } from './routes/customer-portal/shipments'
 import { Route as CustomerPortalSettingsRouteImport } from './routes/customer-portal/settings'
 import { Route as CustomerPortalSecurityRouteImport } from './routes/customer-portal/security'
 import { Route as CustomerPortalRequestsRouteImport } from './routes/customer-portal/requests'
 import { Route as CustomerPortalQuotesRouteImport } from './routes/customer-portal/quotes'
 import { Route as CustomerPortalProfileRouteImport } from './routes/customer-portal/profile'
+import { Route as CustomerPortalPreferencesRouteImport } from './routes/customer-portal/preferences'
 import { Route as CustomerPortalNotificationsRouteImport } from './routes/customer-portal/notifications'
 import { Route as CustomerPortalMessagesRouteImport } from './routes/customer-portal/messages'
 import { Route as CustomerPortalInvoicesRouteImport } from './routes/customer-portal/invoices'
+import { Route as CustomerPortalExceptionsRouteImport } from './routes/customer-portal/exceptions'
 import { Route as CustomerPortalDocumentsRouteImport } from './routes/customer-portal/documents'
+import { Route as CustomerPortalDeliveriesRouteImport } from './routes/customer-portal/deliveries'
 import { Route as CustomerPortalAssistantRouteImport } from './routes/customer-portal/assistant'
+import { Route as CustomerPortalAppointmentsRouteImport } from './routes/customer-portal/appointments'
 import { Route as CustomerPortalApiRouteImport } from './routes/customer-portal/api'
 import { Route as CustomerPortalAnalyticsRouteImport } from './routes/customer-portal/analytics'
+import { Route as CustomerPortalActionCentreRouteImport } from './routes/customer-portal/action-centre'
 import { Route as AuthenticatedYardRouteImport } from './routes/_authenticated/yard'
 import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authenticated/warehouse'
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
@@ -158,6 +164,11 @@ const ShareTokenRoute = ShareTokenRouteImport.update({
   path: '/share/$token',
   getParentRoute: () => rootRouteImport,
 } as any)
+const CustomerPortalTrackingRoute = CustomerPortalTrackingRouteImport.update({
+  id: '/tracking',
+  path: '/tracking',
+  getParentRoute: () => CustomerPortalRoute,
+} as any)
 const CustomerPortalShipmentsRoute = CustomerPortalShipmentsRouteImport.update({
   id: '/shipments',
   path: '/shipments',
@@ -188,6 +199,12 @@ const CustomerPortalProfileRoute = CustomerPortalProfileRouteImport.update({
   path: '/profile',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalPreferencesRoute =
+  CustomerPortalPreferencesRouteImport.update({
+    id: '/preferences',
+    path: '/preferences',
+    getParentRoute: () => CustomerPortalRoute,
+  } as any)
 const CustomerPortalNotificationsRoute =
   CustomerPortalNotificationsRouteImport.update({
     id: '/notifications',
@@ -204,16 +221,34 @@ const CustomerPortalInvoicesRoute = CustomerPortalInvoicesRouteImport.update({
   path: '/invoices',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalExceptionsRoute =
+  CustomerPortalExceptionsRouteImport.update({
+    id: '/exceptions',
+    path: '/exceptions',
+    getParentRoute: () => CustomerPortalRoute,
+  } as any)
 const CustomerPortalDocumentsRoute = CustomerPortalDocumentsRouteImport.update({
   id: '/documents',
   path: '/documents',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalDeliveriesRoute =
+  CustomerPortalDeliveriesRouteImport.update({
+    id: '/deliveries',
+    path: '/deliveries',
+    getParentRoute: () => CustomerPortalRoute,
+  } as any)
 const CustomerPortalAssistantRoute = CustomerPortalAssistantRouteImport.update({
   id: '/assistant',
   path: '/assistant',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalAppointmentsRoute =
+  CustomerPortalAppointmentsRouteImport.update({
+    id: '/appointments',
+    path: '/appointments',
+    getParentRoute: () => CustomerPortalRoute,
+  } as any)
 const CustomerPortalApiRoute = CustomerPortalApiRouteImport.update({
   id: '/api',
   path: '/api',
@@ -224,6 +259,12 @@ const CustomerPortalAnalyticsRoute = CustomerPortalAnalyticsRouteImport.update({
   path: '/analytics',
   getParentRoute: () => CustomerPortalRoute,
 } as any)
+const CustomerPortalActionCentreRoute =
+  CustomerPortalActionCentreRouteImport.update({
+    id: '/action-centre',
+    path: '/action-centre',
+    getParentRoute: () => CustomerPortalRoute,
+  } as any)
 const AuthenticatedYardRoute = AuthenticatedYardRouteImport.update({
   id: '/yard',
   path: '/yard',
@@ -733,19 +774,25 @@ export interface FileRoutesByFullPath {
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/yard': typeof AuthenticatedYardRouteWithChildren
+  '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
+  '/customer-portal/appointments': typeof CustomerPortalAppointmentsRoute
   '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
+  '/customer-portal/deliveries': typeof CustomerPortalDeliveriesRoute
   '/customer-portal/documents': typeof CustomerPortalDocumentsRoute
+  '/customer-portal/exceptions': typeof CustomerPortalExceptionsRoute
   '/customer-portal/invoices': typeof CustomerPortalInvoicesRoute
   '/customer-portal/messages': typeof CustomerPortalMessagesRoute
   '/customer-portal/notifications': typeof CustomerPortalNotificationsRoute
+  '/customer-portal/preferences': typeof CustomerPortalPreferencesRoute
   '/customer-portal/profile': typeof CustomerPortalProfileRoute
   '/customer-portal/quotes': typeof CustomerPortalQuotesRoute
   '/customer-portal/requests': typeof CustomerPortalRequestsRoute
   '/customer-portal/security': typeof CustomerPortalSecurityRoute
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
+  '/customer-portal/tracking': typeof CustomerPortalTrackingRoute
   '/share/$token': typeof ShareTokenRoute
   '/customer-portal/': typeof CustomerPortalIndexRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
@@ -837,19 +884,25 @@ export interface FileRoutesByTo {
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/yard': typeof AuthenticatedYardRouteWithChildren
+  '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
+  '/customer-portal/appointments': typeof CustomerPortalAppointmentsRoute
   '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
+  '/customer-portal/deliveries': typeof CustomerPortalDeliveriesRoute
   '/customer-portal/documents': typeof CustomerPortalDocumentsRoute
+  '/customer-portal/exceptions': typeof CustomerPortalExceptionsRoute
   '/customer-portal/invoices': typeof CustomerPortalInvoicesRoute
   '/customer-portal/messages': typeof CustomerPortalMessagesRoute
   '/customer-portal/notifications': typeof CustomerPortalNotificationsRoute
+  '/customer-portal/preferences': typeof CustomerPortalPreferencesRoute
   '/customer-portal/profile': typeof CustomerPortalProfileRoute
   '/customer-portal/quotes': typeof CustomerPortalQuotesRoute
   '/customer-portal/requests': typeof CustomerPortalRequestsRoute
   '/customer-portal/security': typeof CustomerPortalSecurityRoute
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
+  '/customer-portal/tracking': typeof CustomerPortalTrackingRoute
   '/share/$token': typeof ShareTokenRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/brain/operations': typeof AuthenticatedBrainOperationsRoute
@@ -943,19 +996,25 @@ export interface FileRoutesById {
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
   '/_authenticated/warehouse': typeof AuthenticatedWarehouseRoute
   '/_authenticated/yard': typeof AuthenticatedYardRouteWithChildren
+  '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
+  '/customer-portal/appointments': typeof CustomerPortalAppointmentsRoute
   '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
+  '/customer-portal/deliveries': typeof CustomerPortalDeliveriesRoute
   '/customer-portal/documents': typeof CustomerPortalDocumentsRoute
+  '/customer-portal/exceptions': typeof CustomerPortalExceptionsRoute
   '/customer-portal/invoices': typeof CustomerPortalInvoicesRoute
   '/customer-portal/messages': typeof CustomerPortalMessagesRoute
   '/customer-portal/notifications': typeof CustomerPortalNotificationsRoute
+  '/customer-portal/preferences': typeof CustomerPortalPreferencesRoute
   '/customer-portal/profile': typeof CustomerPortalProfileRoute
   '/customer-portal/quotes': typeof CustomerPortalQuotesRoute
   '/customer-portal/requests': typeof CustomerPortalRequestsRoute
   '/customer-portal/security': typeof CustomerPortalSecurityRoute
   '/customer-portal/settings': typeof CustomerPortalSettingsRoute
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
+  '/customer-portal/tracking': typeof CustomerPortalTrackingRoute
   '/share/$token': typeof ShareTokenRoute
   '/customer-portal/': typeof CustomerPortalIndexRoute
   '/_authenticated/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
@@ -1049,19 +1108,25 @@ export interface FileRouteTypes {
     | '/vehicles'
     | '/warehouse'
     | '/yard'
+    | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
+    | '/customer-portal/appointments'
     | '/customer-portal/assistant'
+    | '/customer-portal/deliveries'
     | '/customer-portal/documents'
+    | '/customer-portal/exceptions'
     | '/customer-portal/invoices'
     | '/customer-portal/messages'
     | '/customer-portal/notifications'
+    | '/customer-portal/preferences'
     | '/customer-portal/profile'
     | '/customer-portal/quotes'
     | '/customer-portal/requests'
     | '/customer-portal/security'
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
+    | '/customer-portal/tracking'
     | '/share/$token'
     | '/customer-portal/'
     | '/brain/evaluation'
@@ -1153,19 +1218,25 @@ export interface FileRouteTypes {
     | '/vehicles'
     | '/warehouse'
     | '/yard'
+    | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
+    | '/customer-portal/appointments'
     | '/customer-portal/assistant'
+    | '/customer-portal/deliveries'
     | '/customer-portal/documents'
+    | '/customer-portal/exceptions'
     | '/customer-portal/invoices'
     | '/customer-portal/messages'
     | '/customer-portal/notifications'
+    | '/customer-portal/preferences'
     | '/customer-portal/profile'
     | '/customer-portal/quotes'
     | '/customer-portal/requests'
     | '/customer-portal/security'
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
+    | '/customer-portal/tracking'
     | '/share/$token'
     | '/brain/evaluation'
     | '/brain/operations'
@@ -1258,19 +1329,25 @@ export interface FileRouteTypes {
     | '/_authenticated/vehicles'
     | '/_authenticated/warehouse'
     | '/_authenticated/yard'
+    | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
+    | '/customer-portal/appointments'
     | '/customer-portal/assistant'
+    | '/customer-portal/deliveries'
     | '/customer-portal/documents'
+    | '/customer-portal/exceptions'
     | '/customer-portal/invoices'
     | '/customer-portal/messages'
     | '/customer-portal/notifications'
+    | '/customer-portal/preferences'
     | '/customer-portal/profile'
     | '/customer-portal/quotes'
     | '/customer-portal/requests'
     | '/customer-portal/security'
     | '/customer-portal/settings'
     | '/customer-portal/shipments'
+    | '/customer-portal/tracking'
     | '/share/$token'
     | '/customer-portal/'
     | '/_authenticated/brain/evaluation'
@@ -1396,6 +1473,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ShareTokenRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/customer-portal/tracking': {
+      id: '/customer-portal/tracking'
+      path: '/tracking'
+      fullPath: '/customer-portal/tracking'
+      preLoaderRoute: typeof CustomerPortalTrackingRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
     '/customer-portal/shipments': {
       id: '/customer-portal/shipments'
       path: '/shipments'
@@ -1438,6 +1522,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalProfileRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
+    '/customer-portal/preferences': {
+      id: '/customer-portal/preferences'
+      path: '/preferences'
+      fullPath: '/customer-portal/preferences'
+      preLoaderRoute: typeof CustomerPortalPreferencesRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
     '/customer-portal/notifications': {
       id: '/customer-portal/notifications'
       path: '/notifications'
@@ -1459,6 +1550,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalInvoicesRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
+    '/customer-portal/exceptions': {
+      id: '/customer-portal/exceptions'
+      path: '/exceptions'
+      fullPath: '/customer-portal/exceptions'
+      preLoaderRoute: typeof CustomerPortalExceptionsRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
     '/customer-portal/documents': {
       id: '/customer-portal/documents'
       path: '/documents'
@@ -1466,11 +1564,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof CustomerPortalDocumentsRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
+    '/customer-portal/deliveries': {
+      id: '/customer-portal/deliveries'
+      path: '/deliveries'
+      fullPath: '/customer-portal/deliveries'
+      preLoaderRoute: typeof CustomerPortalDeliveriesRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
     '/customer-portal/assistant': {
       id: '/customer-portal/assistant'
       path: '/assistant'
       fullPath: '/customer-portal/assistant'
       preLoaderRoute: typeof CustomerPortalAssistantRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/appointments': {
+      id: '/customer-portal/appointments'
+      path: '/appointments'
+      fullPath: '/customer-portal/appointments'
+      preLoaderRoute: typeof CustomerPortalAppointmentsRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
     '/customer-portal/api': {
@@ -1485,6 +1597,13 @@ declare module '@tanstack/react-router' {
       path: '/analytics'
       fullPath: '/customer-portal/analytics'
       preLoaderRoute: typeof CustomerPortalAnalyticsRouteImport
+      parentRoute: typeof CustomerPortalRoute
+    }
+    '/customer-portal/action-centre': {
+      id: '/customer-portal/action-centre'
+      path: '/action-centre'
+      fullPath: '/customer-portal/action-centre'
+      preLoaderRoute: typeof CustomerPortalActionCentreRouteImport
       parentRoute: typeof CustomerPortalRoute
     }
     '/_authenticated/yard': {
@@ -2332,36 +2451,48 @@ const CustomerPortalShipmentsRouteWithChildren =
   )
 
 interface CustomerPortalRouteChildren {
+  CustomerPortalActionCentreRoute: typeof CustomerPortalActionCentreRoute
   CustomerPortalAnalyticsRoute: typeof CustomerPortalAnalyticsRoute
   CustomerPortalApiRoute: typeof CustomerPortalApiRoute
+  CustomerPortalAppointmentsRoute: typeof CustomerPortalAppointmentsRoute
   CustomerPortalAssistantRoute: typeof CustomerPortalAssistantRoute
+  CustomerPortalDeliveriesRoute: typeof CustomerPortalDeliveriesRoute
   CustomerPortalDocumentsRoute: typeof CustomerPortalDocumentsRoute
+  CustomerPortalExceptionsRoute: typeof CustomerPortalExceptionsRoute
   CustomerPortalInvoicesRoute: typeof CustomerPortalInvoicesRoute
   CustomerPortalMessagesRoute: typeof CustomerPortalMessagesRoute
   CustomerPortalNotificationsRoute: typeof CustomerPortalNotificationsRoute
+  CustomerPortalPreferencesRoute: typeof CustomerPortalPreferencesRoute
   CustomerPortalProfileRoute: typeof CustomerPortalProfileRoute
   CustomerPortalQuotesRoute: typeof CustomerPortalQuotesRoute
   CustomerPortalRequestsRoute: typeof CustomerPortalRequestsRoute
   CustomerPortalSecurityRoute: typeof CustomerPortalSecurityRoute
   CustomerPortalSettingsRoute: typeof CustomerPortalSettingsRoute
   CustomerPortalShipmentsRoute: typeof CustomerPortalShipmentsRouteWithChildren
+  CustomerPortalTrackingRoute: typeof CustomerPortalTrackingRoute
   CustomerPortalIndexRoute: typeof CustomerPortalIndexRoute
 }
 
 const CustomerPortalRouteChildren: CustomerPortalRouteChildren = {
+  CustomerPortalActionCentreRoute: CustomerPortalActionCentreRoute,
   CustomerPortalAnalyticsRoute: CustomerPortalAnalyticsRoute,
   CustomerPortalApiRoute: CustomerPortalApiRoute,
+  CustomerPortalAppointmentsRoute: CustomerPortalAppointmentsRoute,
   CustomerPortalAssistantRoute: CustomerPortalAssistantRoute,
+  CustomerPortalDeliveriesRoute: CustomerPortalDeliveriesRoute,
   CustomerPortalDocumentsRoute: CustomerPortalDocumentsRoute,
+  CustomerPortalExceptionsRoute: CustomerPortalExceptionsRoute,
   CustomerPortalInvoicesRoute: CustomerPortalInvoicesRoute,
   CustomerPortalMessagesRoute: CustomerPortalMessagesRoute,
   CustomerPortalNotificationsRoute: CustomerPortalNotificationsRoute,
+  CustomerPortalPreferencesRoute: CustomerPortalPreferencesRoute,
   CustomerPortalProfileRoute: CustomerPortalProfileRoute,
   CustomerPortalQuotesRoute: CustomerPortalQuotesRoute,
   CustomerPortalRequestsRoute: CustomerPortalRequestsRoute,
   CustomerPortalSecurityRoute: CustomerPortalSecurityRoute,
   CustomerPortalSettingsRoute: CustomerPortalSettingsRoute,
   CustomerPortalShipmentsRoute: CustomerPortalShipmentsRouteWithChildren,
+  CustomerPortalTrackingRoute: CustomerPortalTrackingRoute,
   CustomerPortalIndexRoute: CustomerPortalIndexRoute,
 }
 

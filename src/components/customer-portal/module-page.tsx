@@ -234,7 +234,7 @@ function ConversationForm({ onCreated }: { onCreated: () => Promise<void> }) {
 
 export function PortalAnalyticsPage() {
   const [data, setData] = useState<Record<string, number | null> | null>(null);
-  useEffect(() => void portalApi.analytics().then(setData), []);
+  useEffect(() => void portalApi.visibilityAnalytics().then(setData), []);
   return (
     <PortalPageShell
       eyebrow="Customer analytics"
@@ -265,7 +265,7 @@ export function PortalAssistantPage() {
     event.preventDefault();
     setBusy(true);
     try {
-      setAnswer(await portalApi.askZip(question));
+      setAnswer(await portalApi.askVisibilityZip(question));
     } finally {
       setBusy(false);
     }
@@ -298,12 +298,21 @@ export function PortalAssistantPage() {
             </div>
             <p className="mt-3 text-sm text-slate-200">{answer.answer}</p>
             <div className="mt-3 space-y-1">
-              {answer.citations.map((citation: any) => (
-                <p key={citation.id} className="text-xs text-emerald-300">
-                  Citation: {citation.type} · {citation.label}
+              {answer.citations.map((citation: any, index: number) => (
+                <p
+                  key={`${citation.type}-${citation.id ?? index}`}
+                  className="text-xs text-emerald-300"
+                >
+                  Citation: {citation.type} · freshness {citation.freshness ?? "unavailable"}
                 </p>
               ))}
             </div>
+            <p className="mt-3 text-xs text-slate-500">
+              Freshness:{" "}
+              {answer.freshness ? new Date(answer.freshness).toLocaleString() : "unavailable"}
+              {answer.unknowns?.length ? ` · Unknown: ${answer.unknowns.join(", ")}` : ""}
+              {answer.read_only ? " · Read-only" : ""}
+            </p>
           </div>
         ) : null}
       </Card>
