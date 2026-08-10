@@ -63,10 +63,28 @@ const required = [
   "customer_delivery_issue_requests",
   "customer_experience_metrics",
   "customer_audit_logs",
+  "predictive_vehicle_assessments",
+  "predictive_subsystem_assessments",
+  "predictive_maintenance_forecasts",
+  "predictive_recurrence_findings",
+  "predictive_fuel_anomalies",
+  "predictive_tyre_assessments",
+  "predictive_battery_assessments",
+  "predictive_engine_assessments",
+  "predictive_driver_risk_trends",
+  "predictive_route_risk_assessments",
+  "predictive_downtime_estimates",
+  "predictive_service_demand_forecasts",
+  "predictive_parts_demand_forecasts",
+  "predictive_device_health",
+  "predictive_eta_calibration_proposals",
+  "predictive_outcomes",
+  "predictive_feedback",
+  "predictive_audit_logs",
 ];
 const missing = required.filter((name) => !types.includes(`${name}:`));
 if (missing.length) {
   console.error(`Generated Supabase types are missing: ${missing.join(", ")}`);
   process.exit(1);
 }
-console.log(`Supabase type coverage OK (${required.length} Phase 36/36.5/37/38 tables).`);
+console.log(`Supabase type coverage OK (${required.length} Phase 36/36.5/37/38/39 tables).`);

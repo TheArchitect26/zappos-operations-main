@@ -11,6 +11,7 @@ const stagingE2E =
   process.env.ZAPPOS_RUN_PHASE33_STAGING_E2E === "true" ||
   process.env.ZAPPOS_RUN_PHASE34_STAGING_E2E === "true";
 const phase38StagingE2E = process.env.ZAPPOS_RUN_PHASE38_STAGING_E2E === "true";
+const phase39StagingE2E = process.env.ZAPPOS_RUN_PHASE39_STAGING_E2E === "true";
 const phase35StagingE2E = process.env.ZAPPOS_RUN_PHASE35_STAGING_E2E === "true";
 
 const publicUse = {
@@ -29,6 +30,7 @@ const stagingTests = [
   /phase34-authenticated-staging\.spec\.ts/,
   /phase35-authenticated-staging\.spec\.ts/,
   /phase38-customer-staging\.spec\.ts/,
+  /phase39-predictive\.spec\.ts/,
 ];
 
 export default defineConfig({
@@ -86,11 +88,11 @@ export default defineConfig({
       NITRO_HOST: "127.0.0.1",
       NITRO_PORT: String(port),
       VITE_SUPABASE_URL:
-        stagingE2E || phase35StagingE2E || phase38StagingE2E
+        stagingE2E || phase35StagingE2E || phase38StagingE2E || phase39StagingE2E
           ? process.env.SUPABASE_URL || ""
           : "http://127.0.0.1:54321",
       VITE_SUPABASE_PUBLISHABLE_KEY:
-        stagingE2E || phase35StagingE2E || phase38StagingE2E
+        stagingE2E || phase35StagingE2E || phase38StagingE2E || phase39StagingE2E
           ? process.env.SUPABASE_PUBLISHABLE_KEY || ""
           : "sb_publishable_test",
     },

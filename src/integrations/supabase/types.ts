@@ -20506,6 +20506,1656 @@ export type Database = {
           },
         ]
       }
+      predictive_audit_logs: {
+        Row: {
+          actor_id: string | null
+          company_id: string
+          created_at: string
+          entity_id: string | null
+          entity_type: string
+          event_type: string
+          evidence: Json
+          id: string
+        }
+        Insert: {
+          actor_id?: string | null
+          company_id: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type: string
+          event_type: string
+          evidence?: Json
+          id?: string
+        }
+        Update: {
+          actor_id?: string | null
+          company_id?: string
+          created_at?: string
+          entity_id?: string | null
+          entity_type?: string
+          event_type?: string
+          evidence?: Json
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_audit_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_battery_assessments: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_battery_assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_battery_assessments_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_battery_assessments_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_device_health: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_device_health_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_device_health_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_device_health_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_downtime_estimates: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_downtime_estimates_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_downtime_estimates_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_downtime_estimates_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_driver_risk_trends: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_driver_risk_trends_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_driver_risk_trends_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_driver_risk_trends_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_engine_assessments: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_engine_assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_engine_assessments_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_engine_assessments_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_eta_calibration_proposals: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_eta_calibration_proposals_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_eta_calibration_proposals_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_eta_calibration_proposals_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_feedback: {
+        Row: {
+          assessment_id: string
+          assessment_table: string
+          company_id: string
+          created_at: string
+          feedback: string
+          id: string
+          note: string | null
+          review_state: string
+          submitted_by: string
+        }
+        Insert: {
+          assessment_id: string
+          assessment_table: string
+          company_id: string
+          created_at?: string
+          feedback: string
+          id?: string
+          note?: string | null
+          review_state?: string
+          submitted_by: string
+        }
+        Update: {
+          assessment_id?: string
+          assessment_table?: string
+          company_id?: string
+          created_at?: string
+          feedback?: string
+          id?: string
+          note?: string | null
+          review_state?: string
+          submitted_by?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_feedback_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_fuel_anomalies: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_fuel_anomalies_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_fuel_anomalies_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_fuel_anomalies_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_maintenance_forecasts: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_maintenance_forecasts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_maintenance_forecasts_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_maintenance_forecasts_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_outcomes: {
+        Row: {
+          actual_outcome: string | null
+          assessment_id: string
+          assessment_table: string
+          company_id: string
+          confidence: number
+          error_value: number | null
+          evidence_coverage: number
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          model_version: string
+          outcome_at: string | null
+          predicted_at: string
+          recorded_at: string
+          recorded_by: string | null
+        }
+        Insert: {
+          actual_outcome?: string | null
+          assessment_id: string
+          assessment_table: string
+          company_id: string
+          confidence: number
+          error_value?: number | null
+          evidence_coverage: number
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          model_version: string
+          outcome_at?: string | null
+          predicted_at: string
+          recorded_at?: string
+          recorded_by?: string | null
+        }
+        Update: {
+          actual_outcome?: string | null
+          assessment_id?: string
+          assessment_table?: string
+          company_id?: string
+          confidence?: number
+          error_value?: number | null
+          evidence_coverage?: number
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          model_version?: string
+          outcome_at?: string | null
+          predicted_at?: string
+          recorded_at?: string
+          recorded_by?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_outcomes_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_parts_demand_forecasts: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_parts_demand_forecasts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_parts_demand_forecasts_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_parts_demand_forecasts_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_recurrence_findings: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_recurrence_findings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_recurrence_findings_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_recurrence_findings_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_route_risk_assessments: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_route_risk_assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_route_risk_assessments_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_route_risk_assessments_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_service_demand_forecasts: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_service_demand_forecasts_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_service_demand_forecasts_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_service_demand_forecasts_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_subsystem_assessments: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_subsystem_assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_subsystem_assessments_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_subsystem_assessments_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_tyre_assessments: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_tyre_assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_tyre_assessments_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_tyre_assessments_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictive_vehicle_assessments: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          calculated_at: string
+          company_id: string
+          confidence: number
+          created_at: string
+          driver_id: string | null
+          evidence: Json
+          evidence_coverage: number
+          factors: Json
+          freshness: string
+          governance_status: string
+          id: string
+          missing_evidence: Json
+          model_version: string
+          requires_human_review: boolean
+          result: Json
+          review_horizon_end: string | null
+          review_horizon_start: string | null
+          risk_level: string
+          subject_id: string
+          subject_type: string
+          vehicle_id: string | null
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id: string
+          subject_type: string
+          vehicle_id?: string | null
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          calculated_at?: string
+          company_id?: string
+          confidence?: number
+          created_at?: string
+          driver_id?: string | null
+          evidence?: Json
+          evidence_coverage?: number
+          factors?: Json
+          freshness?: string
+          governance_status?: string
+          id?: string
+          missing_evidence?: Json
+          model_version?: string
+          requires_human_review?: boolean
+          result?: Json
+          review_horizon_end?: string | null
+          review_horizon_start?: string | null
+          risk_level?: string
+          subject_id?: string
+          subject_type?: string
+          vehicle_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "predictive_vehicle_assessments_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_vehicle_assessments_driver_id_fkey"
+            columns: ["driver_id"]
+            isOneToOne: false
+            referencedRelation: "drivers"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "predictive_vehicle_assessments_vehicle_id_fkey"
+            columns: ["vehicle_id"]
+            isOneToOne: false
+            referencedRelation: "vehicles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       proc_approvals: {
         Row: {
           approval_stage: string
@@ -32539,6 +34189,30 @@ export type Database = {
         Returns: Json
       }
       portal38_zip_answer: { Args: { _question: string }; Returns: Json }
+      predictive39_assessments: {
+        Args: { _limit?: number; _offset?: number }
+        Returns: Json
+      }
+      predictive39_customer_care: {
+        Args: { _vehicle_id: string }
+        Returns: Json
+      }
+      predictive39_dashboard: { Args: never; Returns: Json }
+      predictive39_dispatch: { Args: { _vehicle_id: string }; Returns: Json }
+      predictive39_driver: { Args: never; Returns: Json }
+      predictive39_read: { Args: { c: string }; Returns: boolean }
+      predictive39_review:
+        | {
+            Args: {
+              _assessment_id: string
+              _feedback: string
+              _note?: string
+              _state: string
+            }
+            Returns: Json
+          }
+        | { Args: { c: string }; Returns: boolean }
+      predictive39_zip: { Args: { _question: string }; Returns: Json }
       proc_can_approve: { Args: { _company: string }; Returns: boolean }
       proc_can_manage: { Args: { _company: string }; Returns: boolean }
       proc_can_read: { Args: { _company: string }; Returns: boolean }
