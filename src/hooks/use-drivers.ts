@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import type { Database } from "@/integrations/supabase/types";
@@ -18,7 +18,9 @@ export function useDrivers(filters?: DriverFilters) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetch = async () => {
+  const status = filters?.status;
+  const searchTerm = filters?.searchTerm;
+  const fetch = useCallback(async () => {
     if (!activeCompany) {
       setDrivers([]);
       setLoading(false);
@@ -34,16 +36,16 @@ export function useDrivers(filters?: DriverFilters) {
         .eq("company_id", activeCompany.id)
         .order("full_name");
 
-      if (filters?.status) {
-        query = query.eq("status", filters.status);
+      if (status) {
+        query = query.eq("status", status);
       }
 
       const { data, error: err } = await query;
       if (err) throw err;
 
       let result = data || [];
-      if (filters?.searchTerm) {
-        const term = filters.searchTerm.toLowerCase();
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
         result = result.filter(
           (d) =>
             d.full_name.toLowerCase().includes(term) ||
@@ -59,11 +61,11 @@ export function useDrivers(filters?: DriverFilters) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCompany, searchTerm, status]);
 
   useEffect(() => {
-    fetch();
-  }, [activeCompany?.id, filters?.status]);
+    void fetch();
+  }, [fetch]);
 
   const create = async (
     data: Omit<DriverInsert, "id" | "company_id" | "created_at" | "updated_at">,

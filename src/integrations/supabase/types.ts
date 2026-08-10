@@ -27512,6 +27512,731 @@ export type Database = {
           },
         ];
       };
+      yard_appointments: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_appointments_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_audit_logs: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_audit_logs_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_dock_allocations: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_dock_allocations_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_docks: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_docks_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_driver_instructions: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_driver_instructions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_exceptions: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_exceptions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_gate_lanes: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_gate_lanes_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_gate_visits: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_gate_visits_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_gates: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_gates_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_handover_reports: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_handover_reports_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_loading_progress: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_loading_progress_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_loading_sessions: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_loading_sessions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_movements: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_movements_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_parking_bays: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_parking_bays_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_queue_entries: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_queue_entries_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_seal_records: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_seal_records_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_security_inspections: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_security_inspections_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_sites: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_sites_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_trailer_states: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_trailer_states_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_unloading_progress: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_unloading_progress_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_unloading_sessions: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_unloading_sessions_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_vehicle_states: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_vehicle_states_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_visitors: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_visitors_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_weighbridge_records: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_weighbridge_records_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      yard_zones: {
+        Row: {
+          company_id: string;
+          created_at: string;
+          id: string;
+          payload: Json;
+        };
+        Insert: {
+          company_id: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Update: {
+          company_id?: string;
+          created_at?: string;
+          id?: string;
+          payload?: Json;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "yard_zones_company_id_fkey";
+            columns: ["company_id"];
+            isOneToOne: false;
+            referencedRelation: "companies";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
       zapp_brain_feedback: {
         Row: {
           company_id: string;
@@ -31594,6 +32319,8 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      yard37_read: { Args: { c: string }; Returns: boolean };
+      yard37_write: { Args: { c: string }; Returns: boolean };
       zip_create_api_request: {
         Args: {
           _company_id: string;
@@ -31666,7 +32393,13 @@ export type Database = {
         | "fleet_controller"
         | "maintenance_manager"
         | "maintenance_coordinator"
-        | "route_planner";
+        | "route_planner"
+        | "yard_controller"
+        | "gate_controller"
+        | "security_officer"
+        | "dock_coordinator"
+        | "technician"
+        | "compliance_officer";
       business_type:
         | "logistics"
         | "trucking"
@@ -32099,6 +32832,12 @@ export const Constants = {
         "maintenance_manager",
         "maintenance_coordinator",
         "route_planner",
+        "yard_controller",
+        "gate_controller",
+        "security_officer",
+        "dock_coordinator",
+        "technician",
+        "compliance_officer",
       ],
       business_type: [
         "logistics",

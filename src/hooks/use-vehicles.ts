@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import type { Database } from "@/integrations/supabase/types";
@@ -18,7 +18,9 @@ export function useVehicles(filters?: VehicleFilters) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetch = async () => {
+  const status = filters?.status;
+  const searchTerm = filters?.searchTerm;
+  const fetch = useCallback(async () => {
     if (!activeCompany) {
       setVehicles([]);
       setLoading(false);
@@ -34,16 +36,16 @@ export function useVehicles(filters?: VehicleFilters) {
         .eq("company_id", activeCompany.id)
         .order("registration");
 
-      if (filters?.status) {
-        query = query.eq("status", filters.status);
+      if (status) {
+        query = query.eq("status", status);
       }
 
       const { data, error: err } = await query;
       if (err) throw err;
 
       let result = data || [];
-      if (filters?.searchTerm) {
-        const term = filters.searchTerm.toLowerCase();
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
         result = result.filter(
           (v) =>
             v.registration.toLowerCase().includes(term) ||
@@ -59,11 +61,11 @@ export function useVehicles(filters?: VehicleFilters) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCompany, searchTerm, status]);
 
   useEffect(() => {
-    fetch();
-  }, [activeCompany?.id, filters?.status]);
+    void fetch();
+  }, [fetch]);
 
   const create = async (
     data: Omit<VehicleInsert, "id" | "company_id" | "created_at" | "updated_at">,
