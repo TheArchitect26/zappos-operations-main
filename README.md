@@ -56,6 +56,7 @@ Run the same checks used by CI:
 ```bash
 npx tsc --noEmit
 npm run lint
+npm run test:security:dependencies
 npm run test:unit
 npm run build
 npx playwright install chromium
@@ -71,6 +72,10 @@ npm run test:simulation:security
 npm run test:simulation:performance
 npm run test:simulation:report
 ```
+
+The dependency security check fails on high or critical advisories. Staging
+database validation additionally runs the pgTAP files in `tests/staging`,
+including the global public-schema RLS gate and tenant-table invariant audit.
 
 Playwright starts the application automatically and supplies local, non-secret placeholder Supabase values for public-route and protected-route tests. It runs desktop, tablet, and mobile Chromium projects. Installing the Chromium binary is a one-time prerequisite on each machine.
 

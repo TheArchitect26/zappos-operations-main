@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { useSession } from "@/lib/session";
@@ -19,7 +19,7 @@ export function useIncidents() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     if (!activeCompany) {
       setIncidents([]);
       setLoading(false);
@@ -42,11 +42,11 @@ export function useIncidents() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCompany]);
 
   useEffect(() => {
     void fetch();
-  }, [activeCompany?.id]);
+  }, [fetch]);
 
   const uploadPhotos = async (files: File[]) => {
     if (!activeCompany) throw new Error("No active company");

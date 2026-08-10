@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { useSession } from "@/lib/session";
@@ -37,7 +37,10 @@ export function useJobs(filters?: JobFilters) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetch = async () => {
+  const status = filters?.status;
+  const priority = filters?.priority;
+  const searchTerm = filters?.searchTerm;
+  const fetch = useCallback(async () => {
     if (!activeCompany) {
       setJobs([]);
       setLoading(false);
@@ -53,19 +56,19 @@ export function useJobs(filters?: JobFilters) {
         .eq("company_id", activeCompany.id)
         .order("created_at", { ascending: false });
 
-      if (filters?.status) {
-        query = query.eq("status", filters.status);
+      if (status) {
+        query = query.eq("status", status);
       }
-      if (filters?.priority) {
-        query = query.eq("priority", filters.priority);
+      if (priority) {
+        query = query.eq("priority", priority);
       }
 
       const { data, error: err } = await query;
       if (err) throw err;
 
       let result = data || [];
-      if (filters?.searchTerm) {
-        const term = filters.searchTerm.toLowerCase();
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
         result = result.filter(
           (j) =>
             j.reference.toLowerCase().includes(term) ||
@@ -81,11 +84,11 @@ export function useJobs(filters?: JobFilters) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCompany, priority, searchTerm, status]);
 
   useEffect(() => {
-    fetch();
-  }, [activeCompany?.id, filters?.status, filters?.priority]);
+    void fetch();
+  }, [fetch]);
 
   const create = async (
     data: Omit<JobInsert, "id" | "company_id" | "created_at" | "updated_at">,

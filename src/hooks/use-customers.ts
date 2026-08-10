@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import type { Database } from "@/integrations/supabase/types";
@@ -16,7 +16,8 @@ export function useCustomers(filters?: CustomerFilters) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetch = async () => {
+  const searchTerm = filters?.searchTerm;
+  const fetch = useCallback(async () => {
     if (!activeCompany) {
       setCustomers([]);
       setLoading(false);
@@ -35,8 +36,8 @@ export function useCustomers(filters?: CustomerFilters) {
       if (err) throw err;
 
       let result = data || [];
-      if (filters?.searchTerm) {
-        const term = filters.searchTerm.toLowerCase();
+      if (searchTerm) {
+        const term = searchTerm.toLowerCase();
         result = result.filter(
           (c) =>
             c.name.toLowerCase().includes(term) ||
@@ -53,11 +54,11 @@ export function useCustomers(filters?: CustomerFilters) {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCompany, searchTerm]);
 
   useEffect(() => {
-    fetch();
-  }, [activeCompany?.id]);
+    void fetch();
+  }, [fetch]);
 
   const create = async (
     data: Omit<CustomerInsert, "id" | "company_id" | "created_at" | "updated_at">,

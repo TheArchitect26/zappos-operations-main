@@ -19,6 +19,7 @@
     "test:simulation": "vitest run tests/simulation/simulation.test.ts",
     "test:simulation:roles": "vitest run tests/simulation/roles.test.ts",
     "test:simulation:security": "vitest run tests/simulation/security.test.ts",
+    "test:security:dependencies": "npm audit --audit-level=high",
     "test:simulation:performance": "vitest run tests/simulation/performance.test.ts",
     "test:simulation:report": "vitest run tests/simulation/report.test.ts --reporter=verbose",
     "verify:types": "node scripts/verify-supabase-types.mjs",

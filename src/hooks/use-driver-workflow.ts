@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
 import { useSession } from "@/lib/session";
@@ -22,7 +22,7 @@ export function useDriverWorkflow() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetch = async () => {
+  const fetch = useCallback(async () => {
     if (!activeCompany || !user) {
       setDriver(null);
       setJobs([]);
@@ -65,11 +65,11 @@ export function useDriverWorkflow() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCompany, user]);
 
   useEffect(() => {
     void fetch();
-  }, [activeCompany?.id, user?.id]);
+  }, [fetch]);
 
   const currentJob = useMemo(
     () =>

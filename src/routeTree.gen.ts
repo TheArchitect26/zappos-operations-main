@@ -31,6 +31,7 @@ import { Route as CustomerPortalDocumentsRouteImport } from './routes/customer-p
 import { Route as CustomerPortalAssistantRouteImport } from './routes/customer-portal/assistant'
 import { Route as CustomerPortalApiRouteImport } from './routes/customer-portal/api'
 import { Route as CustomerPortalAnalyticsRouteImport } from './routes/customer-portal/analytics'
+import { Route as AuthenticatedYardRouteImport } from './routes/_authenticated/yard'
 import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authenticated/warehouse'
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
 import { Route as AuthenticatedTrackingRouteImport } from './routes/_authenticated/tracking'
@@ -68,6 +69,22 @@ import { Route as AuthenticatedCommandCentreRouteImport } from './routes/_authen
 import { Route as AuthenticatedBusinessIntelligenceRouteImport } from './routes/_authenticated/business-intelligence'
 import { Route as AuthenticatedBrainRouteImport } from './routes/_authenticated/brain'
 import { Route as CustomerPortalShipmentsJobIdRouteImport } from './routes/customer-portal/shipments/$jobId'
+import { Route as AuthenticatedYardWeighbridgeRouteImport } from './routes/_authenticated/yard/weighbridge'
+import { Route as AuthenticatedYardWallRouteImport } from './routes/_authenticated/yard/wall'
+import { Route as AuthenticatedYardVehiclesRouteImport } from './routes/_authenticated/yard/vehicles'
+import { Route as AuthenticatedYardUnloadingRouteImport } from './routes/_authenticated/yard/unloading'
+import { Route as AuthenticatedYardTrailersRouteImport } from './routes/_authenticated/yard/trailers'
+import { Route as AuthenticatedYardSecurityRouteImport } from './routes/_authenticated/yard/security'
+import { Route as AuthenticatedYardReadinessRouteImport } from './routes/_authenticated/yard/readiness'
+import { Route as AuthenticatedYardQueuesRouteImport } from './routes/_authenticated/yard/queues'
+import { Route as AuthenticatedYardParkingRouteImport } from './routes/_authenticated/yard/parking'
+import { Route as AuthenticatedYardLoadingRouteImport } from './routes/_authenticated/yard/loading'
+import { Route as AuthenticatedYardLiveRouteImport } from './routes/_authenticated/yard/live'
+import { Route as AuthenticatedYardHistoryRouteImport } from './routes/_authenticated/yard/history'
+import { Route as AuthenticatedYardGatesRouteImport } from './routes/_authenticated/yard/gates'
+import { Route as AuthenticatedYardExceptionsRouteImport } from './routes/_authenticated/yard/exceptions'
+import { Route as AuthenticatedYardDocksRouteImport } from './routes/_authenticated/yard/docks'
+import { Route as AuthenticatedYardAppointmentsRouteImport } from './routes/_authenticated/yard/appointments'
 import { Route as AuthenticatedTrackingWallRouteImport } from './routes/_authenticated/tracking/wall'
 import { Route as AuthenticatedTrackingReplayRouteImport } from './routes/_authenticated/tracking/replay'
 import { Route as AuthenticatedTrackingCustomerCareRouteImport } from './routes/_authenticated/tracking/customer-care'
@@ -206,6 +223,11 @@ const CustomerPortalAnalyticsRoute = CustomerPortalAnalyticsRouteImport.update({
   id: '/analytics',
   path: '/analytics',
   getParentRoute: () => CustomerPortalRoute,
+} as any)
+const AuthenticatedYardRoute = AuthenticatedYardRouteImport.update({
+  id: '/yard',
+  path: '/yard',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedWarehouseRoute = AuthenticatedWarehouseRouteImport.update({
   id: '/warehouse',
@@ -407,6 +429,97 @@ const CustomerPortalShipmentsJobIdRoute =
     id: '/$jobId',
     path: '/$jobId',
     getParentRoute: () => CustomerPortalShipmentsRoute,
+  } as any)
+const AuthenticatedYardWeighbridgeRoute =
+  AuthenticatedYardWeighbridgeRouteImport.update({
+    id: '/weighbridge',
+    path: '/weighbridge',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardWallRoute = AuthenticatedYardWallRouteImport.update({
+  id: '/wall',
+  path: '/wall',
+  getParentRoute: () => AuthenticatedYardRoute,
+} as any)
+const AuthenticatedYardVehiclesRoute =
+  AuthenticatedYardVehiclesRouteImport.update({
+    id: '/vehicles',
+    path: '/vehicles',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardUnloadingRoute =
+  AuthenticatedYardUnloadingRouteImport.update({
+    id: '/unloading',
+    path: '/unloading',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardTrailersRoute =
+  AuthenticatedYardTrailersRouteImport.update({
+    id: '/trailers',
+    path: '/trailers',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardSecurityRoute =
+  AuthenticatedYardSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardReadinessRoute =
+  AuthenticatedYardReadinessRouteImport.update({
+    id: '/readiness',
+    path: '/readiness',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardQueuesRoute = AuthenticatedYardQueuesRouteImport.update({
+  id: '/queues',
+  path: '/queues',
+  getParentRoute: () => AuthenticatedYardRoute,
+} as any)
+const AuthenticatedYardParkingRoute =
+  AuthenticatedYardParkingRouteImport.update({
+    id: '/parking',
+    path: '/parking',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardLoadingRoute =
+  AuthenticatedYardLoadingRouteImport.update({
+    id: '/loading',
+    path: '/loading',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardLiveRoute = AuthenticatedYardLiveRouteImport.update({
+  id: '/live',
+  path: '/live',
+  getParentRoute: () => AuthenticatedYardRoute,
+} as any)
+const AuthenticatedYardHistoryRoute =
+  AuthenticatedYardHistoryRouteImport.update({
+    id: '/history',
+    path: '/history',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardGatesRoute = AuthenticatedYardGatesRouteImport.update({
+  id: '/gates',
+  path: '/gates',
+  getParentRoute: () => AuthenticatedYardRoute,
+} as any)
+const AuthenticatedYardExceptionsRoute =
+  AuthenticatedYardExceptionsRouteImport.update({
+    id: '/exceptions',
+    path: '/exceptions',
+    getParentRoute: () => AuthenticatedYardRoute,
+  } as any)
+const AuthenticatedYardDocksRoute = AuthenticatedYardDocksRouteImport.update({
+  id: '/docks',
+  path: '/docks',
+  getParentRoute: () => AuthenticatedYardRoute,
+} as any)
+const AuthenticatedYardAppointmentsRoute =
+  AuthenticatedYardAppointmentsRouteImport.update({
+    id: '/appointments',
+    path: '/appointments',
+    getParentRoute: () => AuthenticatedYardRoute,
   } as any)
 const AuthenticatedTrackingWallRoute =
   AuthenticatedTrackingWallRouteImport.update({
@@ -619,6 +732,7 @@ export interface FileRoutesByFullPath {
   '/tracking': typeof AuthenticatedTrackingRouteWithChildren
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
+  '/yard': typeof AuthenticatedYardRouteWithChildren
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
   '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
@@ -656,6 +770,22 @@ export interface FileRoutesByFullPath {
   '/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
   '/tracking/replay': typeof AuthenticatedTrackingReplayRoute
   '/tracking/wall': typeof AuthenticatedTrackingWallRoute
+  '/yard/appointments': typeof AuthenticatedYardAppointmentsRoute
+  '/yard/docks': typeof AuthenticatedYardDocksRoute
+  '/yard/exceptions': typeof AuthenticatedYardExceptionsRoute
+  '/yard/gates': typeof AuthenticatedYardGatesRoute
+  '/yard/history': typeof AuthenticatedYardHistoryRoute
+  '/yard/live': typeof AuthenticatedYardLiveRoute
+  '/yard/loading': typeof AuthenticatedYardLoadingRoute
+  '/yard/parking': typeof AuthenticatedYardParkingRoute
+  '/yard/queues': typeof AuthenticatedYardQueuesRoute
+  '/yard/readiness': typeof AuthenticatedYardReadinessRoute
+  '/yard/security': typeof AuthenticatedYardSecurityRoute
+  '/yard/trailers': typeof AuthenticatedYardTrailersRoute
+  '/yard/unloading': typeof AuthenticatedYardUnloadingRoute
+  '/yard/vehicles': typeof AuthenticatedYardVehiclesRoute
+  '/yard/wall': typeof AuthenticatedYardWallRoute
+  '/yard/weighbridge': typeof AuthenticatedYardWeighbridgeRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
   '/mobile/driver/issues': typeof AuthenticatedMobileDriverIssuesRoute
   '/mobile/driver/messages': typeof AuthenticatedMobileDriverMessagesRoute
@@ -706,6 +836,7 @@ export interface FileRoutesByTo {
   '/tracking': typeof AuthenticatedTrackingRouteWithChildren
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
+  '/yard': typeof AuthenticatedYardRouteWithChildren
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
   '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
@@ -742,6 +873,22 @@ export interface FileRoutesByTo {
   '/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
   '/tracking/replay': typeof AuthenticatedTrackingReplayRoute
   '/tracking/wall': typeof AuthenticatedTrackingWallRoute
+  '/yard/appointments': typeof AuthenticatedYardAppointmentsRoute
+  '/yard/docks': typeof AuthenticatedYardDocksRoute
+  '/yard/exceptions': typeof AuthenticatedYardExceptionsRoute
+  '/yard/gates': typeof AuthenticatedYardGatesRoute
+  '/yard/history': typeof AuthenticatedYardHistoryRoute
+  '/yard/live': typeof AuthenticatedYardLiveRoute
+  '/yard/loading': typeof AuthenticatedYardLoadingRoute
+  '/yard/parking': typeof AuthenticatedYardParkingRoute
+  '/yard/queues': typeof AuthenticatedYardQueuesRoute
+  '/yard/readiness': typeof AuthenticatedYardReadinessRoute
+  '/yard/security': typeof AuthenticatedYardSecurityRoute
+  '/yard/trailers': typeof AuthenticatedYardTrailersRoute
+  '/yard/unloading': typeof AuthenticatedYardUnloadingRoute
+  '/yard/vehicles': typeof AuthenticatedYardVehiclesRoute
+  '/yard/wall': typeof AuthenticatedYardWallRoute
+  '/yard/weighbridge': typeof AuthenticatedYardWeighbridgeRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
   '/mobile/driver/issues': typeof AuthenticatedMobileDriverIssuesRoute
   '/mobile/driver/messages': typeof AuthenticatedMobileDriverMessagesRoute
@@ -795,6 +942,7 @@ export interface FileRoutesById {
   '/_authenticated/tracking': typeof AuthenticatedTrackingRouteWithChildren
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
   '/_authenticated/warehouse': typeof AuthenticatedWarehouseRoute
+  '/_authenticated/yard': typeof AuthenticatedYardRouteWithChildren
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
   '/customer-portal/assistant': typeof CustomerPortalAssistantRoute
@@ -832,6 +980,22 @@ export interface FileRoutesById {
   '/_authenticated/tracking/customer-care': typeof AuthenticatedTrackingCustomerCareRoute
   '/_authenticated/tracking/replay': typeof AuthenticatedTrackingReplayRoute
   '/_authenticated/tracking/wall': typeof AuthenticatedTrackingWallRoute
+  '/_authenticated/yard/appointments': typeof AuthenticatedYardAppointmentsRoute
+  '/_authenticated/yard/docks': typeof AuthenticatedYardDocksRoute
+  '/_authenticated/yard/exceptions': typeof AuthenticatedYardExceptionsRoute
+  '/_authenticated/yard/gates': typeof AuthenticatedYardGatesRoute
+  '/_authenticated/yard/history': typeof AuthenticatedYardHistoryRoute
+  '/_authenticated/yard/live': typeof AuthenticatedYardLiveRoute
+  '/_authenticated/yard/loading': typeof AuthenticatedYardLoadingRoute
+  '/_authenticated/yard/parking': typeof AuthenticatedYardParkingRoute
+  '/_authenticated/yard/queues': typeof AuthenticatedYardQueuesRoute
+  '/_authenticated/yard/readiness': typeof AuthenticatedYardReadinessRoute
+  '/_authenticated/yard/security': typeof AuthenticatedYardSecurityRoute
+  '/_authenticated/yard/trailers': typeof AuthenticatedYardTrailersRoute
+  '/_authenticated/yard/unloading': typeof AuthenticatedYardUnloadingRoute
+  '/_authenticated/yard/vehicles': typeof AuthenticatedYardVehiclesRoute
+  '/_authenticated/yard/wall': typeof AuthenticatedYardWallRoute
+  '/_authenticated/yard/weighbridge': typeof AuthenticatedYardWeighbridgeRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
   '/_authenticated/mobile/driver/issues': typeof AuthenticatedMobileDriverIssuesRoute
   '/_authenticated/mobile/driver/messages': typeof AuthenticatedMobileDriverMessagesRoute
@@ -884,6 +1048,7 @@ export interface FileRouteTypes {
     | '/tracking'
     | '/vehicles'
     | '/warehouse'
+    | '/yard'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
     | '/customer-portal/assistant'
@@ -921,6 +1086,22 @@ export interface FileRouteTypes {
     | '/tracking/customer-care'
     | '/tracking/replay'
     | '/tracking/wall'
+    | '/yard/appointments'
+    | '/yard/docks'
+    | '/yard/exceptions'
+    | '/yard/gates'
+    | '/yard/history'
+    | '/yard/live'
+    | '/yard/loading'
+    | '/yard/parking'
+    | '/yard/queues'
+    | '/yard/readiness'
+    | '/yard/security'
+    | '/yard/trailers'
+    | '/yard/unloading'
+    | '/yard/vehicles'
+    | '/yard/wall'
+    | '/yard/weighbridge'
     | '/customer-portal/shipments/$jobId'
     | '/mobile/driver/issues'
     | '/mobile/driver/messages'
@@ -971,6 +1152,7 @@ export interface FileRouteTypes {
     | '/tracking'
     | '/vehicles'
     | '/warehouse'
+    | '/yard'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
     | '/customer-portal/assistant'
@@ -1007,6 +1189,22 @@ export interface FileRouteTypes {
     | '/tracking/customer-care'
     | '/tracking/replay'
     | '/tracking/wall'
+    | '/yard/appointments'
+    | '/yard/docks'
+    | '/yard/exceptions'
+    | '/yard/gates'
+    | '/yard/history'
+    | '/yard/live'
+    | '/yard/loading'
+    | '/yard/parking'
+    | '/yard/queues'
+    | '/yard/readiness'
+    | '/yard/security'
+    | '/yard/trailers'
+    | '/yard/unloading'
+    | '/yard/vehicles'
+    | '/yard/wall'
+    | '/yard/weighbridge'
     | '/customer-portal/shipments/$jobId'
     | '/mobile/driver/issues'
     | '/mobile/driver/messages'
@@ -1059,6 +1257,7 @@ export interface FileRouteTypes {
     | '/_authenticated/tracking'
     | '/_authenticated/vehicles'
     | '/_authenticated/warehouse'
+    | '/_authenticated/yard'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
     | '/customer-portal/assistant'
@@ -1096,6 +1295,22 @@ export interface FileRouteTypes {
     | '/_authenticated/tracking/customer-care'
     | '/_authenticated/tracking/replay'
     | '/_authenticated/tracking/wall'
+    | '/_authenticated/yard/appointments'
+    | '/_authenticated/yard/docks'
+    | '/_authenticated/yard/exceptions'
+    | '/_authenticated/yard/gates'
+    | '/_authenticated/yard/history'
+    | '/_authenticated/yard/live'
+    | '/_authenticated/yard/loading'
+    | '/_authenticated/yard/parking'
+    | '/_authenticated/yard/queues'
+    | '/_authenticated/yard/readiness'
+    | '/_authenticated/yard/security'
+    | '/_authenticated/yard/trailers'
+    | '/_authenticated/yard/unloading'
+    | '/_authenticated/yard/vehicles'
+    | '/_authenticated/yard/wall'
+    | '/_authenticated/yard/weighbridge'
     | '/customer-portal/shipments/$jobId'
     | '/_authenticated/mobile/driver/issues'
     | '/_authenticated/mobile/driver/messages'
@@ -1271,6 +1486,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/customer-portal/analytics'
       preLoaderRoute: typeof CustomerPortalAnalyticsRouteImport
       parentRoute: typeof CustomerPortalRoute
+    }
+    '/_authenticated/yard': {
+      id: '/_authenticated/yard'
+      path: '/yard'
+      fullPath: '/yard'
+      preLoaderRoute: typeof AuthenticatedYardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/warehouse': {
       id: '/_authenticated/warehouse'
@@ -1530,6 +1752,118 @@ declare module '@tanstack/react-router' {
       fullPath: '/customer-portal/shipments/$jobId'
       preLoaderRoute: typeof CustomerPortalShipmentsJobIdRouteImport
       parentRoute: typeof CustomerPortalShipmentsRoute
+    }
+    '/_authenticated/yard/weighbridge': {
+      id: '/_authenticated/yard/weighbridge'
+      path: '/weighbridge'
+      fullPath: '/yard/weighbridge'
+      preLoaderRoute: typeof AuthenticatedYardWeighbridgeRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/wall': {
+      id: '/_authenticated/yard/wall'
+      path: '/wall'
+      fullPath: '/yard/wall'
+      preLoaderRoute: typeof AuthenticatedYardWallRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/vehicles': {
+      id: '/_authenticated/yard/vehicles'
+      path: '/vehicles'
+      fullPath: '/yard/vehicles'
+      preLoaderRoute: typeof AuthenticatedYardVehiclesRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/unloading': {
+      id: '/_authenticated/yard/unloading'
+      path: '/unloading'
+      fullPath: '/yard/unloading'
+      preLoaderRoute: typeof AuthenticatedYardUnloadingRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/trailers': {
+      id: '/_authenticated/yard/trailers'
+      path: '/trailers'
+      fullPath: '/yard/trailers'
+      preLoaderRoute: typeof AuthenticatedYardTrailersRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/security': {
+      id: '/_authenticated/yard/security'
+      path: '/security'
+      fullPath: '/yard/security'
+      preLoaderRoute: typeof AuthenticatedYardSecurityRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/readiness': {
+      id: '/_authenticated/yard/readiness'
+      path: '/readiness'
+      fullPath: '/yard/readiness'
+      preLoaderRoute: typeof AuthenticatedYardReadinessRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/queues': {
+      id: '/_authenticated/yard/queues'
+      path: '/queues'
+      fullPath: '/yard/queues'
+      preLoaderRoute: typeof AuthenticatedYardQueuesRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/parking': {
+      id: '/_authenticated/yard/parking'
+      path: '/parking'
+      fullPath: '/yard/parking'
+      preLoaderRoute: typeof AuthenticatedYardParkingRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/loading': {
+      id: '/_authenticated/yard/loading'
+      path: '/loading'
+      fullPath: '/yard/loading'
+      preLoaderRoute: typeof AuthenticatedYardLoadingRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/live': {
+      id: '/_authenticated/yard/live'
+      path: '/live'
+      fullPath: '/yard/live'
+      preLoaderRoute: typeof AuthenticatedYardLiveRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/history': {
+      id: '/_authenticated/yard/history'
+      path: '/history'
+      fullPath: '/yard/history'
+      preLoaderRoute: typeof AuthenticatedYardHistoryRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/gates': {
+      id: '/_authenticated/yard/gates'
+      path: '/gates'
+      fullPath: '/yard/gates'
+      preLoaderRoute: typeof AuthenticatedYardGatesRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/exceptions': {
+      id: '/_authenticated/yard/exceptions'
+      path: '/exceptions'
+      fullPath: '/yard/exceptions'
+      preLoaderRoute: typeof AuthenticatedYardExceptionsRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/docks': {
+      id: '/_authenticated/yard/docks'
+      path: '/docks'
+      fullPath: '/yard/docks'
+      preLoaderRoute: typeof AuthenticatedYardDocksRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
+    }
+    '/_authenticated/yard/appointments': {
+      id: '/_authenticated/yard/appointments'
+      path: '/appointments'
+      fullPath: '/yard/appointments'
+      preLoaderRoute: typeof AuthenticatedYardAppointmentsRouteImport
+      parentRoute: typeof AuthenticatedYardRoute
     }
     '/_authenticated/tracking/wall': {
       id: '/_authenticated/tracking/wall'
@@ -1857,6 +2191,47 @@ const AuthenticatedTrackingRouteWithChildren =
     AuthenticatedTrackingRouteChildren,
   )
 
+interface AuthenticatedYardRouteChildren {
+  AuthenticatedYardAppointmentsRoute: typeof AuthenticatedYardAppointmentsRoute
+  AuthenticatedYardDocksRoute: typeof AuthenticatedYardDocksRoute
+  AuthenticatedYardExceptionsRoute: typeof AuthenticatedYardExceptionsRoute
+  AuthenticatedYardGatesRoute: typeof AuthenticatedYardGatesRoute
+  AuthenticatedYardHistoryRoute: typeof AuthenticatedYardHistoryRoute
+  AuthenticatedYardLiveRoute: typeof AuthenticatedYardLiveRoute
+  AuthenticatedYardLoadingRoute: typeof AuthenticatedYardLoadingRoute
+  AuthenticatedYardParkingRoute: typeof AuthenticatedYardParkingRoute
+  AuthenticatedYardQueuesRoute: typeof AuthenticatedYardQueuesRoute
+  AuthenticatedYardReadinessRoute: typeof AuthenticatedYardReadinessRoute
+  AuthenticatedYardSecurityRoute: typeof AuthenticatedYardSecurityRoute
+  AuthenticatedYardTrailersRoute: typeof AuthenticatedYardTrailersRoute
+  AuthenticatedYardUnloadingRoute: typeof AuthenticatedYardUnloadingRoute
+  AuthenticatedYardVehiclesRoute: typeof AuthenticatedYardVehiclesRoute
+  AuthenticatedYardWallRoute: typeof AuthenticatedYardWallRoute
+  AuthenticatedYardWeighbridgeRoute: typeof AuthenticatedYardWeighbridgeRoute
+}
+
+const AuthenticatedYardRouteChildren: AuthenticatedYardRouteChildren = {
+  AuthenticatedYardAppointmentsRoute: AuthenticatedYardAppointmentsRoute,
+  AuthenticatedYardDocksRoute: AuthenticatedYardDocksRoute,
+  AuthenticatedYardExceptionsRoute: AuthenticatedYardExceptionsRoute,
+  AuthenticatedYardGatesRoute: AuthenticatedYardGatesRoute,
+  AuthenticatedYardHistoryRoute: AuthenticatedYardHistoryRoute,
+  AuthenticatedYardLiveRoute: AuthenticatedYardLiveRoute,
+  AuthenticatedYardLoadingRoute: AuthenticatedYardLoadingRoute,
+  AuthenticatedYardParkingRoute: AuthenticatedYardParkingRoute,
+  AuthenticatedYardQueuesRoute: AuthenticatedYardQueuesRoute,
+  AuthenticatedYardReadinessRoute: AuthenticatedYardReadinessRoute,
+  AuthenticatedYardSecurityRoute: AuthenticatedYardSecurityRoute,
+  AuthenticatedYardTrailersRoute: AuthenticatedYardTrailersRoute,
+  AuthenticatedYardUnloadingRoute: AuthenticatedYardUnloadingRoute,
+  AuthenticatedYardVehiclesRoute: AuthenticatedYardVehiclesRoute,
+  AuthenticatedYardWallRoute: AuthenticatedYardWallRoute,
+  AuthenticatedYardWeighbridgeRoute: AuthenticatedYardWeighbridgeRoute,
+}
+
+const AuthenticatedYardRouteWithChildren =
+  AuthenticatedYardRoute._addFileChildren(AuthenticatedYardRouteChildren)
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedBrainRoute: typeof AuthenticatedBrainRouteWithChildren
   AuthenticatedBusinessIntelligenceRoute: typeof AuthenticatedBusinessIntelligenceRoute
@@ -1894,6 +2269,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedTrackingRoute: typeof AuthenticatedTrackingRouteWithChildren
   AuthenticatedVehiclesRoute: typeof AuthenticatedVehiclesRoute
   AuthenticatedWarehouseRoute: typeof AuthenticatedWarehouseRoute
+  AuthenticatedYardRoute: typeof AuthenticatedYardRouteWithChildren
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
@@ -1935,6 +2311,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedTrackingRoute: AuthenticatedTrackingRouteWithChildren,
   AuthenticatedVehiclesRoute: AuthenticatedVehiclesRoute,
   AuthenticatedWarehouseRoute: AuthenticatedWarehouseRoute,
+  AuthenticatedYardRoute: AuthenticatedYardRouteWithChildren,
 }
 
 const AuthenticatedRouteRouteWithChildren =
