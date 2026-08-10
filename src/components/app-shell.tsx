@@ -34,6 +34,7 @@ import {
   HeartPulse,
   LockKeyhole,
   ChartNoAxesCombined,
+  Crown,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -151,6 +152,32 @@ const ALL: NavItem[] = [
       "viewer",
       "driver",
     ],
+  },
+  {
+    label: "Predictive fleet",
+    to: "/fleet-predictive/overview",
+    icon: AlertTriangle,
+    roles: [
+      "admin",
+      "fleet_manager",
+      "fleet_controller",
+      "dispatcher",
+      "operations_manager",
+      "maintenance_manager",
+      "maintenance_coordinator",
+      "executive",
+      "managing_director",
+      "analyst",
+      "brain_analyst",
+      "brain_reviewer",
+      "viewer",
+    ],
+  },
+  {
+    label: "Executive centre",
+    to: "/executive/live",
+    icon: Crown,
+    roles: ["admin", "executive", "managing_director", "viewer"],
   },
   {
     label: "Zapp Brain",

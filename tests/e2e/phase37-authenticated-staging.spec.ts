@@ -43,4 +43,15 @@ test.describe("Phase 37 authenticated yard staging", () => {
     await expect(page.getByText(/Controlled workflow only/)).toBeVisible();
     await expect(page.getByRole("button", { name: /auto.?admit|auto.?assign/i })).toHaveCount(0);
   });
+  for (const viewport of [
+    { name: "desktop", width: 1440, height: 900 },
+    { name: "tablet", width: 820, height: 1180 },
+    { name: "mobile", width: 390, height: 844 },
+  ])
+    test(`renders the live yard safely on ${viewport.name}`, async ({ page }) => {
+      await page.setViewportSize({ width: viewport.width, height: viewport.height });
+      await page.goto("/yard/live");
+      await expect(page.getByText("Controlled workflow only")).toBeVisible();
+      await expect(page.getByRole("button", { name: /auto.?admit|auto.?assign/i })).toHaveCount(0);
+    });
 });

@@ -45,4 +45,27 @@ export const portalApi = {
       outcome: "answered" | "refused" | "unavailable";
       deterministic: true;
     }>("portal_zip_answer", { _question: question }),
+  visibilityDashboard: () => invoke<Record<string, any>>("portal38_dashboard"),
+  visibilityShipments: (limit = 25, offset = 0) =>
+    invoke<any[]>("portal38_shipments", { _limit: limit, _offset: offset }),
+  visibilityShipment: (jobId: string) =>
+    invoke<Record<string, any> | null>("portal38_shipment", { _job_id: jobId }),
+  visibilityPreferences: () => invoke<Record<string, any>>("portal38_preferences"),
+  visibilityAnalytics: () => invoke<Record<string, any>>("portal38_analytics"),
+  visibilityAction: (action: string, payload: Record<string, unknown>) =>
+    invoke<{
+      id: string;
+      status: string;
+      direct_schedule_mutation: false;
+      public_tracking_url: null;
+    }>("portal38_action", { _action: action, _payload: payload }),
+  askVisibilityZip: (question: string) =>
+    invoke<{
+      answer: string;
+      citations: Array<{ type: string; id?: string; freshness: string }>;
+      outcome: "answered" | "refused" | "unavailable";
+      freshness: string;
+      unknowns: string[];
+      read_only: true;
+    }>("portal38_zip_answer", { _question: question }),
 };

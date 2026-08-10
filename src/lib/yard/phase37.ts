@@ -513,3 +513,50 @@ export function yardPermission(
     requiresControlledWorkflow: action !== "read",
   };
 }
+
+export type YardPerformanceVehicle = {
+  id: string;
+  registration: string;
+  state: string;
+  waitingMinutes: number;
+  dockId: string | null;
+};
+
+/** Deterministic client transformations only; these are not throughput claims. */
+export function recomputeYardQueue(vehicles: readonly YardPerformanceVehicle[]) {
+  return vehicles
+    .map((vehicle) => ({ ...vehicle, priorityScore: vehicle.waitingMinutes * 2 }))
+    .sort((a, b) => b.priorityScore - a.priorityScore || a.id.localeCompare(b.id));
+}
+
+export function transformYardWall(vehicles: readonly YardPerformanceVehicle[]) {
+  return Object.entries(
+    vehicles.reduce<Record<string, number>>((counts, vehicle) => {
+      counts[vehicle.state] = (counts[vehicle.state] ?? 0) + 1;
+      return counts;
+    }, {}),
+  )
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([state, count]) => ({ state, count }));
+}
+
+export function transformYardReplay<T extends { occurredAt: string; sequence: number }>(
+  events: readonly T[],
+) {
+  return [...events].sort(
+    (a, b) => Date.parse(a.occurredAt) - Date.parse(b.occurredAt) || a.sequence - b.sequence,
+  );
+}
+
+export function searchYardVehicles(
+  vehicles: readonly YardPerformanceVehicle[],
+  query: string,
+  state?: string,
+) {
+  const normalized = query.trim().toLowerCase();
+  return vehicles.filter(
+    (vehicle) =>
+      (!state || vehicle.state === state) &&
+      (!normalized || vehicle.registration.toLowerCase().includes(normalized)),
+  );
+}

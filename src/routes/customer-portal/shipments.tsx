@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, useLocation } from "@tanstack/react-router";
 import { useEffect, useMemo, useState } from "react";
 import { Package2, Search } from "lucide-react";
 import { useSession } from "@/lib/session";
@@ -18,8 +18,17 @@ import { portalApi } from "@/lib/customer-portal-api";
 
 export const Route = createFileRoute("/customer-portal/shipments")({
   head: () => ({ meta: [{ title: "Shipments — Customer portal" }] }),
-  component: CustomerShipmentsPage,
+  component: CustomerShipmentsRoute,
 });
+
+function CustomerShipmentsRoute() {
+  const location = useLocation();
+  return location.pathname === "/customer-portal/shipments" ? (
+    <CustomerShipmentsPage />
+  ) : (
+    <Outlet />
+  );
+}
 
 function CustomerShipmentsPage() {
   const { session } = useSession();
@@ -34,8 +43,8 @@ function CustomerShipmentsPage() {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      const data = await portalApi.shipments(250);
-      setJobs(data.slice(page * pageSize, page * pageSize + pageSize));
+      const data = await portalApi.visibilityShipments(pageSize, page * pageSize);
+      setJobs(data);
       setLoading(false);
     };
     void load();

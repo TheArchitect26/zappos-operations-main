@@ -1,6 +1,6 @@
 BEGIN;
 CREATE EXTENSION IF NOT EXISTS pgtap WITH SCHEMA extensions;
-SELECT extensions.plan(15);
+SELECT extensions.plan(25);
 SELECT extensions.ok((SELECT count(*) FROM pg_tables WHERE schemaname='public' AND tablename LIKE 'yard_%') >= 25, 'Phase 37 coordination tables exist');
 SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='yard_gate_visits') >= 2, 'gate read/write policies exist');
 SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='yard_driver_instructions') >= 2, 'driver instruction policies exist');
@@ -16,5 +16,15 @@ SELECT extensions.ok((SELECT count(*) FROM pg_proc WHERE proname='yard37_write')
 SELECT extensions.ok((SELECT count(*) FROM pg_proc WHERE proname='yard37_append_only') = 1, 'yard append-only trigger exists');
 SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='yard_exceptions') >= 2, 'exception scope exists');
 SELECT extensions.ok((SELECT count(*) FROM pg_policies WHERE tablename='yard_handover_reports') >= 2, 'handover scope exists');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.yard_gate_visits','INSERT'), 'gate evidence requires controlled RPC');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.yard_loading_progress','INSERT'), 'scan evidence requires controlled RPC');
+SELECT extensions.ok(NOT has_table_privilege('authenticated','public.yard_dock_allocations','INSERT'), 'dock allocation requires human-controlled RPC');
+SELECT extensions.ok(has_function_privilege('authenticated','public.yard37_transition(uuid,text,jsonb)','EXECUTE'), 'authenticated transition boundary exists');
+SELECT extensions.ok(NOT has_function_privilege('anon','public.yard37_transition(uuid,text,jsonb)','EXECUTE'), 'anonymous transition denied');
+SELECT extensions.ok(has_function_privilege('authenticated','public.yard37_driver_projection(uuid)','EXECUTE'), 'driver projection boundary exists');
+SELECT extensions.ok(has_function_privilege('authenticated','public.yard37_customer_projection(uuid)','EXECUTE'), 'customer projection boundary exists');
+SELECT extensions.ok(has_function_privilege('authenticated','public.yard37_zip_answer(uuid,text)','EXECUTE'), 'cited ZIP boundary exists');
+SELECT extensions.ok(has_function_privilege('authenticated','public.yard37_brain_signals(uuid)','EXECUTE'), 'advisory Brain boundary exists');
+SELECT extensions.ok((SELECT count(*) FROM pg_indexes WHERE schemaname='public' AND indexname='yard37_loading_scan_idempotency_idx')=1, 'loading scan idempotency enforced');
 SELECT * FROM extensions.finish();
 ROLLBACK;

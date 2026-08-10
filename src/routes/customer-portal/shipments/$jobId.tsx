@@ -38,13 +38,18 @@ function ShipmentDetailPage() {
   const [tracking, setTracking] = useState<any>(null);
   const [acknowledgements, setAcknowledgements] = useState<any[]>([]);
   const [warehouseOrder, setWarehouseOrder] = useState<any>(null);
+  const [experience, setExperience] = useState<any>(null);
 
   useEffect(() => {
     if (!session?.user?.id) return;
     const load = async () => {
       setLoading(true);
-      const data = await portalApi.shipment(jobId);
-      setJob(data?.job ?? null);
+      const [data, visibility] = await Promise.all([
+        portalApi.shipment(jobId),
+        portalApi.visibilityShipment(jobId),
+      ]);
+      setExperience(visibility);
+      setJob(visibility?.job ?? data?.job ?? null);
       setTimeline(
         (data?.timeline ?? []).map((entry: any) => ({
           ...entry,
@@ -53,7 +58,27 @@ function ShipmentDetailPage() {
       );
       setDocuments(data?.documents ?? []);
       setProof(data?.proof ?? null);
-      setTracking(data?.tracking ?? { visibility: "disabled", location: null });
+      setTracking(
+        visibility?.tracking
+          ? {
+              visibility:
+                visibility.tracking.visibility_mode === "approximate_area"
+                  ? "approximate"
+                  : visibility.tracking.visibility_mode === "exact_location" ||
+                      visibility.tracking.visibility_mode === "delayed_location"
+                    ? "exact"
+                    : "disabled",
+              location:
+                visibility.tracking.latitude != null && visibility.tracking.longitude != null
+                  ? {
+                      latitude: visibility.tracking.latitude,
+                      longitude: visibility.tracking.longitude,
+                      recorded_at: visibility.tracking.last_update,
+                    }
+                  : null,
+            }
+          : { visibility: "disabled", location: null },
+      );
       setAcknowledgements(data?.acknowledgements ?? []);
       setWarehouseOrder(null);
       setLoading(false);
@@ -172,6 +197,80 @@ function ShipmentDetailPage() {
         </div>
       </Card>
 
+      <Card className="border-white/10 bg-slate-900/70 p-5">
+        <h3 className="font-semibold text-white">Expected arrival</h3>
+        {experience?.eta ? (
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            <div>
+              <p className="text-xs text-slate-400">Delivery window</p>
+              <p className="mt-1 text-sm text-white">
+                {experience.eta.window_start && experience.eta.window_end
+                  ? `${new Date(experience.eta.window_start).toLocaleTimeString()}–${new Date(experience.eta.window_end).toLocaleTimeString()}`
+                  : "Unavailable"}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">Confidence</p>
+              <p className="mt-1 text-sm capitalize text-white">{experience.eta.confidence}</p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">Last updated</p>
+              <p className="mt-1 text-sm text-white">
+                {experience.eta.last_updated
+                  ? new Date(experience.eta.last_updated).toLocaleString()
+                  : "Unavailable"}
+              </p>
+            </div>
+            <div>
+              <p className="text-xs text-slate-400">Next milestone</p>
+              <p className="mt-1 text-sm text-white">
+                {experience.eta.next_milestone ?? "Unavailable"}
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div className="mt-2 text-sm text-slate-400">
+            <p className="font-medium text-slate-300">Arrival estimate unavailable</p>
+            <p className="mt-1">
+              ETA and confidence will appear when authorised delivery evidence is available.
+            </p>
+          </div>
+        )}
+      </Card>
+
+      <Card className="border-white/10 bg-slate-900/70 p-5">
+        <h3 className="font-semibold text-white">ETA change history</h3>
+        <div className="mt-3 space-y-2">
+          {(experience?.eta_history ?? []).length ? (
+            experience.eta_history.map((change: any) => (
+              <div
+                key={`${change.timestamp}-${change.eta}`}
+                className="rounded-xl border border-white/10 p-3 text-sm"
+              >
+                <span>
+                  {new Date(change.timestamp).toLocaleTimeString()} ·{" "}
+                  {new Date(change.eta).toLocaleTimeString()}
+                </span>
+                {change.change_minutes != null ? (
+                  <span className="ml-2 text-slate-400">
+                    {change.change_minutes > 0 ? "+" : ""}
+                    {change.change_minutes} min
+                  </span>
+                ) : null}
+                {change.safe_reason ? (
+                  <p className="mt-1 text-slate-400">{change.safe_reason}</p>
+                ) : null}
+                <p className="mt-1 text-xs text-slate-500">
+                  Notification: {change.notification_state}
+                </p>
+              </div>
+            ))
+          ) : (
+            <p className="text-sm text-slate-400">No meaningful ETA changes are recorded.</p>
+          )}
+        </div>
+      </Card>
+
       {warehouseOrder ? (
         <Card className="border-white/10 bg-slate-900/70 p-5">
           <div className="flex items-center gap-2">
@@ -258,13 +357,18 @@ function ShipmentDetailPage() {
       <Card className="border-white/10 bg-slate-900/70 p-5">
         <h3 className="font-semibold text-white">Status timeline</h3>
         <div className="mt-4 space-y-3">
-          {timeline.map((entry) => (
+          {(experience?.timeline ?? timeline).map((entry: any) => (
             <div
-              key={`${entry.title}-${entry.timestamp}`}
+              key={`${entry.id ?? entry.title}-${entry.timestamp}`}
               className="rounded-xl border border-white/10 bg-slate-950/60 p-3"
             >
-              <p className="text-sm font-medium text-white">{entry.title}</p>
-              <p className="mt-1 text-sm text-slate-400">{entry.description}</p>
+              <p className="text-sm font-medium text-white">{entry.milestone ?? entry.title}</p>
+              <p className="mt-1 text-sm text-slate-400">{entry.note ?? entry.description}</p>
+              {entry.freshness ? (
+                <p className="mt-1 text-xs text-slate-500">
+                  {entry.source} · {entry.freshness} · {new Date(entry.timestamp).toLocaleString()}
+                </p>
+              ) : null}
             </div>
           ))}
         </div>

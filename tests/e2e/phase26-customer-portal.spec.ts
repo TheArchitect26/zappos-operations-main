@@ -3,6 +3,12 @@ import { expect, test } from "./public-test";
 const portalRoutes = [
   "/customer-portal",
   "/customer-portal/shipments",
+  "/customer-portal/tracking",
+  "/customer-portal/deliveries",
+  "/customer-portal/appointments",
+  "/customer-portal/action-centre",
+  "/customer-portal/exceptions",
+  "/customer-portal/preferences",
   "/customer-portal/documents",
   "/customer-portal/quotes",
   "/customer-portal/invoices",

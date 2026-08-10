@@ -17,6 +17,11 @@ import {
   ReceiptText,
   ShieldCheck,
   Building2,
+  MapPin,
+  CalendarDays,
+  Truck,
+  CircleAlert,
+  ListChecks,
 } from "lucide-react";
 import { useSession } from "@/lib/session";
 import { Button } from "@/components/ui/button";
@@ -111,6 +116,11 @@ function CustomerPortalLayout() {
         <aside className="max-h-[calc(100vh-8rem)] space-y-1 overflow-y-auto rounded-2xl border border-white/10 bg-slate-900/80 p-3">
           <NavLink to="/customer-portal" label="Dashboard" icon={LayoutDashboard} exact />
           <NavLink to="/customer-portal/shipments" label="Shipments" icon={Package2} />
+          <NavLink to="/customer-portal/tracking" label="Live tracking" icon={MapPin} />
+          <NavLink to="/customer-portal/deliveries" label="Deliveries" icon={Truck} />
+          <NavLink to="/customer-portal/appointments" label="Appointments" icon={CalendarDays} />
+          <NavLink to="/customer-portal/action-centre" label="Action Centre" icon={ListChecks} />
+          <NavLink to="/customer-portal/exceptions" label="Exceptions" icon={CircleAlert} />
           <NavLink to="/customer-portal/documents" label="Documents" icon={FileText} />
           <NavLink to="/customer-portal/quotes" label="Quotes & booking" icon={BadgeDollarSign} />
           <NavLink to="/customer-portal/invoices" label="Invoices" icon={ReceiptText} />
