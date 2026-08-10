@@ -6,6 +6,31 @@ export type Database = {
   __InternalSupabase: {
     PostgrestVersion: "14.5";
   };
+  graphql_public: {
+    Tables: {
+      [_ in never]: never;
+    };
+    Views: {
+      [_ in never]: never;
+    };
+    Functions: {
+      graphql: {
+        Args: {
+          extensions?: Json;
+          operationName?: string;
+          query?: string;
+          variables?: Json;
+        };
+        Returns: Json;
+      };
+    };
+    Enums: {
+      [_ in never]: never;
+    };
+    CompositeTypes: {
+      [_ in never]: never;
+    };
+  };
   public: {
     Tables: {
       bi_alerts: {
@@ -32319,8 +32344,41 @@ export type Database = {
           isSetofReturn: false;
         };
       };
+      yard37_brain_signals: { Args: { _root_visit_id: string }; Returns: Json };
+      yard37_create_fixture: {
+        Args: { _company_id: string; _payload: Json; _run_id: string };
+        Returns: string;
+      };
+      yard37_customer_care_projection: {
+        Args: { _root_visit_id: string };
+        Returns: Json;
+      };
+      yard37_customer_projection: {
+        Args: { _root_visit_id: string };
+        Returns: Json;
+      };
+      yard37_dispatch_projection: {
+        Args: { _root_visit_id: string };
+        Returns: Json;
+      };
+      yard37_driver_projection: {
+        Args: { _root_visit_id: string };
+        Returns: Json;
+      };
       yard37_read: { Args: { c: string }; Returns: boolean };
+      yard37_require_role: {
+        Args: { c: string; roles: Database["public"]["Enums"]["app_role"][] };
+        Returns: undefined;
+      };
+      yard37_transition: {
+        Args: { _action: string; _evidence?: Json; _root_visit_id: string };
+        Returns: Json;
+      };
       yard37_write: { Args: { c: string }; Returns: boolean };
+      yard37_zip_answer: {
+        Args: { _question: string; _root_visit_id: string };
+        Returns: Json;
+      };
       zip_create_api_request: {
         Args: {
           _company_id: string;
@@ -32780,6 +32838,9 @@ export type CompositeTypes<
     : never;
 
 export const Constants = {
+  graphql_public: {
+    Enums: {},
+  },
   public: {
     Enums: {
       app_role: [

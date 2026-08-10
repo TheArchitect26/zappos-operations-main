@@ -22,6 +22,8 @@
     "test:security:dependencies": "npm audit --audit-level=high",
     "test:simulation:performance": "vitest run tests/simulation/performance.test.ts",
     "test:simulation:report": "vitest run tests/simulation/report.test.ts --reporter=verbose",
+    "test:staging:phase37": "node tests/staging/phase37-persisted-workflow.mjs",
+    "test:performance:phase37": "vitest run tests/unit/phase37-performance.test.ts --reporter=verbose",
     "verify:types": "node scripts/verify-supabase-types.mjs",
     "format": "prettier --write ."
   },
