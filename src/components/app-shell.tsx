@@ -34,6 +34,7 @@ import {
   HeartPulse,
   LockKeyhole,
   ChartNoAxesCombined,
+  Crown,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { useCompany } from "@/lib/company-context";
@@ -171,6 +172,12 @@ const ALL: NavItem[] = [
       "brain_reviewer",
       "viewer",
     ],
+  },
+  {
+    label: "Executive centre",
+    to: "/executive/live",
+    icon: Crown,
+    roles: ["admin", "executive", "managing_director", "viewer"],
   },
   {
     label: "Zapp Brain",

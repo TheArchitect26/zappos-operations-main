@@ -62,6 +62,7 @@ import { Route as AuthenticatedFleetPredictiveRouteImport } from './routes/_auth
 import { Route as AuthenticatedFleetIntelligenceRouteImport } from './routes/_authenticated/fleet-intelligence'
 import { Route as AuthenticatedFleetBoardRouteImport } from './routes/_authenticated/fleet-board'
 import { Route as AuthenticatedFieldDeploymentRouteImport } from './routes/_authenticated/field-deployment'
+import { Route as AuthenticatedExecutiveRouteImport } from './routes/_authenticated/executive'
 import { Route as AuthenticatedDriversRouteImport } from './routes/_authenticated/drivers'
 import { Route as AuthenticatedDriverRouteImport } from './routes/_authenticated/driver'
 import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authenticated/documents'
@@ -76,6 +77,7 @@ import { Route as AuthenticatedCommandCentreRouteImport } from './routes/_authen
 import { Route as AuthenticatedBusinessIntelligenceRouteImport } from './routes/_authenticated/business-intelligence'
 import { Route as AuthenticatedBrainRouteImport } from './routes/_authenticated/brain'
 import { Route as AuthenticatedFleetPredictiveIndexRouteImport } from './routes/_authenticated/fleet-predictive/index'
+import { Route as AuthenticatedExecutiveIndexRouteImport } from './routes/_authenticated/executive/index'
 import { Route as CustomerPortalShipmentsJobIdRouteImport } from './routes/customer-portal/shipments/$jobId'
 import { Route as AuthenticatedYardWeighbridgeRouteImport } from './routes/_authenticated/yard/weighbridge'
 import { Route as AuthenticatedYardWallRouteImport } from './routes/_authenticated/yard/wall'
@@ -120,6 +122,23 @@ import { Route as AuthenticatedFleetBoardLiveRouteImport } from './routes/_authe
 import { Route as AuthenticatedFleetBoardHourlyRouteImport } from './routes/_authenticated/fleet-board/hourly'
 import { Route as AuthenticatedFleetBoardHandoversRouteImport } from './routes/_authenticated/fleet-board/handovers'
 import { Route as AuthenticatedFleetBoardCustomerCareRouteImport } from './routes/_authenticated/fleet-board/customer-care'
+import { Route as AuthenticatedExecutiveWarehouseRouteImport } from './routes/_authenticated/executive/warehouse'
+import { Route as AuthenticatedExecutiveWallRouteImport } from './routes/_authenticated/executive/wall'
+import { Route as AuthenticatedExecutiveSecurityRouteImport } from './routes/_authenticated/executive/security'
+import { Route as AuthenticatedExecutiveRisksRouteImport } from './routes/_authenticated/executive/risks'
+import { Route as AuthenticatedExecutiveReplayRouteImport } from './routes/_authenticated/executive/replay'
+import { Route as AuthenticatedExecutiveReliabilityRouteImport } from './routes/_authenticated/executive/reliability'
+import { Route as AuthenticatedExecutiveReadinessRouteImport } from './routes/_authenticated/executive/readiness'
+import { Route as AuthenticatedExecutivePeopleRouteImport } from './routes/_authenticated/executive/people'
+import { Route as AuthenticatedExecutiveOpportunitiesRouteImport } from './routes/_authenticated/executive/opportunities'
+import { Route as AuthenticatedExecutiveOperationsRouteImport } from './routes/_authenticated/executive/operations'
+import { Route as AuthenticatedExecutiveLiveRouteImport } from './routes/_authenticated/executive/live'
+import { Route as AuthenticatedExecutiveHistoryRouteImport } from './routes/_authenticated/executive/history'
+import { Route as AuthenticatedExecutiveFleetRouteImport } from './routes/_authenticated/executive/fleet'
+import { Route as AuthenticatedExecutiveFinancialRouteImport } from './routes/_authenticated/executive/financial'
+import { Route as AuthenticatedExecutiveCustomersRouteImport } from './routes/_authenticated/executive/customers'
+import { Route as AuthenticatedExecutiveBriefingsRouteImport } from './routes/_authenticated/executive/briefings'
+import { Route as AuthenticatedExecutiveBranchesRouteImport } from './routes/_authenticated/executive/branches'
 import { Route as AuthenticatedDispatchWorkloadRouteImport } from './routes/_authenticated/dispatch/workload'
 import { Route as AuthenticatedDispatchRoutesRouteImport } from './routes/_authenticated/dispatch/routes'
 import { Route as AuthenticatedDispatchRecommendationsRouteImport } from './routes/_authenticated/dispatch/recommendations'
@@ -420,6 +439,11 @@ const AuthenticatedFieldDeploymentRoute =
     path: '/field-deployment',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedExecutiveRoute = AuthenticatedExecutiveRouteImport.update({
+  id: '/executive',
+  path: '/executive',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedDriversRoute = AuthenticatedDriversRouteImport.update({
   id: '/drivers',
   path: '/drivers',
@@ -493,6 +517,12 @@ const AuthenticatedFleetPredictiveIndexRoute =
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedFleetPredictiveRoute,
+  } as any)
+const AuthenticatedExecutiveIndexRoute =
+  AuthenticatedExecutiveIndexRouteImport.update({
+    id: '/',
+    path: '/',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
   } as any)
 const CustomerPortalShipmentsJobIdRoute =
   CustomerPortalShipmentsJobIdRouteImport.update({
@@ -753,6 +783,108 @@ const AuthenticatedFleetBoardCustomerCareRoute =
     path: '/customer-care',
     getParentRoute: () => AuthenticatedFleetBoardRoute,
   } as any)
+const AuthenticatedExecutiveWarehouseRoute =
+  AuthenticatedExecutiveWarehouseRouteImport.update({
+    id: '/warehouse',
+    path: '/warehouse',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveWallRoute =
+  AuthenticatedExecutiveWallRouteImport.update({
+    id: '/wall',
+    path: '/wall',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveSecurityRoute =
+  AuthenticatedExecutiveSecurityRouteImport.update({
+    id: '/security',
+    path: '/security',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveRisksRoute =
+  AuthenticatedExecutiveRisksRouteImport.update({
+    id: '/risks',
+    path: '/risks',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveReplayRoute =
+  AuthenticatedExecutiveReplayRouteImport.update({
+    id: '/replay',
+    path: '/replay',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveReliabilityRoute =
+  AuthenticatedExecutiveReliabilityRouteImport.update({
+    id: '/reliability',
+    path: '/reliability',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveReadinessRoute =
+  AuthenticatedExecutiveReadinessRouteImport.update({
+    id: '/readiness',
+    path: '/readiness',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutivePeopleRoute =
+  AuthenticatedExecutivePeopleRouteImport.update({
+    id: '/people',
+    path: '/people',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveOpportunitiesRoute =
+  AuthenticatedExecutiveOpportunitiesRouteImport.update({
+    id: '/opportunities',
+    path: '/opportunities',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveOperationsRoute =
+  AuthenticatedExecutiveOperationsRouteImport.update({
+    id: '/operations',
+    path: '/operations',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveLiveRoute =
+  AuthenticatedExecutiveLiveRouteImport.update({
+    id: '/live',
+    path: '/live',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveHistoryRoute =
+  AuthenticatedExecutiveHistoryRouteImport.update({
+    id: '/history',
+    path: '/history',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveFleetRoute =
+  AuthenticatedExecutiveFleetRouteImport.update({
+    id: '/fleet',
+    path: '/fleet',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveFinancialRoute =
+  AuthenticatedExecutiveFinancialRouteImport.update({
+    id: '/financial',
+    path: '/financial',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveCustomersRoute =
+  AuthenticatedExecutiveCustomersRouteImport.update({
+    id: '/customers',
+    path: '/customers',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveBriefingsRoute =
+  AuthenticatedExecutiveBriefingsRouteImport.update({
+    id: '/briefings',
+    path: '/briefings',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
+const AuthenticatedExecutiveBranchesRoute =
+  AuthenticatedExecutiveBranchesRouteImport.update({
+    id: '/branches',
+    path: '/branches',
+    getParentRoute: () => AuthenticatedExecutiveRoute,
+  } as any)
 const AuthenticatedDispatchWorkloadRoute =
   AuthenticatedDispatchWorkloadRouteImport.update({
     id: '/workload',
@@ -869,6 +1001,7 @@ export interface FileRoutesByFullPath {
   '/documents': typeof AuthenticatedDocumentsRoute
   '/driver': typeof AuthenticatedDriverRoute
   '/drivers': typeof AuthenticatedDriversRoute
+  '/executive': typeof AuthenticatedExecutiveRouteWithChildren
   '/field-deployment': typeof AuthenticatedFieldDeploymentRoute
   '/fleet-board': typeof AuthenticatedFleetBoardRouteWithChildren
   '/fleet-intelligence': typeof AuthenticatedFleetIntelligenceRoute
@@ -925,6 +1058,23 @@ export interface FileRoutesByFullPath {
   '/dispatch/recommendations': typeof AuthenticatedDispatchRecommendationsRoute
   '/dispatch/routes': typeof AuthenticatedDispatchRoutesRoute
   '/dispatch/workload': typeof AuthenticatedDispatchWorkloadRoute
+  '/executive/branches': typeof AuthenticatedExecutiveBranchesRoute
+  '/executive/briefings': typeof AuthenticatedExecutiveBriefingsRoute
+  '/executive/customers': typeof AuthenticatedExecutiveCustomersRoute
+  '/executive/financial': typeof AuthenticatedExecutiveFinancialRoute
+  '/executive/fleet': typeof AuthenticatedExecutiveFleetRoute
+  '/executive/history': typeof AuthenticatedExecutiveHistoryRoute
+  '/executive/live': typeof AuthenticatedExecutiveLiveRoute
+  '/executive/operations': typeof AuthenticatedExecutiveOperationsRoute
+  '/executive/opportunities': typeof AuthenticatedExecutiveOpportunitiesRoute
+  '/executive/people': typeof AuthenticatedExecutivePeopleRoute
+  '/executive/readiness': typeof AuthenticatedExecutiveReadinessRoute
+  '/executive/reliability': typeof AuthenticatedExecutiveReliabilityRoute
+  '/executive/replay': typeof AuthenticatedExecutiveReplayRoute
+  '/executive/risks': typeof AuthenticatedExecutiveRisksRoute
+  '/executive/security': typeof AuthenticatedExecutiveSecurityRoute
+  '/executive/wall': typeof AuthenticatedExecutiveWallRoute
+  '/executive/warehouse': typeof AuthenticatedExecutiveWarehouseRoute
   '/fleet-board/customer-care': typeof AuthenticatedFleetBoardCustomerCareRoute
   '/fleet-board/handovers': typeof AuthenticatedFleetBoardHandoversRoute
   '/fleet-board/hourly': typeof AuthenticatedFleetBoardHourlyRoute
@@ -969,6 +1119,7 @@ export interface FileRoutesByFullPath {
   '/yard/wall': typeof AuthenticatedYardWallRoute
   '/yard/weighbridge': typeof AuthenticatedYardWeighbridgeRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
+  '/executive/': typeof AuthenticatedExecutiveIndexRoute
   '/fleet-predictive/': typeof AuthenticatedFleetPredictiveIndexRoute
   '/mobile/driver/issues': typeof AuthenticatedMobileDriverIssuesRoute
   '/mobile/driver/messages': typeof AuthenticatedMobileDriverMessagesRoute
@@ -1050,6 +1201,23 @@ export interface FileRoutesByTo {
   '/dispatch/recommendations': typeof AuthenticatedDispatchRecommendationsRoute
   '/dispatch/routes': typeof AuthenticatedDispatchRoutesRoute
   '/dispatch/workload': typeof AuthenticatedDispatchWorkloadRoute
+  '/executive/branches': typeof AuthenticatedExecutiveBranchesRoute
+  '/executive/briefings': typeof AuthenticatedExecutiveBriefingsRoute
+  '/executive/customers': typeof AuthenticatedExecutiveCustomersRoute
+  '/executive/financial': typeof AuthenticatedExecutiveFinancialRoute
+  '/executive/fleet': typeof AuthenticatedExecutiveFleetRoute
+  '/executive/history': typeof AuthenticatedExecutiveHistoryRoute
+  '/executive/live': typeof AuthenticatedExecutiveLiveRoute
+  '/executive/operations': typeof AuthenticatedExecutiveOperationsRoute
+  '/executive/opportunities': typeof AuthenticatedExecutiveOpportunitiesRoute
+  '/executive/people': typeof AuthenticatedExecutivePeopleRoute
+  '/executive/readiness': typeof AuthenticatedExecutiveReadinessRoute
+  '/executive/reliability': typeof AuthenticatedExecutiveReliabilityRoute
+  '/executive/replay': typeof AuthenticatedExecutiveReplayRoute
+  '/executive/risks': typeof AuthenticatedExecutiveRisksRoute
+  '/executive/security': typeof AuthenticatedExecutiveSecurityRoute
+  '/executive/wall': typeof AuthenticatedExecutiveWallRoute
+  '/executive/warehouse': typeof AuthenticatedExecutiveWarehouseRoute
   '/fleet-board/customer-care': typeof AuthenticatedFleetBoardCustomerCareRoute
   '/fleet-board/handovers': typeof AuthenticatedFleetBoardHandoversRoute
   '/fleet-board/hourly': typeof AuthenticatedFleetBoardHourlyRoute
@@ -1094,6 +1262,7 @@ export interface FileRoutesByTo {
   '/yard/wall': typeof AuthenticatedYardWallRoute
   '/yard/weighbridge': typeof AuthenticatedYardWeighbridgeRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
+  '/executive': typeof AuthenticatedExecutiveIndexRoute
   '/fleet-predictive': typeof AuthenticatedFleetPredictiveIndexRoute
   '/mobile/driver/issues': typeof AuthenticatedMobileDriverIssuesRoute
   '/mobile/driver/messages': typeof AuthenticatedMobileDriverMessagesRoute
@@ -1124,6 +1293,7 @@ export interface FileRoutesById {
   '/_authenticated/documents': typeof AuthenticatedDocumentsRoute
   '/_authenticated/driver': typeof AuthenticatedDriverRoute
   '/_authenticated/drivers': typeof AuthenticatedDriversRoute
+  '/_authenticated/executive': typeof AuthenticatedExecutiveRouteWithChildren
   '/_authenticated/field-deployment': typeof AuthenticatedFieldDeploymentRoute
   '/_authenticated/fleet-board': typeof AuthenticatedFleetBoardRouteWithChildren
   '/_authenticated/fleet-intelligence': typeof AuthenticatedFleetIntelligenceRoute
@@ -1180,6 +1350,23 @@ export interface FileRoutesById {
   '/_authenticated/dispatch/recommendations': typeof AuthenticatedDispatchRecommendationsRoute
   '/_authenticated/dispatch/routes': typeof AuthenticatedDispatchRoutesRoute
   '/_authenticated/dispatch/workload': typeof AuthenticatedDispatchWorkloadRoute
+  '/_authenticated/executive/branches': typeof AuthenticatedExecutiveBranchesRoute
+  '/_authenticated/executive/briefings': typeof AuthenticatedExecutiveBriefingsRoute
+  '/_authenticated/executive/customers': typeof AuthenticatedExecutiveCustomersRoute
+  '/_authenticated/executive/financial': typeof AuthenticatedExecutiveFinancialRoute
+  '/_authenticated/executive/fleet': typeof AuthenticatedExecutiveFleetRoute
+  '/_authenticated/executive/history': typeof AuthenticatedExecutiveHistoryRoute
+  '/_authenticated/executive/live': typeof AuthenticatedExecutiveLiveRoute
+  '/_authenticated/executive/operations': typeof AuthenticatedExecutiveOperationsRoute
+  '/_authenticated/executive/opportunities': typeof AuthenticatedExecutiveOpportunitiesRoute
+  '/_authenticated/executive/people': typeof AuthenticatedExecutivePeopleRoute
+  '/_authenticated/executive/readiness': typeof AuthenticatedExecutiveReadinessRoute
+  '/_authenticated/executive/reliability': typeof AuthenticatedExecutiveReliabilityRoute
+  '/_authenticated/executive/replay': typeof AuthenticatedExecutiveReplayRoute
+  '/_authenticated/executive/risks': typeof AuthenticatedExecutiveRisksRoute
+  '/_authenticated/executive/security': typeof AuthenticatedExecutiveSecurityRoute
+  '/_authenticated/executive/wall': typeof AuthenticatedExecutiveWallRoute
+  '/_authenticated/executive/warehouse': typeof AuthenticatedExecutiveWarehouseRoute
   '/_authenticated/fleet-board/customer-care': typeof AuthenticatedFleetBoardCustomerCareRoute
   '/_authenticated/fleet-board/handovers': typeof AuthenticatedFleetBoardHandoversRoute
   '/_authenticated/fleet-board/hourly': typeof AuthenticatedFleetBoardHourlyRoute
@@ -1224,6 +1411,7 @@ export interface FileRoutesById {
   '/_authenticated/yard/wall': typeof AuthenticatedYardWallRoute
   '/_authenticated/yard/weighbridge': typeof AuthenticatedYardWeighbridgeRoute
   '/customer-portal/shipments/$jobId': typeof CustomerPortalShipmentsJobIdRoute
+  '/_authenticated/executive/': typeof AuthenticatedExecutiveIndexRoute
   '/_authenticated/fleet-predictive/': typeof AuthenticatedFleetPredictiveIndexRoute
   '/_authenticated/mobile/driver/issues': typeof AuthenticatedMobileDriverIssuesRoute
   '/_authenticated/mobile/driver/messages': typeof AuthenticatedMobileDriverMessagesRoute
@@ -1253,6 +1441,7 @@ export interface FileRouteTypes {
     | '/documents'
     | '/driver'
     | '/drivers'
+    | '/executive'
     | '/field-deployment'
     | '/fleet-board'
     | '/fleet-intelligence'
@@ -1309,6 +1498,23 @@ export interface FileRouteTypes {
     | '/dispatch/recommendations'
     | '/dispatch/routes'
     | '/dispatch/workload'
+    | '/executive/branches'
+    | '/executive/briefings'
+    | '/executive/customers'
+    | '/executive/financial'
+    | '/executive/fleet'
+    | '/executive/history'
+    | '/executive/live'
+    | '/executive/operations'
+    | '/executive/opportunities'
+    | '/executive/people'
+    | '/executive/readiness'
+    | '/executive/reliability'
+    | '/executive/replay'
+    | '/executive/risks'
+    | '/executive/security'
+    | '/executive/wall'
+    | '/executive/warehouse'
     | '/fleet-board/customer-care'
     | '/fleet-board/handovers'
     | '/fleet-board/hourly'
@@ -1353,6 +1559,7 @@ export interface FileRouteTypes {
     | '/yard/wall'
     | '/yard/weighbridge'
     | '/customer-portal/shipments/$jobId'
+    | '/executive/'
     | '/fleet-predictive/'
     | '/mobile/driver/issues'
     | '/mobile/driver/messages'
@@ -1434,6 +1641,23 @@ export interface FileRouteTypes {
     | '/dispatch/recommendations'
     | '/dispatch/routes'
     | '/dispatch/workload'
+    | '/executive/branches'
+    | '/executive/briefings'
+    | '/executive/customers'
+    | '/executive/financial'
+    | '/executive/fleet'
+    | '/executive/history'
+    | '/executive/live'
+    | '/executive/operations'
+    | '/executive/opportunities'
+    | '/executive/people'
+    | '/executive/readiness'
+    | '/executive/reliability'
+    | '/executive/replay'
+    | '/executive/risks'
+    | '/executive/security'
+    | '/executive/wall'
+    | '/executive/warehouse'
     | '/fleet-board/customer-care'
     | '/fleet-board/handovers'
     | '/fleet-board/hourly'
@@ -1478,6 +1702,7 @@ export interface FileRouteTypes {
     | '/yard/wall'
     | '/yard/weighbridge'
     | '/customer-portal/shipments/$jobId'
+    | '/executive'
     | '/fleet-predictive'
     | '/mobile/driver/issues'
     | '/mobile/driver/messages'
@@ -1507,6 +1732,7 @@ export interface FileRouteTypes {
     | '/_authenticated/documents'
     | '/_authenticated/driver'
     | '/_authenticated/drivers'
+    | '/_authenticated/executive'
     | '/_authenticated/field-deployment'
     | '/_authenticated/fleet-board'
     | '/_authenticated/fleet-intelligence'
@@ -1563,6 +1789,23 @@ export interface FileRouteTypes {
     | '/_authenticated/dispatch/recommendations'
     | '/_authenticated/dispatch/routes'
     | '/_authenticated/dispatch/workload'
+    | '/_authenticated/executive/branches'
+    | '/_authenticated/executive/briefings'
+    | '/_authenticated/executive/customers'
+    | '/_authenticated/executive/financial'
+    | '/_authenticated/executive/fleet'
+    | '/_authenticated/executive/history'
+    | '/_authenticated/executive/live'
+    | '/_authenticated/executive/operations'
+    | '/_authenticated/executive/opportunities'
+    | '/_authenticated/executive/people'
+    | '/_authenticated/executive/readiness'
+    | '/_authenticated/executive/reliability'
+    | '/_authenticated/executive/replay'
+    | '/_authenticated/executive/risks'
+    | '/_authenticated/executive/security'
+    | '/_authenticated/executive/wall'
+    | '/_authenticated/executive/warehouse'
     | '/_authenticated/fleet-board/customer-care'
     | '/_authenticated/fleet-board/handovers'
     | '/_authenticated/fleet-board/hourly'
@@ -1607,6 +1850,7 @@ export interface FileRouteTypes {
     | '/_authenticated/yard/wall'
     | '/_authenticated/yard/weighbridge'
     | '/customer-portal/shipments/$jobId'
+    | '/_authenticated/executive/'
     | '/_authenticated/fleet-predictive/'
     | '/_authenticated/mobile/driver/issues'
     | '/_authenticated/mobile/driver/messages'
@@ -2000,6 +2244,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFieldDeploymentRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/executive': {
+      id: '/_authenticated/executive'
+      path: '/executive'
+      fullPath: '/executive'
+      preLoaderRoute: typeof AuthenticatedExecutiveRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/drivers': {
       id: '/_authenticated/drivers'
       path: '/drivers'
@@ -2097,6 +2348,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/fleet-predictive/'
       preLoaderRoute: typeof AuthenticatedFleetPredictiveIndexRouteImport
       parentRoute: typeof AuthenticatedFleetPredictiveRoute
+    }
+    '/_authenticated/executive/': {
+      id: '/_authenticated/executive/'
+      path: '/'
+      fullPath: '/executive/'
+      preLoaderRoute: typeof AuthenticatedExecutiveIndexRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
     }
     '/customer-portal/shipments/$jobId': {
       id: '/customer-portal/shipments/$jobId'
@@ -2406,6 +2664,125 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedFleetBoardCustomerCareRouteImport
       parentRoute: typeof AuthenticatedFleetBoardRoute
     }
+    '/_authenticated/executive/warehouse': {
+      id: '/_authenticated/executive/warehouse'
+      path: '/warehouse'
+      fullPath: '/executive/warehouse'
+      preLoaderRoute: typeof AuthenticatedExecutiveWarehouseRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/wall': {
+      id: '/_authenticated/executive/wall'
+      path: '/wall'
+      fullPath: '/executive/wall'
+      preLoaderRoute: typeof AuthenticatedExecutiveWallRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/security': {
+      id: '/_authenticated/executive/security'
+      path: '/security'
+      fullPath: '/executive/security'
+      preLoaderRoute: typeof AuthenticatedExecutiveSecurityRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/risks': {
+      id: '/_authenticated/executive/risks'
+      path: '/risks'
+      fullPath: '/executive/risks'
+      preLoaderRoute: typeof AuthenticatedExecutiveRisksRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/replay': {
+      id: '/_authenticated/executive/replay'
+      path: '/replay'
+      fullPath: '/executive/replay'
+      preLoaderRoute: typeof AuthenticatedExecutiveReplayRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/reliability': {
+      id: '/_authenticated/executive/reliability'
+      path: '/reliability'
+      fullPath: '/executive/reliability'
+      preLoaderRoute: typeof AuthenticatedExecutiveReliabilityRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/readiness': {
+      id: '/_authenticated/executive/readiness'
+      path: '/readiness'
+      fullPath: '/executive/readiness'
+      preLoaderRoute: typeof AuthenticatedExecutiveReadinessRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/people': {
+      id: '/_authenticated/executive/people'
+      path: '/people'
+      fullPath: '/executive/people'
+      preLoaderRoute: typeof AuthenticatedExecutivePeopleRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/opportunities': {
+      id: '/_authenticated/executive/opportunities'
+      path: '/opportunities'
+      fullPath: '/executive/opportunities'
+      preLoaderRoute: typeof AuthenticatedExecutiveOpportunitiesRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/operations': {
+      id: '/_authenticated/executive/operations'
+      path: '/operations'
+      fullPath: '/executive/operations'
+      preLoaderRoute: typeof AuthenticatedExecutiveOperationsRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/live': {
+      id: '/_authenticated/executive/live'
+      path: '/live'
+      fullPath: '/executive/live'
+      preLoaderRoute: typeof AuthenticatedExecutiveLiveRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/history': {
+      id: '/_authenticated/executive/history'
+      path: '/history'
+      fullPath: '/executive/history'
+      preLoaderRoute: typeof AuthenticatedExecutiveHistoryRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/fleet': {
+      id: '/_authenticated/executive/fleet'
+      path: '/fleet'
+      fullPath: '/executive/fleet'
+      preLoaderRoute: typeof AuthenticatedExecutiveFleetRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/financial': {
+      id: '/_authenticated/executive/financial'
+      path: '/financial'
+      fullPath: '/executive/financial'
+      preLoaderRoute: typeof AuthenticatedExecutiveFinancialRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/customers': {
+      id: '/_authenticated/executive/customers'
+      path: '/customers'
+      fullPath: '/executive/customers'
+      preLoaderRoute: typeof AuthenticatedExecutiveCustomersRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/briefings': {
+      id: '/_authenticated/executive/briefings'
+      path: '/briefings'
+      fullPath: '/executive/briefings'
+      preLoaderRoute: typeof AuthenticatedExecutiveBriefingsRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
+    '/_authenticated/executive/branches': {
+      id: '/_authenticated/executive/branches'
+      path: '/branches'
+      fullPath: '/executive/branches'
+      preLoaderRoute: typeof AuthenticatedExecutiveBranchesRouteImport
+      parentRoute: typeof AuthenticatedExecutiveRoute
+    }
     '/_authenticated/dispatch/workload': {
       id: '/_authenticated/dispatch/workload'
       path: '/workload'
@@ -2560,6 +2937,57 @@ const AuthenticatedDispatchRouteChildren: AuthenticatedDispatchRouteChildren = {
 const AuthenticatedDispatchRouteWithChildren =
   AuthenticatedDispatchRoute._addFileChildren(
     AuthenticatedDispatchRouteChildren,
+  )
+
+interface AuthenticatedExecutiveRouteChildren {
+  AuthenticatedExecutiveBranchesRoute: typeof AuthenticatedExecutiveBranchesRoute
+  AuthenticatedExecutiveBriefingsRoute: typeof AuthenticatedExecutiveBriefingsRoute
+  AuthenticatedExecutiveCustomersRoute: typeof AuthenticatedExecutiveCustomersRoute
+  AuthenticatedExecutiveFinancialRoute: typeof AuthenticatedExecutiveFinancialRoute
+  AuthenticatedExecutiveFleetRoute: typeof AuthenticatedExecutiveFleetRoute
+  AuthenticatedExecutiveHistoryRoute: typeof AuthenticatedExecutiveHistoryRoute
+  AuthenticatedExecutiveLiveRoute: typeof AuthenticatedExecutiveLiveRoute
+  AuthenticatedExecutiveOperationsRoute: typeof AuthenticatedExecutiveOperationsRoute
+  AuthenticatedExecutiveOpportunitiesRoute: typeof AuthenticatedExecutiveOpportunitiesRoute
+  AuthenticatedExecutivePeopleRoute: typeof AuthenticatedExecutivePeopleRoute
+  AuthenticatedExecutiveReadinessRoute: typeof AuthenticatedExecutiveReadinessRoute
+  AuthenticatedExecutiveReliabilityRoute: typeof AuthenticatedExecutiveReliabilityRoute
+  AuthenticatedExecutiveReplayRoute: typeof AuthenticatedExecutiveReplayRoute
+  AuthenticatedExecutiveRisksRoute: typeof AuthenticatedExecutiveRisksRoute
+  AuthenticatedExecutiveSecurityRoute: typeof AuthenticatedExecutiveSecurityRoute
+  AuthenticatedExecutiveWallRoute: typeof AuthenticatedExecutiveWallRoute
+  AuthenticatedExecutiveWarehouseRoute: typeof AuthenticatedExecutiveWarehouseRoute
+  AuthenticatedExecutiveIndexRoute: typeof AuthenticatedExecutiveIndexRoute
+}
+
+const AuthenticatedExecutiveRouteChildren: AuthenticatedExecutiveRouteChildren =
+  {
+    AuthenticatedExecutiveBranchesRoute: AuthenticatedExecutiveBranchesRoute,
+    AuthenticatedExecutiveBriefingsRoute: AuthenticatedExecutiveBriefingsRoute,
+    AuthenticatedExecutiveCustomersRoute: AuthenticatedExecutiveCustomersRoute,
+    AuthenticatedExecutiveFinancialRoute: AuthenticatedExecutiveFinancialRoute,
+    AuthenticatedExecutiveFleetRoute: AuthenticatedExecutiveFleetRoute,
+    AuthenticatedExecutiveHistoryRoute: AuthenticatedExecutiveHistoryRoute,
+    AuthenticatedExecutiveLiveRoute: AuthenticatedExecutiveLiveRoute,
+    AuthenticatedExecutiveOperationsRoute:
+      AuthenticatedExecutiveOperationsRoute,
+    AuthenticatedExecutiveOpportunitiesRoute:
+      AuthenticatedExecutiveOpportunitiesRoute,
+    AuthenticatedExecutivePeopleRoute: AuthenticatedExecutivePeopleRoute,
+    AuthenticatedExecutiveReadinessRoute: AuthenticatedExecutiveReadinessRoute,
+    AuthenticatedExecutiveReliabilityRoute:
+      AuthenticatedExecutiveReliabilityRoute,
+    AuthenticatedExecutiveReplayRoute: AuthenticatedExecutiveReplayRoute,
+    AuthenticatedExecutiveRisksRoute: AuthenticatedExecutiveRisksRoute,
+    AuthenticatedExecutiveSecurityRoute: AuthenticatedExecutiveSecurityRoute,
+    AuthenticatedExecutiveWallRoute: AuthenticatedExecutiveWallRoute,
+    AuthenticatedExecutiveWarehouseRoute: AuthenticatedExecutiveWarehouseRoute,
+    AuthenticatedExecutiveIndexRoute: AuthenticatedExecutiveIndexRoute,
+  }
+
+const AuthenticatedExecutiveRouteWithChildren =
+  AuthenticatedExecutiveRoute._addFileChildren(
+    AuthenticatedExecutiveRouteChildren,
   )
 
 interface AuthenticatedFleetBoardRouteChildren {
@@ -2763,6 +3191,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedDocumentsRoute: typeof AuthenticatedDocumentsRoute
   AuthenticatedDriverRoute: typeof AuthenticatedDriverRoute
   AuthenticatedDriversRoute: typeof AuthenticatedDriversRoute
+  AuthenticatedExecutiveRoute: typeof AuthenticatedExecutiveRouteWithChildren
   AuthenticatedFieldDeploymentRoute: typeof AuthenticatedFieldDeploymentRoute
   AuthenticatedFleetBoardRoute: typeof AuthenticatedFleetBoardRouteWithChildren
   AuthenticatedFleetIntelligenceRoute: typeof AuthenticatedFleetIntelligenceRoute
@@ -2805,6 +3234,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedDocumentsRoute: AuthenticatedDocumentsRoute,
   AuthenticatedDriverRoute: AuthenticatedDriverRoute,
   AuthenticatedDriversRoute: AuthenticatedDriversRoute,
+  AuthenticatedExecutiveRoute: AuthenticatedExecutiveRouteWithChildren,
   AuthenticatedFieldDeploymentRoute: AuthenticatedFieldDeploymentRoute,
   AuthenticatedFleetBoardRoute: AuthenticatedFleetBoardRouteWithChildren,
   AuthenticatedFleetIntelligenceRoute: AuthenticatedFleetIntelligenceRoute,

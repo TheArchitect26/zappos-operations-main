@@ -81,10 +81,22 @@ const required = [
   "predictive_outcomes",
   "predictive_feedback",
   "predictive_audit_logs",
+  "executive_operating_state",
+  "executive_kpi_snapshots",
+  "executive_change_events",
+  "executive_attention_items",
+  "executive_forward_risks",
+  "executive_opportunities",
+  "executive_briefings",
+  "executive_briefing_sections",
+  "executive_decisions",
+  "executive_scorecards",
+  "executive_board_pack_definitions",
+  "executive_audit_logs",
 ];
 const missing = required.filter((name) => !types.includes(`${name}:`));
 if (missing.length) {
   console.error(`Generated Supabase types are missing: ${missing.join(", ")}`);
   process.exit(1);
 }
-console.log(`Supabase type coverage OK (${required.length} Phase 36/36.5/37/38/39 tables).`);
+console.log(`Supabase type coverage OK (${required.length} Phase 36/36.5/37/38/39/40 tables).`);

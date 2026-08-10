@@ -13074,6 +13074,1110 @@ export type Database = {
           },
         ]
       }
+      executive_attention_items: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_attention_items_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_audit_logs: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_audit_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_board_pack_definitions: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_board_pack_definitions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_briefing_sections: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_briefing_sections_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_briefings: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_briefings_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_change_events: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_change_events_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_decisions: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_decisions_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_forward_risks: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_forward_risks_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_kpi_snapshots: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_kpi_snapshots_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_operating_state: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_operating_state_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_opportunities: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_opportunities_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      executive_scorecards: {
+        Row: {
+          advisory_only: boolean
+          branch_id: string | null
+          company_id: string
+          comparison_period: string | null
+          confidence: number
+          coverage: number
+          created_at: string
+          created_by: string | null
+          domain: string
+          effective_at: string
+          factors: Json
+          freshness: string
+          horizon_end: string | null
+          horizon_start: string | null
+          id: string
+          metrics: Json
+          missing_sources: Json
+          owner: string | null
+          record_type: string
+          severity: string
+          source_links: Json
+          state: string
+          status: string
+          summary: string
+          title: string
+        }
+        Insert: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary: string
+          title: string
+        }
+        Update: {
+          advisory_only?: boolean
+          branch_id?: string | null
+          company_id?: string
+          comparison_period?: string | null
+          confidence?: number
+          coverage?: number
+          created_at?: string
+          created_by?: string | null
+          domain?: string
+          effective_at?: string
+          factors?: Json
+          freshness?: string
+          horizon_end?: string | null
+          horizon_start?: string | null
+          id?: string
+          metrics?: Json
+          missing_sources?: Json
+          owner?: string | null
+          record_type?: string
+          severity?: string
+          source_links?: Json
+          state?: string
+          status?: string
+          summary?: string
+          title?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "executive_scorecards_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       field_audit_ledger: {
         Row: {
           action: string
@@ -33644,6 +34748,23 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      executive40_dashboard: { Args: never; Returns: Json }
+      executive40_read: { Args: { c: string }; Returns: boolean }
+      executive40_record_decision: {
+        Args: {
+          _review_at: string
+          _source_links: Json
+          _summary: string
+          _title: string
+        }
+        Returns: Json
+      }
+      executive40_records: {
+        Args: { _limit?: number; _table: string }
+        Returns: Json
+      }
+      executive40_write: { Args: { c: string }; Returns: boolean }
+      executive40_zip: { Args: { _question: string }; Returns: Json }
       fleet_board365_read: { Args: { c: string }; Returns: boolean }
       fleet_board365_write: { Args: { c: string }; Returns: boolean }
       fleet_intelligence_can_read: {
