@@ -33614,6 +33614,16 @@ export type Database = {
         Args: { _company_id: string; _scope_id: string; _scope_type: string }
         Returns: boolean
       }
+      bootstrap_workspace: {
+        Args: {
+          _business_type?: Database["public"]["Enums"]["business_type"]
+          _country?: string
+          _fleet_size?: Database["public"]["Enums"]["fleet_size"]
+          _name: string
+          _terminology?: Database["public"]["Enums"]["terminology"]
+        }
+        Returns: Json
+      }
       brain_contract_visible: {
         Args: { _classification: string; _company_id: string }
         Returns: boolean

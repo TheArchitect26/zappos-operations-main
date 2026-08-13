@@ -52,6 +52,7 @@ function Onboarding() {
   const [fleetSize, setFleetSize] = useState<string>("6-20");
   const [terminology, setTerminology] = useState<string>("jobs");
   const [busy, setBusy] = useState(false);
+  const [setupError, setSetupError] = useState("");
 
   useEffect(() => {
     if (!loading && !session) navigate({ to: "/auth", replace: true });
@@ -61,45 +62,46 @@ function Onboarding() {
     e.preventDefault();
     if (!session) return;
     setBusy(true);
+    setSetupError("");
     try {
-      const { data: company, error: cErr } = await supabase
-        .from("companies")
-        .insert({
-          name,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          business_type: businessType as any,
-          country,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          fleet_size: fleetSize as any,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          terminology: terminology as any,
-          created_by: session.user.id,
-        })
-        .select()
-        .single();
-      if (cErr) throw cErr;
-
-      // Membership + admin role (self-bootstrap policies permit this)
-      const [{ error: mErr }, { error: rErr }, { error: pErr }] = await Promise.all([
-        supabase
-          .from("company_members")
-          .insert({ company_id: company.id, user_id: session.user.id }),
-        supabase
-          .from("user_roles")
-          .insert({ company_id: company.id, user_id: session.user.id, role: "admin" }),
-        supabase
-          .from("profiles")
-          .update({ active_company_id: company.id })
-          .eq("id", session.user.id),
-      ]);
-      if (mErr) throw mErr;
-      if (rErr) throw rErr;
-      if (pErr) throw pErr;
+      // The database function owns the transaction and derives identity/role from auth.uid().
+      const { data, error } = await (
+        supabase as unknown as {
+          rpc: (
+            name: string,
+            args: Record<string, unknown>,
+          ) => Promise<{
+            data: { company_id: string; status: string } | null;
+            error: Error | null;
+          }>;
+        }
+      ).rpc("bootstrap_workspace", {
+        _name: name.trim(),
+        _business_type: businessType,
+        _country: country.trim() || null,
+        _fleet_size: fleetSize,
+        _terminology: terminology,
+      });
+      if (error) throw error;
+      if (!data?.company_id) throw new Error("Workspace setup did not return a company context.");
 
       toast.success("Workspace ready");
       navigate({ to: "/dashboard", replace: true });
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Setup failed");
+      const raw = err instanceof Error ? err.message : "";
+      const message = /email confirmation required/i.test(raw)
+        ? "Your account is not verified yet. Confirm your email, then sign in again."
+        : /already linked/i.test(raw)
+          ? "A workspace is already linked to this account. Reload to continue."
+          : /authentication required|jwt|session/i.test(raw)
+            ? "Your session expired. Sign in again."
+            : "We couldn't create your workspace. No changes were saved. Please try again.";
+      console.warn("[Onboarding] workspace setup failed", {
+        category: /42501|permission|policy/i.test(raw) ? "authorization" : "setup",
+        message: raw || "unknown",
+      });
+      setSetupError(message);
+      toast.error(message);
     } finally {
       setBusy(false);
     }
@@ -192,6 +194,11 @@ function Onboarding() {
                 {busy ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
                 Create workspace
               </Button>
+              {setupError ? (
+                <p role="alert" className="text-sm text-destructive">
+                  {setupError}
+                </p>
+              ) : null}
             </form>
           </CardContent>
         </Card>

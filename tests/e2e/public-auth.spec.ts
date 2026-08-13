@@ -75,13 +75,68 @@ test("signup requiring email confirmation shows a clear confirmation state", asy
   await page.getByLabel("Password").fill("ValidPassword!123");
   await page.getByRole("button", { name: /create account/i }).click();
 
-  await expect(page.getByText("Check your email")).toBeVisible();
-  await expect(page.getByText(`We sent a confirmation link to ${email}.`)).toBeVisible();
+  await expect(page.getByText("Confirm your email")).toBeVisible();
+  await expect(page.getByText(`A confirmation was requested for ${email}.`)).toBeVisible();
   await expect(page.getByText(`Finish confirming ${email} before signing in.`)).toBeVisible();
+  await expect(page.getByRole("button", { name: /resend confirmation/i })).toBeVisible();
   await page.getByRole("button", { name: /back to sign in/i }).click();
   await expect(page.getByText("Welcome back")).toBeVisible();
   await expect(page.getByLabel("Email")).toHaveValue(email);
   await expectNoHorizontalOverflow(page);
+});
+
+test("resend confirmation reports accepted and rate-limited states truthfully", async ({
+  page,
+}) => {
+  const email = "resend-user@example.com";
+  let resendAttempts = 0;
+  await page.route("**/auth/v1/signup**", async (route) => {
+    if (route.request().method() === "OPTIONS") {
+      await route.fulfill({ status: 204, headers: supabaseCorsHeaders });
+      return;
+    }
+    await route.fulfill({
+      status: 200,
+      headers: supabaseCorsHeaders,
+      contentType: "application/json",
+      body: JSON.stringify({
+        id: "00000000-0000-4000-8000-000000000002",
+        email,
+        email_confirmed_at: null,
+        identities: [{ id: "identity-2", provider: "email" }],
+      }),
+    });
+  });
+  await page.route("**/auth/v1/resend**", async (route) => {
+    resendAttempts += 1;
+    await route.fulfill(
+      resendAttempts === 1
+        ? { status: 200, headers: supabaseCorsHeaders, contentType: "application/json", body: "{}" }
+        : {
+            status: 429,
+            headers: supabaseCorsHeaders,
+            contentType: "application/json",
+            body: JSON.stringify({ message: "rate limit exceeded" }),
+          },
+    );
+  });
+
+  await page.goto("/auth");
+  await switchToSignUp(page);
+  await page.getByLabel("Full name").fill("Resend User");
+  await page.getByLabel("Email").fill(email);
+  await page.getByLabel("Password").fill("ValidPassword!123");
+  await page.getByRole("button", { name: /create account/i }).click();
+  await page.getByRole("button", { name: /resend confirmation/i }).click();
+  await expect(page.getByText(/confirmation requested again/i)).toBeVisible();
+  await page.getByRole("button", { name: /resend confirmation/i }).click();
+  await expect(page.getByText(/too many attempts/i).first()).toBeVisible();
+});
+
+test("invalid confirmation callback has a useful recovery state", async ({ page }) => {
+  await page.goto("/auth/callback?error=access_denied&error_description=Token%20has%20expired");
+  await expect(page.getByText("Confirmation could not be completed")).toBeVisible();
+  await expect(page.getByRole("link", { name: /return to sign in/i })).toBeVisible();
 });
 
 test("email confirmation callback errors do not look like wrong credentials", async ({ page }) => {
