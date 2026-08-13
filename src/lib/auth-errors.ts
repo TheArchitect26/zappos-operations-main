@@ -26,11 +26,11 @@ export function preserveAuthCallbackError() {
 
 export function consumeAuthCallbackError() {
   const error = readAuthCallbackError();
-  if (error || typeof window === "undefined") return error;
+  if (typeof window === "undefined") return error;
 
   const preserved = window.sessionStorage.getItem(AUTH_CALLBACK_ERROR_KEY);
   window.sessionStorage.removeItem(AUTH_CALLBACK_ERROR_KEY);
-  return preserved;
+  return error || preserved;
 }
 
 function normalize(value: string | number | undefined) {

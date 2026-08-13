@@ -9,7 +9,6 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as OnboardingRouteImport } from './routes/onboarding'
 import { Route as ForgotPasswordRouteImport } from './routes/forgot-password'
 import { Route as CustomerPortalRouteImport } from './routes/customer-portal'
@@ -37,6 +36,7 @@ import { Route as CustomerPortalAppointmentsRouteImport } from './routes/custome
 import { Route as CustomerPortalApiRouteImport } from './routes/customer-portal/api'
 import { Route as CustomerPortalAnalyticsRouteImport } from './routes/customer-portal/analytics'
 import { Route as CustomerPortalActionCentreRouteImport } from './routes/customer-portal/action-centre'
+import { Route as AuthResetPasswordRouteImport } from './routes/auth_.reset-password'
 import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AuthenticatedYardRouteImport } from './routes/_authenticated/yard'
 import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authenticated/warehouse'
@@ -157,11 +157,6 @@ import { Route as AuthenticatedMobileDriverNavigationRouteImport } from './route
 import { Route as AuthenticatedMobileDriverMessagesRouteImport } from './routes/_authenticated/mobile/driver/messages'
 import { Route as AuthenticatedMobileDriverIssuesRouteImport } from './routes/_authenticated/mobile/driver/issues'
 
-const ResetPasswordRoute = ResetPasswordRouteImport.update({
-  id: '/reset-password',
-  path: '/reset-password',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const OnboardingRoute = OnboardingRouteImport.update({
   id: '/onboarding',
   path: '/onboarding',
@@ -302,6 +297,11 @@ const CustomerPortalActionCentreRoute =
     path: '/action-centre',
     getParentRoute: () => CustomerPortalRoute,
   } as any)
+const AuthResetPasswordRoute = AuthResetPasswordRouteImport.update({
+  id: '/auth_/reset-password',
+  path: '/auth/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthCallbackRoute = AuthCallbackRouteImport.update({
   id: '/auth_/callback',
   path: '/auth/callback',
@@ -994,7 +994,6 @@ export interface FileRoutesByFullPath {
   '/customer-portal': typeof AuthenticatedCustomerPortalRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/brain': typeof AuthenticatedBrainRouteWithChildren
   '/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/command-centre': typeof AuthenticatedCommandCentreRoute
@@ -1034,6 +1033,7 @@ export interface FileRoutesByFullPath {
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/yard': typeof AuthenticatedYardRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
@@ -1140,7 +1140,6 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/brain': typeof AuthenticatedBrainRouteWithChildren
   '/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/command-centre': typeof AuthenticatedCommandCentreRoute
@@ -1179,6 +1178,7 @@ export interface FileRoutesByTo {
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/yard': typeof AuthenticatedYardRouteWithChildren
   '/auth/callback': typeof AuthCallbackRoute
+  '/auth/reset-password': typeof AuthResetPasswordRoute
   '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
@@ -1287,7 +1287,6 @@ export interface FileRoutesById {
   '/customer-portal': typeof CustomerPortalRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
-  '/reset-password': typeof ResetPasswordRoute
   '/_authenticated/brain': typeof AuthenticatedBrainRouteWithChildren
   '/_authenticated/business-intelligence': typeof AuthenticatedBusinessIntelligenceRoute
   '/_authenticated/command-centre': typeof AuthenticatedCommandCentreRoute
@@ -1328,6 +1327,7 @@ export interface FileRoutesById {
   '/_authenticated/warehouse': typeof AuthenticatedWarehouseRoute
   '/_authenticated/yard': typeof AuthenticatedYardRouteWithChildren
   '/auth_/callback': typeof AuthCallbackRoute
+  '/auth_/reset-password': typeof AuthResetPasswordRoute
   '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
@@ -1437,7 +1437,6 @@ export interface FileRouteTypes {
     | '/customer-portal'
     | '/forgot-password'
     | '/onboarding'
-    | '/reset-password'
     | '/brain'
     | '/business-intelligence'
     | '/command-centre'
@@ -1477,6 +1476,7 @@ export interface FileRouteTypes {
     | '/warehouse'
     | '/yard'
     | '/auth/callback'
+    | '/auth/reset-password'
     | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
@@ -1583,7 +1583,6 @@ export interface FileRouteTypes {
     | '/auth'
     | '/forgot-password'
     | '/onboarding'
-    | '/reset-password'
     | '/brain'
     | '/business-intelligence'
     | '/command-centre'
@@ -1622,6 +1621,7 @@ export interface FileRouteTypes {
     | '/warehouse'
     | '/yard'
     | '/auth/callback'
+    | '/auth/reset-password'
     | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
@@ -1729,7 +1729,6 @@ export interface FileRouteTypes {
     | '/customer-portal'
     | '/forgot-password'
     | '/onboarding'
-    | '/reset-password'
     | '/_authenticated/brain'
     | '/_authenticated/business-intelligence'
     | '/_authenticated/command-centre'
@@ -1770,6 +1769,7 @@ export interface FileRouteTypes {
     | '/_authenticated/warehouse'
     | '/_authenticated/yard'
     | '/auth_/callback'
+    | '/auth_/reset-password'
     | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
@@ -1879,20 +1879,13 @@ export interface RootRouteChildren {
   CustomerPortalRoute: typeof CustomerPortalRouteWithChildren
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   OnboardingRoute: typeof OnboardingRoute
-  ResetPasswordRoute: typeof ResetPasswordRoute
   AuthCallbackRoute: typeof AuthCallbackRoute
+  AuthResetPasswordRoute: typeof AuthResetPasswordRoute
   ShareTokenRoute: typeof ShareTokenRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/reset-password': {
-      id: '/reset-password'
-      path: '/reset-password'
-      fullPath: '/reset-password'
-      preLoaderRoute: typeof ResetPasswordRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/onboarding': {
       id: '/onboarding'
       path: '/onboarding'
@@ -2081,6 +2074,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/customer-portal/action-centre'
       preLoaderRoute: typeof CustomerPortalActionCentreRouteImport
       parentRoute: typeof CustomerPortalRoute
+    }
+    '/auth_/reset-password': {
+      id: '/auth_/reset-password'
+      path: '/auth/reset-password'
+      fullPath: '/auth/reset-password'
+      preLoaderRoute: typeof AuthResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth_/callback': {
       id: '/auth_/callback'
@@ -3358,8 +3358,8 @@ const rootRouteChildren: RootRouteChildren = {
   CustomerPortalRoute: CustomerPortalRouteWithChildren,
   ForgotPasswordRoute: ForgotPasswordRoute,
   OnboardingRoute: OnboardingRoute,
-  ResetPasswordRoute: ResetPasswordRoute,
   AuthCallbackRoute: AuthCallbackRoute,
+  AuthResetPasswordRoute: AuthResetPasswordRoute,
   ShareTokenRoute: ShareTokenRoute,
 }
 export const routeTree = rootRouteImport

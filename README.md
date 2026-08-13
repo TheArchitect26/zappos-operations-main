@@ -34,6 +34,7 @@ Create a local `.env` (ignored by Git) containing the public browser credentials
 
 ```dotenv
 VITE_SUPABASE_URL=https://your-project.supabase.co
+VITE_PUBLIC_APP_URL=https://your-public-zappos-origin.example
 VITE_SUPABASE_PUBLISHABLE_KEY=your-publishable-key
 ```
 

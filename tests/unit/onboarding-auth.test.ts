@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { deriveOnboardingState, onboardingDestination } from "@/lib/onboarding-state";
 import { isEmailConfirmationPending, normalizeAuthError } from "@/lib/auth-errors";
+import { resolvePublicAuthOrigin } from "@/lib/public-auth-url";
 
 describe("authentication and onboarding state", () => {
   it("keeps unauthenticated users at auth", () => {
@@ -71,5 +72,38 @@ describe("authentication and onboarding state", () => {
   it("provides useful confirmation and rate-limit errors without internals", () => {
     expect(normalizeAuthError({ code: "email_not_confirmed" })).toMatch(/confirm/i);
     expect(normalizeAuthError({ status: 429, message: "rate limit" })).toMatch(/wait/i);
+  });
+
+  it("uses an externally reachable staging origin for public auth", () => {
+    const origin = resolvePublicAuthOrigin({
+      codespacesOrigin: "https://zappos-stage-8080.app.github.dev",
+      currentOrigin: "http://127.0.0.1:4173",
+      isDevelopment: false,
+    });
+    expect(new URL(origin).hostname).toBe("zappos-stage-8080.app.github.dev");
+  });
+
+  it("rejects local public auth origins outside explicit development", () => {
+    expect(() =>
+      resolvePublicAuthOrigin({
+        configuredOrigin: "http://127.0.0.1:4173",
+        isDevelopment: false,
+      }),
+    ).toThrow(/local address/i);
+    expect(() =>
+      resolvePublicAuthOrigin({
+        configuredOrigin: "http://localhost:8080",
+        isDevelopment: false,
+      }),
+    ).toThrow(/local address/i);
+  });
+
+  it("permits localhost only for intentional local development", () => {
+    expect(
+      resolvePublicAuthOrigin({
+        currentOrigin: "http://localhost:8080",
+        isDevelopment: true,
+      }),
+    ).toBe("http://localhost:8080");
   });
 });

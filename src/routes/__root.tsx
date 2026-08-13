@@ -123,6 +123,12 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(()=>{const q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.replace(/^#/,"")),e=q.get("error_description")||q.get("error")||h.get("error_description")||h.get("error");if(e)sessionStorage.setItem("zappos.auth.callback-error",e)})()',
+          }}
+        />
         <Scripts />
       </body>
     </html>

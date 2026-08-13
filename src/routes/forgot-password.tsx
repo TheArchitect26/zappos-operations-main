@@ -9,6 +9,7 @@ import { Wordmark } from "@/components/brand/wordmark";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { normalizeAuthError } from "@/lib/auth-errors";
+import { getPublicAuthRedirect } from "@/lib/public-auth-url";
 
 export const Route = createFileRoute("/forgot-password")({
   head: () => ({
@@ -26,7 +27,7 @@ function ForgotPasswordPage() {
     e.preventDefault();
     setBusy(true);
     const { error } = await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/reset-password`,
+      redirectTo: getPublicAuthRedirect("/auth/reset-password"),
     });
     setBusy(false);
     if (error) return toast.error(normalizeAuthError(error, "Could not send reset link"));
