@@ -7,10 +7,9 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
-import { useEffect, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
-import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SessionProvider } from "../lib/session";
 import { Toaster } from "sonner";
 
@@ -39,9 +38,6 @@ function NotFoundComponent() {
 function ErrorComponent({ error, reset }: { error: Error; reset: () => void }) {
   console.error(error);
   const router = useRouter();
-  useEffect(() => {
-    reportLovableError(error, { boundary: "tanstack_root_error_component" });
-  }, [error]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-background px-4">
@@ -86,6 +82,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
           "ZappOS is a mobile-first transport and fleet operations platform for logistics, courier, last-mile, food delivery, fuel transport, passenger transport, and any business running its own vehicles.",
       },
       { name: "theme-color", content: "#0b1220" },
+      { name: "author", content: "ZappOS" },
       { property: "og:title", content: "ZappOS — Transport & Fleet Operations" },
       {
         property: "og:description",
@@ -94,6 +91,11 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
+      { name: "twitter:title", content: "ZappOS — Transport & Fleet Operations" },
+      {
+        name: "twitter:description",
+        content: "Know what's happening in your operation and what needs attention.",
+      },
       { name: "apple-mobile-web-app-capable", content: "yes" },
       { name: "apple-mobile-web-app-title", content: "ZappOS" },
       { name: "apple-mobile-web-app-status-bar-style", content: "black-translucent" },

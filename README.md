@@ -15,7 +15,7 @@ nvm use
 npm install --global npm@11.4.2
 ```
 
-Do not install with Bun or regenerate `package-lock.json` using a different package manager. `bun.lock` is retained for historical tooling compatibility, but CI and deployment use npm.
+Do not install with Bun or regenerate `package-lock.json` using a different package manager. CI and builds use npm exclusively.
 
 ## Clean installation
 
@@ -47,7 +47,7 @@ For staging, set `ZAPPOS_ENV=staging` in the server/worker environment and use a
 npm run dev
 ```
 
-The development server uses Vite/TanStack Start. The shared Lovable configuration in `vite.config.ts` already installs the React, Tailwind, TanStack Start, Nitro, and path-alias plugins; do not register duplicate plugins.
+The development server uses the repository's Vite/TanStack Start configuration with React, Tailwind, Nitro, and TypeScript path aliases.
 
 ## Validation
 

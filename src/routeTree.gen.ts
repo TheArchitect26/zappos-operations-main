@@ -37,6 +37,7 @@ import { Route as CustomerPortalAppointmentsRouteImport } from './routes/custome
 import { Route as CustomerPortalApiRouteImport } from './routes/customer-portal/api'
 import { Route as CustomerPortalAnalyticsRouteImport } from './routes/customer-portal/analytics'
 import { Route as CustomerPortalActionCentreRouteImport } from './routes/customer-portal/action-centre'
+import { Route as AuthCallbackRouteImport } from './routes/auth_.callback'
 import { Route as AuthenticatedYardRouteImport } from './routes/_authenticated/yard'
 import { Route as AuthenticatedWarehouseRouteImport } from './routes/_authenticated/warehouse'
 import { Route as AuthenticatedVehiclesRouteImport } from './routes/_authenticated/vehicles'
@@ -301,6 +302,11 @@ const CustomerPortalActionCentreRoute =
     path: '/action-centre',
     getParentRoute: () => CustomerPortalRoute,
   } as any)
+const AuthCallbackRoute = AuthCallbackRouteImport.update({
+  id: '/auth_/callback',
+  path: '/auth/callback',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AuthenticatedYardRoute = AuthenticatedYardRouteImport.update({
   id: '/yard',
   path: '/yard',
@@ -1027,6 +1033,7 @@ export interface FileRoutesByFullPath {
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/yard': typeof AuthenticatedYardRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
@@ -1171,6 +1178,7 @@ export interface FileRoutesByTo {
   '/vehicles': typeof AuthenticatedVehiclesRoute
   '/warehouse': typeof AuthenticatedWarehouseRoute
   '/yard': typeof AuthenticatedYardRouteWithChildren
+  '/auth/callback': typeof AuthCallbackRoute
   '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
@@ -1319,6 +1327,7 @@ export interface FileRoutesById {
   '/_authenticated/vehicles': typeof AuthenticatedVehiclesRoute
   '/_authenticated/warehouse': typeof AuthenticatedWarehouseRoute
   '/_authenticated/yard': typeof AuthenticatedYardRouteWithChildren
+  '/auth_/callback': typeof AuthCallbackRoute
   '/customer-portal/action-centre': typeof CustomerPortalActionCentreRoute
   '/customer-portal/analytics': typeof CustomerPortalAnalyticsRoute
   '/customer-portal/api': typeof CustomerPortalApiRoute
@@ -1467,6 +1476,7 @@ export interface FileRouteTypes {
     | '/vehicles'
     | '/warehouse'
     | '/yard'
+    | '/auth/callback'
     | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
@@ -1611,6 +1621,7 @@ export interface FileRouteTypes {
     | '/vehicles'
     | '/warehouse'
     | '/yard'
+    | '/auth/callback'
     | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
@@ -1758,6 +1769,7 @@ export interface FileRouteTypes {
     | '/_authenticated/vehicles'
     | '/_authenticated/warehouse'
     | '/_authenticated/yard'
+    | '/auth_/callback'
     | '/customer-portal/action-centre'
     | '/customer-portal/analytics'
     | '/customer-portal/api'
@@ -1868,6 +1880,7 @@ export interface RootRouteChildren {
   ForgotPasswordRoute: typeof ForgotPasswordRoute
   OnboardingRoute: typeof OnboardingRoute
   ResetPasswordRoute: typeof ResetPasswordRoute
+  AuthCallbackRoute: typeof AuthCallbackRoute
   ShareTokenRoute: typeof ShareTokenRoute
 }
 
@@ -2068,6 +2081,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/customer-portal/action-centre'
       preLoaderRoute: typeof CustomerPortalActionCentreRouteImport
       parentRoute: typeof CustomerPortalRoute
+    }
+    '/auth_/callback': {
+      id: '/auth_/callback'
+      path: '/auth/callback'
+      fullPath: '/auth/callback'
+      preLoaderRoute: typeof AuthCallbackRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/yard': {
       id: '/_authenticated/yard'
@@ -3339,6 +3359,7 @@ const rootRouteChildren: RootRouteChildren = {
   ForgotPasswordRoute: ForgotPasswordRoute,
   OnboardingRoute: OnboardingRoute,
   ResetPasswordRoute: ResetPasswordRoute,
+  AuthCallbackRoute: AuthCallbackRoute,
   ShareTokenRoute: ShareTokenRoute,
 }
 export const routeTree = rootRouteImport

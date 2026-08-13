@@ -10,8 +10,12 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
 import { Wordmark } from "@/components/brand/wordmark";
 import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
-import { isEmailConfirmationPending, normalizeAuthError } from "@/lib/auth-errors";
-import { portalApi } from "@/lib/customer-portal-api";
+import {
+  consumeAuthCallbackError,
+  isEmailConfirmationPending,
+  normalizeAuthError,
+} from "@/lib/auth-errors";
+import { resolveOnboardingDestination } from "@/lib/onboarding-state";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Sign in — ZappOS" }, { name: "robots", content: "noindex" }] }),
@@ -28,6 +32,7 @@ function AuthPage() {
   const [busy, setBusy] = useState(false);
   const [confirmationEmail, setConfirmationEmail] = useState("");
   const [authMessage, setAuthMessage] = useState("");
+  const [resending, setResending] = useState(false);
 
   const normalizedEmail = useMemo(() => email.trim().toLowerCase(), [email]);
 
@@ -35,14 +40,9 @@ function AuthPage() {
     if (loading || !session) return;
 
     let active = true;
-    void portalApi
-      .context()
-      .then(() => {
-        if (active) navigate({ to: "/customer-portal", replace: true });
-      })
-      .catch(() => {
-        if (active) navigate({ to: "/dashboard", replace: true });
-      });
+    void resolveOnboardingDestination(session.user).then((destination) => {
+      if (active) navigate({ to: destination, replace: true });
+    });
 
     return () => {
       active = false;
@@ -50,13 +50,7 @@ function AuthPage() {
   }, [session, loading, navigate]);
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    const hashParams = new URLSearchParams(window.location.hash.replace(/^#/, ""));
-    const callbackError =
-      params.get("error_description") ||
-      hashParams.get("error_description") ||
-      params.get("error") ||
-      hashParams.get("error");
+    const callbackError = consumeAuthCallbackError();
 
     if (!callbackError) return;
     const message = normalizeAuthError(new Error(callbackError), "Could not complete sign in");
@@ -81,7 +75,7 @@ function AuthPage() {
           password,
           options: {
             data: { full_name: fullName },
-            emailRedirectTo: `${window.location.origin}/auth`,
+            emailRedirectTo: `${window.location.origin}/auth/callback`,
           },
         });
         if (error) throw error;
@@ -96,7 +90,9 @@ function AuthPage() {
           setConfirmationEmail(normalizedEmail);
           setMode("confirm");
           setPassword("");
-          setAuthMessage("Check your email to confirm your account before signing in.");
+          setAuthMessage(
+            "Confirmation requested. Delivery depends on the configured email provider.",
+          );
           return;
         }
 
@@ -120,6 +116,31 @@ function AuthPage() {
     }
   };
 
+  const resendConfirmation = async () => {
+    if (!confirmationEmail || resending) return;
+    setResending(true);
+    setAuthMessage("");
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: confirmationEmail,
+        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+      });
+      if (error) throw error;
+      console.info("[Auth] confirmation requested", { requestAccepted: true });
+      setAuthMessage(
+        "Confirmation requested again. Check your inbox and spam folder before retrying.",
+      );
+    } catch (err) {
+      console.warn("[Auth] confirmation request failed", {
+        message: err instanceof Error ? err.message : "unknown",
+      });
+      showAuthError(err, "Could not request another confirmation email.");
+    } finally {
+      setResending(false);
+    }
+  };
+
   return (
     <div className="grid min-h-screen place-items-center bg-background px-4 py-10">
       <div className="w-full max-w-md">
@@ -130,11 +151,11 @@ function AuthPage() {
           <CardHeader className="pb-4">
             {mode === "confirm" ? (
               <>
-                <CardTitle>Check your email</CardTitle>
+                <CardTitle>Confirm your email</CardTitle>
                 <CardDescription>
                   {confirmationEmail
-                    ? `We sent a confirmation link to ${confirmationEmail}.`
-                    : "We sent a confirmation link to your email address."}
+                    ? `A confirmation was requested for ${confirmationEmail}.`
+                    : "A confirmation email was requested."}
                 </CardDescription>
               </>
             ) : (
@@ -153,8 +174,22 @@ function AuthPage() {
               <div className="space-y-4">
                 <p className="text-sm text-muted-foreground">
                   Finish confirming {confirmationEmail || "your account"} before signing in. If the
-                  message does not arrive, check spam or sign up again with the same email address.
+                  message does not arrive, check spam or request another confirmation below.
                 </p>
+                <Button
+                  type="button"
+                  className="w-full"
+                  disabled={resending}
+                  onClick={() => void resendConfirmation()}
+                >
+                  {resending ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : null}
+                  Resend confirmation
+                </Button>
+                {authMessage ? (
+                  <p role="status" className="text-sm text-muted-foreground">
+                    {authMessage}
+                  </p>
+                ) : null}
                 <Button
                   type="button"
                   variant="outline"

@@ -4,6 +4,35 @@ type AuthLikeError = {
   status?: number;
 };
 
+const AUTH_CALLBACK_ERROR_KEY = "zappos.auth.callback-error";
+
+function readAuthCallbackError() {
+  if (typeof window === "undefined") return null;
+
+  const query = new URLSearchParams(window.location.search);
+  const hash = new URLSearchParams(window.location.hash.replace(/^#/, ""));
+  return (
+    query.get("error_description") ||
+    query.get("error") ||
+    hash.get("error_description") ||
+    hash.get("error")
+  );
+}
+
+export function preserveAuthCallbackError() {
+  const error = readAuthCallbackError();
+  if (error) window.sessionStorage.setItem(AUTH_CALLBACK_ERROR_KEY, error);
+}
+
+export function consumeAuthCallbackError() {
+  const error = readAuthCallbackError();
+  if (error || typeof window === "undefined") return error;
+
+  const preserved = window.sessionStorage.getItem(AUTH_CALLBACK_ERROR_KEY);
+  window.sessionStorage.removeItem(AUTH_CALLBACK_ERROR_KEY);
+  return preserved;
+}
+
 function normalize(value: string | number | undefined) {
   return String(value ?? "")
     .trim()
