@@ -6,6 +6,13 @@ import { nitro } from "nitro/vite";
 import tsconfigPaths from "vite-tsconfig-paths";
 
 export default defineConfig(({ command }) => ({
+  define: {
+    "import.meta.env.VITE_CODESPACES_PUBLIC_ORIGIN": JSON.stringify(
+      process.env.CODESPACE_NAME && process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN
+        ? `https://${process.env.CODESPACE_NAME}-8080.${process.env.GITHUB_CODESPACES_PORT_FORWARDING_DOMAIN}`
+        : "",
+    ),
+  },
   server: { host: "::", port: 8080 },
   css: { transformer: "lightningcss" },
   resolve: {

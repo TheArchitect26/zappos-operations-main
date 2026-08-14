@@ -105,8 +105,10 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
-      { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
-      { rel: "manifest", href: "/manifest.webmanifest" },
+      { rel: "icon", href: "/zappos-icon-v1.svg", type: "image/svg+xml" },
+      { rel: "shortcut icon", href: "/zappos-icon-v1.svg", type: "image/svg+xml" },
+      { rel: "apple-touch-icon", href: "/apple-touch-icon-v1.png", sizes: "180x180" },
+      { rel: "manifest", href: "/manifest-v1.webmanifest" },
     ],
   }),
   shellComponent: RootShell,
@@ -123,6 +125,12 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body suppressHydrationWarning>
         {children}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              '(()=>{const q=new URLSearchParams(location.search),h=new URLSearchParams(location.hash.replace(/^#/,"")),e=q.get("error_description")||q.get("error")||h.get("error_description")||h.get("error");if(e)sessionStorage.setItem("zappos.auth.callback-error",e)})()',
+          }}
+        />
         <Scripts />
       </body>
     </html>

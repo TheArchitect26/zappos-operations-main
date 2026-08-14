@@ -43,6 +43,7 @@ test("auth page exposes sign in and sign up forms", async ({ page }) => {
 
 test("signup requiring email confirmation shows a clear confirmation state", async ({ page }) => {
   const email = "new-user@example.com";
+  let confirmationRedirect = "";
 
   await page.route("**/auth/v1/signup**", async (route) => {
     if (route.request().method() === "OPTIONS") {
@@ -50,6 +51,7 @@ test("signup requiring email confirmation shows a clear confirmation state", asy
       return;
     }
 
+    confirmationRedirect = new URL(route.request().url()).searchParams.get("redirect_to") ?? "";
     await route.fulfill({
       status: 200,
       headers: supabaseCorsHeaders,
@@ -75,6 +77,10 @@ test("signup requiring email confirmation shows a clear confirmation state", asy
   await page.getByLabel("Password").fill("ValidPassword!123");
   await page.getByRole("button", { name: /create account/i }).click();
 
+  const confirmationUrl = new URL(confirmationRedirect);
+  expect(["localhost", "127.0.0.1"]).not.toContain(confirmationUrl.hostname);
+  expect(confirmationUrl.pathname).toBe("/auth/callback");
+
   await expect(page.getByText("Confirm your email")).toBeVisible();
   await expect(page.getByText(`A confirmation was requested for ${email}.`)).toBeVisible();
   await expect(page.getByText(`Finish confirming ${email} before signing in.`)).toBeVisible();
@@ -90,6 +96,7 @@ test("resend confirmation reports accepted and rate-limited states truthfully", 
 }) => {
   const email = "resend-user@example.com";
   let resendAttempts = 0;
+  let resendRedirect = "";
   await page.route("**/auth/v1/signup**", async (route) => {
     if (route.request().method() === "OPTIONS") {
       await route.fulfill({ status: 204, headers: supabaseCorsHeaders });
@@ -109,6 +116,7 @@ test("resend confirmation reports accepted and rate-limited states truthfully", 
   });
   await page.route("**/auth/v1/resend**", async (route) => {
     resendAttempts += 1;
+    resendRedirect = new URL(route.request().url()).searchParams.get("redirect_to") ?? "";
     await route.fulfill(
       resendAttempts === 1
         ? { status: 200, headers: supabaseCorsHeaders, contentType: "application/json", body: "{}" }
@@ -128,6 +136,9 @@ test("resend confirmation reports accepted and rate-limited states truthfully", 
   await page.getByLabel("Password").fill("ValidPassword!123");
   await page.getByRole("button", { name: /create account/i }).click();
   await page.getByRole("button", { name: /resend confirmation/i }).click();
+  const resendUrl = new URL(resendRedirect);
+  expect(["localhost", "127.0.0.1"]).not.toContain(resendUrl.hostname);
+  expect(resendUrl.pathname).toBe("/auth/callback");
   await expect(page.getByText(/confirmation requested again/i)).toBeVisible();
   await page.getByRole("button", { name: /resend confirmation/i }).click();
   await expect(page.getByText(/too many attempts/i).first()).toBeVisible();
@@ -140,7 +151,7 @@ test("invalid confirmation callback has a useful recovery state", async ({ page 
 });
 
 test("email confirmation callback errors do not look like wrong credentials", async ({ page }) => {
-  await page.goto("/auth#error_description=Email%20not%20confirmed");
+  await page.goto("/auth?error_description=Email%20not%20confirmed");
   await expect(
     page.getByText("Check your email to confirm your account before signing in.").first(),
   ).toBeVisible();
@@ -149,8 +160,26 @@ test("email confirmation callback errors do not look like wrong credentials", as
 });
 
 test("forgot password page renders without authenticated state", async ({ page }) => {
+  let recoveryRedirect = "";
+  await page.route("**/auth/v1/recover**", async (route) => {
+    recoveryRedirect = new URL(route.request().url()).searchParams.get("redirect_to") ?? "";
+    await route.fulfill({
+      status: 200,
+      headers: supabaseCorsHeaders,
+      contentType: "application/json",
+      body: "{}",
+    });
+  });
   await page.goto("/forgot-password");
   await expect(page.getByText("Reset your password")).toBeVisible();
   await expect(page.getByRole("button", { name: /send reset link/i })).toBeVisible();
+  await page.getByLabel("Email").fill("recovery-user@example.com");
+  await page.getByRole("button", { name: /send reset link/i }).click();
+  await expect(page.getByText(/check your email/i)).toBeVisible();
+  const recoveryUrl = new URL(recoveryRedirect);
+  expect(["localhost", "127.0.0.1"]).not.toContain(recoveryUrl.hostname);
+  expect(recoveryUrl.pathname).toBe("/auth/reset-password");
   await expectNoHorizontalOverflow(page);
+  await page.goto("/auth/reset-password");
+  await expect(page.getByText(/waiting for reset link/i)).toBeVisible();
 });

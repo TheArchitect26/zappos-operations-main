@@ -16,6 +16,7 @@ import {
   normalizeAuthError,
 } from "@/lib/auth-errors";
 import { resolveOnboardingDestination } from "@/lib/onboarding-state";
+import { getPublicAuthRedirect } from "@/lib/public-auth-url";
 
 export const Route = createFileRoute("/auth")({
   head: () => ({ meta: [{ title: "Sign in — ZappOS" }, { name: "robots", content: "noindex" }] }),
@@ -75,7 +76,7 @@ function AuthPage() {
           password,
           options: {
             data: { full_name: fullName },
-            emailRedirectTo: `${window.location.origin}/auth/callback`,
+            emailRedirectTo: getPublicAuthRedirect("/auth/callback"),
           },
         });
         if (error) throw error;
@@ -124,7 +125,7 @@ function AuthPage() {
       const { error } = await supabase.auth.resend({
         type: "signup",
         email: confirmationEmail,
-        options: { emailRedirectTo: `${window.location.origin}/auth/callback` },
+        options: { emailRedirectTo: getPublicAuthRedirect("/auth/callback") },
       });
       if (error) throw error;
       console.info("[Auth] confirmation requested", { requestAccepted: true });

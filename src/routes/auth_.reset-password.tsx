@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { Loader2 } from "lucide-react";
 import { normalizeAuthError } from "@/lib/auth-errors";
 
-export const Route = createFileRoute("/reset-password")({
+export const Route = createFileRoute("/auth_/reset-password")({
   head: () => ({
     meta: [{ title: "Set new password — ZappOS" }, { name: "robots", content: "noindex" }],
   }),
@@ -24,7 +24,6 @@ function ResetPasswordPage() {
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
-    // Supabase auth will fire PASSWORD_RECOVERY when the recovery hash is processed.
     const { data: sub } = supabase.auth.onAuthStateChange((event) => {
       if (event === "PASSWORD_RECOVERY" || event === "SIGNED_IN") setReady(true);
     });
