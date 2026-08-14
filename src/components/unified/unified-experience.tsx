@@ -228,8 +228,9 @@ export function UnifiedExperienceBar() {
   return (
     <>
       <div
-        className="sticky top-0 z-20 hidden items-center gap-2 border-b bg-background/95 px-4 py-2 backdrop-blur lg:flex"
+        className="z-20 hidden shrink-0 items-center gap-2 border-b bg-background/95 px-4 py-2 backdrop-blur lg:flex"
         aria-label="Unified productivity bar"
+        data-testid="desktop-topbar"
       >
         <Button
           variant="outline"

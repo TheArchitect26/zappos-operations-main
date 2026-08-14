@@ -610,9 +610,12 @@ export function AppShell({ children }: { children: ReactNode }) {
   };
 
   return (
-    <div className="flex min-h-screen bg-background text-foreground">
+    <div className="flex h-dvh overflow-hidden bg-background text-foreground">
       {/* Desktop sidebar */}
-      <aside className="hidden w-60 shrink-0 flex-col border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:flex">
+      <aside
+        className="hidden h-full min-h-0 w-60 shrink-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar text-sidebar-foreground lg:flex"
+        data-testid="desktop-sidebar"
+      >
         <div className="flex h-16 items-center border-b border-sidebar-border px-4">
           <Wordmark size="md" />
         </div>
@@ -626,7 +629,10 @@ export function AppShell({ children }: { children: ReactNode }) {
             </div>
           </div>
         </div>
-        <nav className="flex-1 space-y-0.5 overflow-y-auto px-2 py-3">
+        <nav
+          className="min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain px-2 py-3 [scrollbar-width:thin]"
+          data-testid="desktop-sidebar-nav"
+        >
           {navItems.map((item) => {
             const Icon = item.icon;
             const active = location.pathname.startsWith(item.to);
@@ -656,9 +662,9 @@ export function AppShell({ children }: { children: ReactNode }) {
       </aside>
 
       {/* Main column */}
-      <div className="flex min-w-0 flex-1 flex-col">
+      <div className="flex min-h-0 min-w-0 flex-1 flex-col overflow-hidden">
         {/* Mobile top bar */}
-        <header className="sticky top-0 z-30 flex h-14 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur lg:hidden">
+        <header className="z-30 flex h-14 shrink-0 items-center gap-2 border-b border-border bg-background/95 px-4 backdrop-blur lg:hidden">
           <Button
             variant="ghost"
             size="icon"
@@ -680,7 +686,12 @@ export function AppShell({ children }: { children: ReactNode }) {
         <UnifiedExperienceBar />
 
         {/* Content */}
-        <main className="min-w-0 flex-1 pb-20 lg:pb-0">{children}</main>
+        <main
+          className="min-h-0 min-w-0 flex-1 overflow-y-auto overscroll-contain pb-20 lg:pb-0"
+          data-testid="app-main-scroll"
+        >
+          {children}
+        </main>
 
         {/* Mobile bottom nav */}
         <nav className="fixed inset-x-0 bottom-0 z-30 grid grid-cols-5 border-t border-border bg-background/95 backdrop-blur lg:hidden">
@@ -711,7 +722,7 @@ export function AppShell({ children }: { children: ReactNode }) {
             className="absolute inset-0 bg-background/70 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="absolute inset-y-0 left-0 w-72 border-r border-sidebar-border bg-sidebar p-3">
+          <aside className="absolute inset-y-0 left-0 flex w-72 min-h-0 flex-col overflow-hidden border-r border-sidebar-border bg-sidebar p-3">
             <div className="mb-3 flex items-center justify-between">
               <Wordmark size="md" />
               <Button
@@ -729,7 +740,10 @@ export function AppShell({ children }: { children: ReactNode }) {
                 {roles.join(" · ") || "no role"}
               </div>
             </div>
-            <nav className="space-y-0.5">
+            <nav
+              className="min-h-0 flex-1 space-y-0.5 overflow-y-auto overscroll-contain"
+              data-testid="mobile-sidebar-nav"
+            >
               {navItems.map((item) => {
                 const Icon = item.icon;
                 const active = location.pathname.startsWith(item.to);
@@ -751,7 +765,7 @@ export function AppShell({ children }: { children: ReactNode }) {
                 );
               })}
             </nav>
-            <div className="mt-4 border-t border-sidebar-border pt-3">
+            <div className="shrink-0 border-t border-sidebar-border pt-3">
               <div className="mb-2 truncate px-1 text-xs text-muted-foreground">{user?.email}</div>
               <Button variant="ghost" size="sm" className="w-full justify-start" onClick={signOut}>
                 <LogOut className="mr-2 h-4 w-4" /> Sign out
