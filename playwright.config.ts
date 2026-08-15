@@ -13,6 +13,12 @@ const stagingE2E =
 const phase38StagingE2E = process.env.ZAPPOS_RUN_PHASE38_STAGING_E2E === "true";
 const phase39StagingE2E = process.env.ZAPPOS_RUN_PHASE39_STAGING_E2E === "true";
 const phase40StagingE2E = process.env.ZAPPOS_RUN_PHASE40_STAGING_E2E === "true";
+const phase404StagingE2E =
+  process.env.ZAPPOS_RUN_PHASE404_STAGING_E2E === "true" ||
+  Boolean(
+    (process.env.E2E_ADMIN_EMAIL && process.env.E2E_ADMIN_PASSWORD) ||
+    (process.env.ZAPPOS_STAGING_TEST_EMAIL && process.env.ZAPPOS_STAGING_TEST_PASSWORD),
+  );
 const phase35StagingE2E = process.env.ZAPPOS_RUN_PHASE35_STAGING_E2E === "true";
 const onboardingStagingE2E = process.env.ZAPPOS_RUN_ONBOARDING_STAGING_E2E === "true";
 
@@ -34,6 +40,10 @@ const stagingTests = [
   /phase38-customer-staging\.spec\.ts/,
   /phase39-predictive\.spec\.ts/,
   /phase40-executive\.spec\.ts/,
+  /phase404-product-completeness-staging\.spec\.ts/,
+  /phase404-census-staging\.spec\.ts/,
+  /phase404-personas-staging\.spec\.ts/,
+  /phase404-browser-integration\.spec\.ts/,
 ];
 
 export default defineConfig({
@@ -96,6 +106,7 @@ export default defineConfig({
         phase38StagingE2E ||
         phase39StagingE2E ||
         phase40StagingE2E ||
+        phase404StagingE2E ||
         onboardingStagingE2E
           ? process.env.SUPABASE_URL || ""
           : "http://127.0.0.1:54321",
@@ -105,6 +116,7 @@ export default defineConfig({
         phase38StagingE2E ||
         phase39StagingE2E ||
         phase40StagingE2E ||
+        phase404StagingE2E ||
         onboardingStagingE2E
           ? process.env.SUPABASE_PUBLISHABLE_KEY || ""
           : "sb_publishable_test",

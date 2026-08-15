@@ -89,7 +89,7 @@ export function TrackingControlWorkspace() {
             <div>
               <p className="font-medium text-foreground">Map data unavailable</p>
               <p>No fresh authorised vehicle positions are loaded.</p>
-              <p>Public demo tiles are not operational evidence.</p>
+              <p>No approved map provider is configured for this environment.</p>
             </div>
           </CardContent>
         </Card>

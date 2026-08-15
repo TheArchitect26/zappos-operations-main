@@ -10364,6 +10364,7 @@ export type Database = {
       }
       device_fitment_jobs: {
         Row: {
+          appointment_end_at: string | null
           approved_at: string | null
           blocked_reason: string | null
           cancelled_at: string | null
@@ -10371,19 +10372,24 @@ export type Database = {
           checklist_template_version: number
           company_id: string
           completed_at: string | null
+          controlled_staging: boolean
           created_at: string
           created_by: string | null
+          customer_acknowledged_at: string | null
           device_id: string
+          handover_at: string | null
           id: string
           installation_location: string | null
           metadata: Json
           notes: string | null
           odometer_at_fitment: number | null
           override_reason: string | null
+          project_name: string | null
           reference: string
           rejected_at: string | null
           scheduled_at: string | null
           sim_id: string | null
+          site_name: string | null
           started_at: string | null
           status: Database["public"]["Enums"]["fitment_job_status"]
           submitted_at: string | null
@@ -10392,8 +10398,10 @@ export type Database = {
           technician_user_id: string | null
           updated_at: string
           vehicle_id: string
+          workflow_stage: string
         }
         Insert: {
+          appointment_end_at?: string | null
           approved_at?: string | null
           blocked_reason?: string | null
           cancelled_at?: string | null
@@ -10401,19 +10409,24 @@ export type Database = {
           checklist_template_version?: number
           company_id: string
           completed_at?: string | null
+          controlled_staging?: boolean
           created_at?: string
           created_by?: string | null
+          customer_acknowledged_at?: string | null
           device_id: string
+          handover_at?: string | null
           id?: string
           installation_location?: string | null
           metadata?: Json
           notes?: string | null
           odometer_at_fitment?: number | null
           override_reason?: string | null
+          project_name?: string | null
           reference: string
           rejected_at?: string | null
           scheduled_at?: string | null
           sim_id?: string | null
+          site_name?: string | null
           started_at?: string | null
           status?: Database["public"]["Enums"]["fitment_job_status"]
           submitted_at?: string | null
@@ -10422,8 +10435,10 @@ export type Database = {
           technician_user_id?: string | null
           updated_at?: string
           vehicle_id: string
+          workflow_stage?: string
         }
         Update: {
+          appointment_end_at?: string | null
           approved_at?: string | null
           blocked_reason?: string | null
           cancelled_at?: string | null
@@ -10431,19 +10446,24 @@ export type Database = {
           checklist_template_version?: number
           company_id?: string
           completed_at?: string | null
+          controlled_staging?: boolean
           created_at?: string
           created_by?: string | null
+          customer_acknowledged_at?: string | null
           device_id?: string
+          handover_at?: string | null
           id?: string
           installation_location?: string | null
           metadata?: Json
           notes?: string | null
           odometer_at_fitment?: number | null
           override_reason?: string | null
+          project_name?: string | null
           reference?: string
           rejected_at?: string | null
           scheduled_at?: string | null
           sim_id?: string | null
+          site_name?: string | null
           started_at?: string | null
           status?: Database["public"]["Enums"]["fitment_job_status"]
           submitted_at?: string | null
@@ -10452,6 +10472,7 @@ export type Database = {
           technician_user_id?: string | null
           updated_at?: string
           vehicle_id?: string
+          workflow_stage?: string
         }
         Relationships: [
           {
@@ -26872,6 +26893,44 @@ export type Database = {
           },
         ]
       }
+      settings_audit_logs: {
+        Row: {
+          actor_id: string
+          company_id: string
+          created_at: string
+          event_type: string
+          id: string
+          safe_changes: Json
+          setting_scope: string
+        }
+        Insert: {
+          actor_id?: string
+          company_id: string
+          created_at?: string
+          event_type: string
+          id?: string
+          safe_changes?: Json
+          setting_scope: string
+        }
+        Update: {
+          actor_id?: string
+          company_id?: string
+          created_at?: string
+          event_type?: string
+          id?: string
+          safe_changes?: Json
+          setting_scope?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "settings_audit_logs_company_id_fkey"
+            columns: ["company_id"]
+            isOneToOne: false
+            referencedRelation: "companies"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       shift_handover_items: {
         Row: {
           company_id: string
@@ -33871,6 +33930,64 @@ export type Database = {
         }
         Returns: Json
       }
+      create_field_deployment: {
+        Args: {
+          _appointment_end_at?: string
+          _company_id: string
+          _device_id: string
+          _notes?: string
+          _project_name: string
+          _reference: string
+          _scheduled_at?: string
+          _sim_id?: string
+          _site_name?: string
+          _technician_user_id?: string
+          _vehicle_id: string
+        }
+        Returns: {
+          appointment_end_at: string | null
+          approved_at: string | null
+          blocked_reason: string | null
+          cancelled_at: string | null
+          checklist_template_id: string | null
+          checklist_template_version: number
+          company_id: string
+          completed_at: string | null
+          controlled_staging: boolean
+          created_at: string
+          created_by: string | null
+          customer_acknowledged_at: string | null
+          device_id: string
+          handover_at: string | null
+          id: string
+          installation_location: string | null
+          metadata: Json
+          notes: string | null
+          odometer_at_fitment: number | null
+          override_reason: string | null
+          project_name: string | null
+          reference: string
+          rejected_at: string | null
+          scheduled_at: string | null
+          sim_id: string | null
+          site_name: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["fitment_job_status"]
+          submitted_at: string | null
+          supervisor_review_notes: string | null
+          supervisor_user_id: string | null
+          technician_user_id: string | null
+          updated_at: string
+          vehicle_id: string
+          workflow_stage: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "device_fitment_jobs"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       create_operational_note: {
         Args: {
           _company_id: string
@@ -35184,6 +35301,52 @@ export type Database = {
         }
         Returns: string
       }
+      mark_field_deployment_controlled_staging: {
+        Args: { _company_id: string; _fitment_job_id: string; _reason: string }
+        Returns: {
+          appointment_end_at: string | null
+          approved_at: string | null
+          blocked_reason: string | null
+          cancelled_at: string | null
+          checklist_template_id: string | null
+          checklist_template_version: number
+          company_id: string
+          completed_at: string | null
+          controlled_staging: boolean
+          created_at: string
+          created_by: string | null
+          customer_acknowledged_at: string | null
+          device_id: string
+          handover_at: string | null
+          id: string
+          installation_location: string | null
+          metadata: Json
+          notes: string | null
+          odometer_at_fitment: number | null
+          override_reason: string | null
+          project_name: string | null
+          reference: string
+          rejected_at: string | null
+          scheduled_at: string | null
+          sim_id: string | null
+          site_name: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["fitment_job_status"]
+          submitted_at: string | null
+          supervisor_review_notes: string | null
+          supervisor_user_id: string | null
+          technician_user_id: string | null
+          updated_at: string
+          vehicle_id: string
+          workflow_stage: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "device_fitment_jobs"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       normalize_device_identifier: { Args: { _value: string }; Returns: string }
       notify_operations_users: {
         Args: {
@@ -35205,6 +35368,16 @@ export type Database = {
         Returns: boolean
       }
       phase11_provisioning_rank: { Args: { _state: string }; Returns: number }
+      phase404_customer_care_search: { Args: { _query: string }; Returns: Json }
+      phase404_queue_delay_notification: {
+        Args: {
+          _company_id: string
+          _delay_minutes?: number
+          _job_id: string
+          _safe_reason: string
+        }
+        Returns: Json
+      }
       platform_ingest_device_telemetry: {
         Args: {
           _company_id: string
@@ -35539,6 +35712,7 @@ export type Database = {
           _reason?: string
         }
         Returns: {
+          appointment_end_at: string | null
           approved_at: string | null
           blocked_reason: string | null
           cancelled_at: string | null
@@ -35546,19 +35720,24 @@ export type Database = {
           checklist_template_version: number
           company_id: string
           completed_at: string | null
+          controlled_staging: boolean
           created_at: string
           created_by: string | null
+          customer_acknowledged_at: string | null
           device_id: string
+          handover_at: string | null
           id: string
           installation_location: string | null
           metadata: Json
           notes: string | null
           odometer_at_fitment: number | null
           override_reason: string | null
+          project_name: string | null
           reference: string
           rejected_at: string | null
           scheduled_at: string | null
           sim_id: string | null
+          site_name: string | null
           started_at: string | null
           status: Database["public"]["Enums"]["fitment_job_status"]
           submitted_at: string | null
@@ -35567,6 +35746,58 @@ export type Database = {
           technician_user_id: string | null
           updated_at: string
           vehicle_id: string
+          workflow_stage: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "device_fitment_jobs"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      transition_field_deployment_stage: {
+        Args: {
+          _company_id: string
+          _fitment_job_id: string
+          _next_stage: string
+          _reason?: string
+        }
+        Returns: {
+          appointment_end_at: string | null
+          approved_at: string | null
+          blocked_reason: string | null
+          cancelled_at: string | null
+          checklist_template_id: string | null
+          checklist_template_version: number
+          company_id: string
+          completed_at: string | null
+          controlled_staging: boolean
+          created_at: string
+          created_by: string | null
+          customer_acknowledged_at: string | null
+          device_id: string
+          handover_at: string | null
+          id: string
+          installation_location: string | null
+          metadata: Json
+          notes: string | null
+          odometer_at_fitment: number | null
+          override_reason: string | null
+          project_name: string | null
+          reference: string
+          rejected_at: string | null
+          scheduled_at: string | null
+          sim_id: string | null
+          site_name: string | null
+          started_at: string | null
+          status: Database["public"]["Enums"]["fitment_job_status"]
+          submitted_at: string | null
+          supervisor_review_notes: string | null
+          supervisor_user_id: string | null
+          technician_user_id: string | null
+          updated_at: string
+          vehicle_id: string
+          workflow_stage: string
         }
         SetofOptions: {
           from: "*"
@@ -35637,6 +35868,76 @@ export type Database = {
           isSetofReturn: false
         }
       }
+      update_company_settings: {
+        Args: {
+          _company_id: string
+          _country: string
+          _document_expiry_warning_days: number
+          _name: string
+          _terminology: Database["public"]["Enums"]["terminology"]
+        }
+        Returns: {
+          business_type: Database["public"]["Enums"]["business_type"]
+          country: string | null
+          created_at: string
+          created_by: string | null
+          document_expiry_warning_days: number
+          fleet_size: Database["public"]["Enums"]["fleet_size"] | null
+          id: string
+          name: string
+          terminology: Database["public"]["Enums"]["terminology"]
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "companies"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      update_my_profile_settings: {
+        Args: { _company_id: string; _full_name: string; _phone?: string }
+        Returns: {
+          active_company_id: string | null
+          avatar_url: string | null
+          created_at: string
+          full_name: string | null
+          id: string
+          phone: string | null
+          updated_at: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "profiles"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      upsert_my_notification_setting: {
+        Args: {
+          _background_allowed: boolean
+          _category: string
+          _company_id: string
+          _enabled: boolean
+        }
+        Returns: {
+          background_allowed: boolean
+          category: string
+          company_id: string
+          device_id: string | null
+          enabled: boolean
+          id: string
+          production_provider_token: string | null
+          updated_at: string
+          user_id: string
+        }
+        SetofOptions: {
+          from: "*"
+          to: "mobile_notification_preferences"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
       upsert_operational_alert: {
         Args: {
           _alert_type: string
@@ -35668,6 +35969,44 @@ export type Database = {
         SetofOptions: {
           from: "*"
           to: "operational_alerts"
+          isOneToOne: true
+          isSetofReturn: false
+        }
+      }
+      upsert_tracking_settings: {
+        Args: {
+          _company_id: string
+          _live_seconds: number
+          _offline_seconds: number
+          _recent_seconds: number
+          _timezone: string
+          _tracking_refresh_seconds: number
+        }
+        Returns: {
+          cluster_threshold: number
+          company_id: string
+          customer_care_check_minutes: number
+          customer_delay_minutes: number
+          customer_location_mode: string
+          default_map_view: Json
+          deviation_duration_seconds: number
+          dwell_threshold_seconds: number
+          eta_refresh_seconds: number
+          id: string
+          live_seconds: number
+          offline_seconds: number
+          recent_seconds: number
+          route_deviation_meters: number
+          timezone: string
+          tracking_refresh_seconds: number
+          updated_at: string
+          updated_by: string | null
+          wall_rotation_seconds: number
+          working_hours: Json
+        }
+        SetofOptions: {
+          from: "*"
+          to: "tracking_operational_settings"
           isOneToOne: true
           isSetofReturn: false
         }

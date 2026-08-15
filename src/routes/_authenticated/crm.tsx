@@ -160,6 +160,15 @@ function CrmPage() {
   const [leadName, setLeadName] = useState("");
   const [leadSource, setLeadSource] = useState("manual");
   const [addingLead, setAddingLead] = useState(false);
+  const [operationalCustomers, setOperationalCustomers] = useState<any[]>([]);
+  const [operationalJobs, setOperationalJobs] = useState<any[]>([]);
+  const [operationalSearchResults, setOperationalSearchResults] = useState<any[]>([]);
+  const [interactionDraft, setInteractionDraft] = useState("");
+  const [savingInteraction, setSavingInteraction] = useState(false);
+  const [interactionSavedFor, setInteractionSavedFor] = useState<string | null>(null);
+  const [queueingNotification, setQueueingNotification] = useState(false);
+  const [notificationResultFor, setNotificationResultFor] = useState<string | null>(null);
+  const [operationalSearch, setOperationalSearch] = useState("");
   const capabilities = useMemo(() => crmCapabilities(roles as CrmRole[]), [roles]);
   const hasCrmAccess = roles.some((role) => crmRoles.includes(role as CrmRole));
 
@@ -281,12 +290,14 @@ function CrmPage() {
         .limit(100),
       supabase
         .from("jobs")
-        .select("id,status,customer_id,completed_at")
+        .select(
+          "id,reference,status,customer_id,vehicle_id,scheduled_at,started_at,arrived_at,completed_at,description,dropoff_location",
+        )
         .eq("company_id", companyId)
         .limit(100),
       supabase
         .from("incidents")
-        .select("id,status,customer_id,created_at")
+        .select("id,status,created_at")
         .eq("company_id", companyId)
         .limit(100),
       (supabase as any)
@@ -322,12 +333,46 @@ function CrmPage() {
       incidents: results[17].data ?? [],
       requests: results[18].data ?? [],
     });
+    const operational = await supabase
+      .from("customers")
+      .select("id,name,email,phone,updated_at")
+      .eq("company_id", companyId)
+      .order("name")
+      .limit(500);
+    if (!operational.error) setOperationalCustomers(operational.data ?? []);
+    const operationalJobsResult = await supabase
+      .from("jobs")
+      .select(
+        "id,reference,status,customer_id,vehicle_id,scheduled_at,started_at,arrived_at,completed_at,description,dropoff_location",
+      )
+      .eq("company_id", companyId)
+      .order("created_at", { ascending: false })
+      .limit(500);
+    if (!operationalJobsResult.error) setOperationalJobs(operationalJobsResult.data ?? []);
     setLoading(false);
   }, [activeCompany, capabilities.canViewFinance, hasCrmAccess]);
 
   useEffect(() => {
     void load();
   }, [load]);
+
+  useEffect(() => {
+    let cancelled = false;
+    if (operationalSearch.trim().length < 2) {
+      setOperationalSearchResults([]);
+      return;
+    }
+    void (async () => {
+      const { data, error: searchError } = await (supabase as any).rpc(
+        "phase404_customer_care_search",
+        { _query: operationalSearch.trim() },
+      );
+      if (!cancelled && !searchError) setOperationalSearchResults((data as any[]) ?? []);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [operationalSearch]);
 
   const addLead = async () => {
     if (!activeCompany || !leadName.trim()) return;
@@ -462,6 +507,64 @@ function CrmPage() {
     { id: "success", label: "Success & care" },
     { id: "activities", label: "Activities & calendar" },
   ];
+  const normalizedOperationalSearch = operationalSearch.trim().toLowerCase();
+  const operationalMatches = normalizedOperationalSearch ? operationalSearchResults : [];
+
+  async function recordOperationalInteraction(customerId: string, jobId: string) {
+    if (!activeCompany || !interactionDraft.trim()) return;
+    setSavingInteraction(true);
+    const user = await supabase.auth.getUser();
+    const { error: interactionError } = await supabase.from("customer_service_requests").insert({
+      company_id: activeCompany.id,
+      customer_id: customerId,
+      job_id: jobId,
+      created_by_user_id: user.data.user?.id ?? "",
+      category: "delivery_timing_dispute",
+      subject: "Customer Care delivery interaction",
+      message: interactionDraft.trim(),
+      internal_notes: "Recorded from operational Customer Care lookup",
+      assigned_department: "customer_care",
+      priority: "medium",
+    });
+    setSavingInteraction(false);
+    if (!interactionError) {
+      setInteractionSavedFor(jobId);
+      setInteractionDraft("");
+      const { data } = await (supabase as any).rpc("phase404_customer_care_search", {
+        _query: operationalSearch.trim(),
+      });
+      if (data) setOperationalSearchResults(data as any[]);
+    }
+  }
+
+  async function queueDelayNotification(jobId: string, safeReason: string | null | undefined) {
+    if (!activeCompany) return;
+    setQueueingNotification(true);
+    const { data: result, error: notificationError } = await (supabase as any).rpc(
+      "phase404_queue_delay_notification",
+      {
+        _company_id: activeCompany.id,
+        _job_id: jobId,
+        _safe_reason: safeReason ?? "The delivery schedule has been adjusted.",
+        _delay_minutes: 30,
+      },
+    );
+    setQueueingNotification(false);
+    if (notificationError) {
+      toast.error("Notification could not be queued");
+      return;
+    }
+    if (!result?.eligible) {
+      toast.message(
+        result?.reason === "customer_opted_out"
+          ? "Notification not eligible: customer preference is disabled"
+          : "Notification not eligible for this delay",
+      );
+      return;
+    }
+    setNotificationResultFor(jobId);
+    toast.success(result?.duplicate ? "Notification already queued" : "Notification queued");
+  }
 
   return (
     <div className="mx-auto max-w-7xl space-y-6 px-4 py-6 lg:px-8">
@@ -495,6 +598,134 @@ function CrmPage() {
           </Button>
         ))}
       </div>
+
+      <Card className="p-5" data-testid="crm-operational-search">
+        <div>
+          <h2 className="font-semibold">Operational customer and delivery lookup</h2>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Search governed operational customers by name, email, phone, or job reference. CRM
+            accounts remain available alongside these delivery records.
+          </p>
+        </div>
+        <Input
+          className="mt-4"
+          aria-label="Search operational customers or delivery references"
+          placeholder="Customer, job reference, email, or phone"
+          value={operationalSearch}
+          onChange={(event) => setOperationalSearch(event.target.value)}
+        />
+        {normalizedOperationalSearch ? (
+          <div className="mt-4 space-y-3" data-testid="crm-operational-results">
+            {operationalMatches.map((customer) => {
+              const customerJobs: any[] =
+                customer.shipments ??
+                operationalJobs.filter((job) => job.customer_id === customer.customer_id);
+              const customerName = customer.customer_name ?? customer.name;
+              return (
+                <div key={customer.customer_id ?? customer.id} className="rounded-lg border p-4">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div>
+                      <p className="font-medium">{customerName}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {customer.email ?? customer.phone ?? "No contact detail"}
+                      </p>
+                    </div>
+                    <StatusPill value={`${customerJobs.length} deliveries`} />
+                  </div>
+                  <div className="mt-3 space-y-2">
+                    {customerJobs.length ? (
+                      customerJobs.map((job) => (
+                        <div key={job.id} className="rounded-md bg-muted/40 p-3 text-sm">
+                          <div className="flex flex-wrap items-center justify-between gap-2">
+                            <span className="font-medium">{job.reference}</span>
+                            <StatusPill value={job.status} />
+                          </div>
+                          <p className="mt-1 text-xs text-muted-foreground">
+                            {job.dropoff_location ?? "Delivery location unavailable"}
+                            {job.completed_at
+                              ? ` · completed ${new Date(job.completed_at).toLocaleString()}`
+                              : job.arrived_at
+                                ? ` · arrived ${new Date(job.arrived_at).toLocaleString()}`
+                                : ""}
+                          </p>
+                          {job.eta ? (
+                            <p className="mt-1 text-xs text-muted-foreground">
+                              ETA {new Date(job.eta).toLocaleString()}
+                              {job.confidence ? ` · ${job.confidence} confidence` : ""}
+                            </p>
+                          ) : null}
+                          {job.window_start && job.window_end ? (
+                            <p className="text-xs text-muted-foreground">
+                              Window {new Date(job.window_start).toLocaleTimeString()}–
+                              {new Date(job.window_end).toLocaleTimeString()}
+                            </p>
+                          ) : null}
+                          {job.delay_reason ? (
+                            <p className="mt-1 text-xs text-amber-700">{job.delay_reason}</p>
+                          ) : null}
+                          {Array.isArray(job.support_history) && job.support_history.length ? (
+                            <p className="text-xs text-muted-foreground">
+                              Interaction history: {job.support_history.length}
+                            </p>
+                          ) : null}
+                          <div className="mt-3 flex flex-col gap-2">
+                            <Input
+                              aria-label={`Interaction note for ${job.reference}`}
+                              placeholder="Record customer interaction or follow-up"
+                              value={interactionDraft}
+                              onChange={(event) => setInteractionDraft(event.target.value)}
+                            />
+                            <Button
+                              size="sm"
+                              variant="outline"
+                              disabled={savingInteraction || !interactionDraft.trim()}
+                              onClick={() =>
+                                void recordOperationalInteraction(customer.customer_id, job.id)
+                              }
+                            >
+                              {savingInteraction ? "Saving…" : "Record interaction"}
+                            </Button>
+                            {job.delay_reason ? (
+                              <Button
+                                size="sm"
+                                variant="outline"
+                                disabled={queueingNotification}
+                                onClick={() =>
+                                  void queueDelayNotification(job.id, job.delay_reason)
+                                }
+                              >
+                                {queueingNotification ? "Queueing…" : "Queue delay notification"}
+                              </Button>
+                            ) : null}
+                            {interactionSavedFor === job.id ? (
+                              <p className="text-xs text-emerald-700">Interaction saved</p>
+                            ) : null}
+                            {notificationResultFor === job.id ? (
+                              <p className="text-xs text-emerald-700">
+                                Notification request persisted; provider state is shown in
+                                Notifications.
+                              </p>
+                            ) : null}
+                          </div>
+                        </div>
+                      ))
+                    ) : (
+                      <p className="text-sm text-muted-foreground">
+                        No operational deliveries found.
+                      </p>
+                    )}
+                  </div>
+                </div>
+              );
+            })}
+            {!operationalMatches.length ? (
+              <p className="rounded-lg border border-dashed p-4 text-sm text-muted-foreground">
+                No operational customer or delivery matches found.
+              </p>
+            ) : null}
+          </div>
+        ) : null}
+      </Card>
 
       {tab === "overview" ? (
         <>

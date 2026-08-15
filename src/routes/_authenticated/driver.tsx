@@ -286,7 +286,7 @@ function DriverPage() {
       setProofNotes("");
       setProofPhoto(null);
       setSignature(null);
-      toast.success(`${terminology.Singular} completed`);
+      toast.success(`${terminology.Singular} POD submitted for review`);
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Proof upload failed");
     } finally {

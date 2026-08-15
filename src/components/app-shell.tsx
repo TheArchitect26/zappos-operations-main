@@ -94,7 +94,7 @@ const ALL: NavItem[] = [
     label: "Command centre",
     to: "/command-centre",
     icon: Radio,
-    roles: ["admin", "fleet_manager", "dispatcher", "viewer"],
+    roles: ["admin", "fleet_manager", "dispatcher", "technician", "viewer"],
     mobile: true,
   },
   { label: "Driver", to: "/driver", icon: Smartphone, roles: ["driver"], mobile: true },
@@ -247,7 +247,7 @@ const ALL: NavItem[] = [
     label: "Field deployment",
     to: "/field-deployment",
     icon: HardHat,
-    roles: ["admin", "fleet_manager", "dispatcher", "viewer"],
+    roles: ["admin", "fleet_manager", "dispatcher", "technician", "viewer"],
   },
   {
     label: "Warehouse",
@@ -485,11 +485,27 @@ const ALL: NavItem[] = [
     roles: ["admin", "dispatcher", "viewer"],
   },
   { label: "Notifications", to: "/notifications", icon: Bell, mobile: true },
-  { label: "Settings", to: "/settings", icon: Settings, roles: ["admin"] },
+  { label: "Settings", to: "/settings", icon: Settings },
 ];
 
+// These modules retain their routes and source implementations, but are not presented as
+// production-ready navigation while their primary workflows remain incomplete. Re-enable a module
+// only after its documented enter→act→persist→downstream-consequence workflow is proven.
+const HIDDEN_PARTIAL_MODULES = new Set([
+  "Zapp Brain",
+  "HR & workforce",
+  "Compliance",
+  "Procurement",
+  "Reliability",
+  "Security",
+  "Integrations",
+]);
+
 function filterFor(items: NavItem[], roles: Role[]): NavItem[] {
-  return items.filter((i) => !i.roles || i.roles.some((r) => roles.includes(r)));
+  return items.filter(
+    (i) =>
+      !HIDDEN_PARTIAL_MODULES.has(i.label) && (!i.roles || i.roles.some((r) => roles.includes(r))),
+  );
 }
 
 export function AppShell({ children }: { children: ReactNode }) {
@@ -578,15 +594,21 @@ export function AppShell({ children }: { children: ReactNode }) {
     .filter(
       (item) =>
         !warehouseRestricted ||
-        ["/mobile", "/warehouse", "/hr", "/compliance", "/connect", "/notifications"].includes(
-          item.to,
-        ) ||
+        [
+          "/mobile",
+          "/warehouse",
+          "/yard",
+          "/hr",
+          "/compliance",
+          "/connect",
+          "/notifications",
+        ].includes(item.to) ||
         (hasBiRole && item.to === "/business-intelligence"),
     )
     .filter(
       (item) =>
         !crmRestricted ||
-        ["/mobile", "/crm", "/connect", "/notifications"].includes(item.to) ||
+        ["/mobile", "/crm", "/tracking", "/connect", "/notifications"].includes(item.to) ||
         (hasBiRole && item.to === "/business-intelligence"),
     )
     .filter(

@@ -183,7 +183,9 @@ export function useDriverWorkflow() {
         uploadedPaths.push({ bucket: "proof-of-completion", path: signatureUrl });
       }
 
-      const { error: err } = await supabase.rpc("submit_job_proof", {
+      // POD submission is intentionally a review boundary. Completion is owned by the
+      // reviewer/driver departure authorities after the immutable proof is accepted.
+      const { error: err } = await supabase.rpc("driver_submit_pod_for_review", {
         _job_id: jobId,
         _recipient_name: proof.recipientName,
         _notes: proof.notes || undefined,

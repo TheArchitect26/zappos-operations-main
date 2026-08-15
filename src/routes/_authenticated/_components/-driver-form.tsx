@@ -39,7 +39,17 @@ export function DriverForm({ initialData, onSubmit, loading }: DriverFormProps) 
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(data);
+    await onSubmit({
+      ...data,
+      phone: data.phone || null,
+      employee_ref: data.employee_ref || null,
+      licence_number: data.licence_number || null,
+      licence_class: data.licence_class || null,
+      licence_expiry: data.licence_expiry || null,
+      emergency_contact_name: data.emergency_contact_name || null,
+      emergency_contact_phone: data.emergency_contact_phone || null,
+      notes: data.notes || null,
+    });
   };
 
   return (

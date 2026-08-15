@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Link } from "@tanstack/react-router";
 import {
   Activity,
   Bot,
@@ -190,13 +191,12 @@ export function MobilePlatform({
           </div>
           <div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
             {active.actions.map((action) => (
-              <button
+              <div
                 key={action}
-                disabled={access.readOnly && workspace !== "executive"}
-                className="min-h-14 rounded-lg border bg-card p-3 text-left text-sm font-medium transition-colors hover:bg-muted disabled:opacity-60"
+                className="min-h-14 rounded-lg border bg-card p-3 text-left text-sm font-medium"
               >
                 {action}
-              </button>
+              </div>
             ))}
           </div>
         </Card>
@@ -224,8 +224,8 @@ export function MobilePlatform({
           <p className="mt-2 text-sm text-muted-foreground">
             Role-aware, permission-filtered answers grounded in cited ZappOS evidence.
           </p>
-          <Button className="mt-3" variant="outline" size="sm">
-            Ask ZIP
+          <Button asChild className="mt-3" variant="outline" size="sm">
+            <Link to="/intelligence">Ask ZIP</Link>
           </Button>
         </Card>
         <Card className="p-4">

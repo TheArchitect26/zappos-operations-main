@@ -579,7 +579,7 @@ function BrainPage() {
         <Card className="p-4">
           <EmptyState
             title="No Zapp Brain insights yet"
-            description="Future imported insights will appear here for human review and feedback."
+            description="No imported insights are awaiting human review. Use a configured, authorised source to submit evidence."
             icon={BrainCircuit}
           />
         </Card>

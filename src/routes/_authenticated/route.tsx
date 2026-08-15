@@ -4,6 +4,7 @@ import { useSession } from "@/lib/session";
 import { CompanyProvider, useCompany } from "@/lib/company-context";
 import { AppShell } from "@/components/app-shell";
 import { Loader2 } from "lucide-react";
+import { resolveOnboardingDestination } from "@/lib/onboarding-state";
 
 export const Route = createFileRoute("/_authenticated")({
   component: AuthedLayout,
@@ -38,6 +39,7 @@ function AuthedLayout() {
 
 function CompanyGate({ children }: { children: React.ReactNode }) {
   const { loading, companies, roles } = useCompany();
+  const { session } = useSession();
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -112,8 +114,15 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   );
 
   useEffect(() => {
-    if (!loading && companies.length === 0) navigate({ to: "/onboarding", replace: true });
-  }, [loading, companies.length, navigate]);
+    if (loading || companies.length > 0 || !session?.user) return;
+    let active = true;
+    void resolveOnboardingDestination(session.user).then((destination) => {
+      if (active) navigate({ to: destination, replace: true });
+    });
+    return () => {
+      active = false;
+    };
+  }, [loading, companies.length, navigate, session?.user]);
 
   useEffect(() => {
     if (!loading && driverRestricted) {
@@ -129,7 +138,7 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && warehouseRestricted) {
       const allowed =
-        ["/mobile", "/warehouse", "/hr", "/compliance", "/notifications"].some((prefix) =>
+        ["/mobile", "/warehouse", "/yard", "/hr", "/compliance", "/notifications"].some((prefix) =>
           location.pathname.startsWith(prefix),
         ) ||
         (hasBiRole && location.pathname.startsWith("/business-intelligence"));
@@ -142,7 +151,7 @@ function CompanyGate({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (!loading && crmRestricted) {
       const allowed =
-        ["/mobile", "/crm", "/notifications"].some((prefix) =>
+        ["/mobile", "/crm", "/tracking", "/notifications"].some((prefix) =>
           location.pathname.startsWith(prefix),
         ) ||
         (hasBiRole && location.pathname.startsWith("/business-intelligence"));

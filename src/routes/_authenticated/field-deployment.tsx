@@ -18,15 +18,15 @@ import {
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { EmptyState, ErrorState, LoadingState } from "@/components/operational-state";
 import { StatusBadge } from "@/components/ui/status-badge-detailed";
 import { useCompany } from "@/lib/company-context";
-import { useSession } from "@/lib/session";
 import {
   labelFitmentSource,
   rolloutTruthLabel,
   supportDiagnosticCopy,
-  validateFitmentTransition,
   type ChecklistStepStatus,
   type FitmentStatus,
   type FitmentTestResult,
@@ -50,6 +50,10 @@ interface FitmentJobRow {
   technician_user_id: string | null;
   supervisor_user_id: string | null;
   status: FitmentStatus;
+  workflow_stage: string;
+  controlled_staging: boolean;
+  project_name: string | null;
+  site_name: string | null;
   scheduled_at: string | null;
   started_at: string | null;
   submitted_at: string | null;
@@ -61,6 +65,15 @@ interface FitmentJobRow {
   blocked_reason: string | null;
   created_at: string;
   updated_at: string;
+}
+
+interface VehicleRow {
+  id: string;
+  registration: string;
+}
+
+interface MemberRow {
+  user_id: string;
 }
 
 interface DeviceRow {
@@ -114,7 +127,7 @@ interface TestRow {
   critical: boolean;
   notes: string | null;
   override_reason: string | null;
-  recorded_at: string;
+  observed_at: string;
 }
 
 interface RoadTestRow {
@@ -212,13 +225,20 @@ function relativeTime(value: string | null | undefined) {
   return new Date(value).toLocaleDateString();
 }
 
+function errorMessage(error: unknown) {
+  if (error instanceof Error) return error.message;
+  if (error && typeof error === "object" && "message" in error)
+    return String((error as { message: unknown }).message);
+  return String(error);
+}
+
 function FieldDeploymentPage() {
-  const { activeCompany, hasAnyRole, roles } = useCompany();
-  const { user } = useSession();
+  const { activeCompany, hasAnyRole } = useCompany();
   const activeCompanyId = activeCompany?.id;
-  const canRead = hasAnyRole(["admin", "fleet_manager", "dispatcher", "viewer"]);
+  const canRead = hasAnyRole(["admin", "fleet_manager", "dispatcher", "technician", "viewer"]);
   const canManage = hasAnyRole(["admin", "fleet_manager"]);
-  const canTransition = hasAnyRole(["admin", "fleet_manager", "viewer"]);
+  const canWork = hasAnyRole(["admin", "fleet_manager", "technician"]);
+  const canTransition = canWork;
   const requestRef = useRef(0);
 
   const [loading, setLoading] = useState(true);
@@ -227,6 +247,8 @@ function FieldDeploymentPage() {
   const [selectedJobId, setSelectedJobId] = useState<string | null>(null);
   const [saving, setSaving] = useState<"idle" | "saving" | "saved" | "error">("idle");
   const [jobs, setJobs] = useState<FitmentJobRow[]>([]);
+  const [vehicles, setVehicles] = useState<VehicleRow[]>([]);
+  const [members, setMembers] = useState<MemberRow[]>([]);
   const [devices, setDevices] = useState<DeviceRow[]>([]);
   const [sims, setSims] = useState<SimRow[]>([]);
   const [checklist, setChecklist] = useState<ChecklistRow[]>([]);
@@ -236,6 +258,19 @@ function FieldDeploymentPage() {
   const [rollouts, setRollouts] = useState<RolloutRow[]>([]);
   const [supportCases, setSupportCases] = useState<SupportCaseRow[]>([]);
   const [audit, setAudit] = useState<AuditRow[]>([]);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [showCreate, setShowCreate] = useState(false);
+  const [createForm, setCreateForm] = useState({
+    reference: "",
+    projectName: "",
+    vehicleId: "",
+    deviceId: "",
+    technicianId: "",
+    scheduledAt: "",
+    siteName: "",
+    notes: "",
+  });
 
   const load = useCallback(async () => {
     if (!activeCompanyId) {
@@ -248,6 +283,8 @@ function FieldDeploymentPage() {
     try {
       const [
         jobResult,
+        vehicleResult,
+        memberResult,
         deviceResult,
         simResult,
         checklistResult,
@@ -264,6 +301,12 @@ function FieldDeploymentPage() {
           .eq("company_id", activeCompanyId)
           .order("updated_at", { ascending: false })
           .limit(120),
+        supabase
+          .from("vehicles")
+          .select("id,registration")
+          .eq("company_id", activeCompanyId)
+          .order("registration"),
+        supabase.from("company_members").select("user_id").eq("company_id", activeCompanyId),
         supabase
           .from("devices" as never)
           .select("*")
@@ -286,7 +329,7 @@ function FieldDeploymentPage() {
           .from("fitment_test_results" as never)
           .select("*")
           .eq("company_id", activeCompanyId)
-          .order("recorded_at", { ascending: false })
+          .order("observed_at", { ascending: false })
           .limit(160),
         supabase
           .from("fitment_road_tests" as never)
@@ -323,6 +366,8 @@ function FieldDeploymentPage() {
       if (requestId !== requestRef.current) return;
       for (const result of [
         jobResult,
+        vehicleResult,
+        memberResult,
         deviceResult,
         simResult,
         checklistResult,
@@ -338,6 +383,8 @@ function FieldDeploymentPage() {
 
       const nextJobs = (jobResult.data ?? []) as unknown as FitmentJobRow[];
       setJobs(nextJobs);
+      setVehicles((vehicleResult.data ?? []) as VehicleRow[]);
+      setMembers((memberResult.data ?? []) as MemberRow[]);
       setDevices((deviceResult.data ?? []) as unknown as DeviceRow[]);
       setSims((simResult.data ?? []) as unknown as SimRow[]);
       setChecklist((checklistResult.data ?? []) as unknown as ChecklistRow[]);
@@ -351,8 +398,7 @@ function FieldDeploymentPage() {
         current && nextJobs.some((job) => job.id === current) ? current : (nextJobs[0]?.id ?? null),
       );
     } catch (err) {
-      if (requestId === requestRef.current)
-        setError(err instanceof Error ? err.message : String(err));
+      if (requestId === requestRef.current) setError(errorMessage(err));
     } finally {
       if (requestId === requestRef.current) setLoading(false);
     }
@@ -369,6 +415,10 @@ function FieldDeploymentPage() {
   const selectedDevice = useMemo(
     () => devices.find((device) => device.id === selectedJob?.device_id) ?? null,
     [devices, selectedJob],
+  );
+  const selectedVehicle = useMemo(
+    () => vehicles.find((vehicle) => vehicle.id === selectedJob?.vehicle_id) ?? null,
+    [vehicles, selectedJob],
   );
   const selectedSim = useMemo(
     () => sims.find((sim) => sim.id === selectedJob?.sim_id) ?? null,
@@ -404,41 +454,28 @@ function FieldDeploymentPage() {
     simulatedOnly:
       selectedTests.length > 0 && selectedTests.every((test) => test.source === "simulated"),
   });
+  const today = new Date().toISOString().slice(0, 10);
+  const completedJobs = jobs.filter((job) => job.workflow_stage === "completed");
+  const completedDurations = completedJobs
+    .filter((job) => job.started_at && job.completed_at)
+    .map((job) => (Date.parse(job.completed_at!) - Date.parse(job.started_at!)) / 60_000)
+    .filter((minutes) => minutes >= 0);
+  const firstTimeCompleted = completedJobs.filter((job) => !job.blocked_reason).length;
 
-  const transitionJob = async (nextStatus: FitmentStatus) => {
+  const filteredJobs = useMemo(() => {
+    const needle = search.trim().toLowerCase();
+    return jobs.filter(
+      (job) =>
+        (statusFilter === "all" || job.workflow_stage === statusFilter) &&
+        (!needle ||
+          job.reference.toLowerCase().includes(needle) ||
+          job.project_name?.toLowerCase().includes(needle) ||
+          job.site_name?.toLowerCase().includes(needle)),
+    );
+  }, [jobs, search, statusFilter]);
+
+  const transitionJob = async (nextStage: string, reason?: string) => {
     if (!activeCompanyId || !selectedJob || !canTransition) return;
-    const validation = validateFitmentTransition({
-      job: {
-        id: selectedJob.id,
-        status: selectedJob.status,
-        technicianUserId: selectedJob.technician_user_id,
-        supervisorUserId: selectedJob.supervisor_user_id,
-      },
-      actor: { userId: user?.id ?? "", roles: roles as never },
-      nextStatus,
-      reason:
-        nextStatus === "blocked" || nextStatus === "rejected"
-          ? "Recorded from field workspace"
-          : null,
-      overrideReason: criticalFailures.length ? "Documented supervisor override" : null,
-      checklist: selectedChecklist.map((step) => ({
-        mandatory: step.mandatory,
-        critical: step.critical,
-        status: step.status,
-        overrideReason: step.supervisor_comment ?? step.failure_reason,
-      })),
-      tests: selectedTests.map((test) => ({
-        category: test.test_category as never,
-        result: test.result,
-        source: test.source,
-        critical: test.critical,
-        overrideReason: test.override_reason,
-      })),
-    });
-    if (!validation.ok) {
-      setError(validation.issues.join("; "));
-      return;
-    }
     setSaving("saving");
     try {
       const { error: transitionError } = await (
@@ -448,22 +485,65 @@ function FieldDeploymentPage() {
             args: Record<string, unknown>,
           ) => Promise<{ error: { message: string } | null }>;
         }
-      ).rpc("transition_device_fitment_job", {
+      ).rpc("transition_field_deployment_stage", {
         _company_id: activeCompanyId,
         _fitment_job_id: selectedJob.id,
-        _next_status: nextStatus,
-        _reason:
-          nextStatus === "blocked" || nextStatus === "rejected"
-            ? "Recorded from field workspace"
-            : null,
-        _override_reason: criticalFailures.length ? "Documented supervisor override" : null,
+        _next_stage: nextStage,
+        _reason: reason ?? null,
       });
       if (transitionError) throw transitionError;
       setSaving("saved");
       await load();
     } catch (err) {
       setSaving("error");
-      setError(err instanceof Error ? err.message : String(err));
+      setError(errorMessage(err));
+    }
+  };
+
+  const createDeployment = async () => {
+    if (!activeCompanyId || !canManage) return;
+    setSaving("saving");
+    setError(null);
+    try {
+      const { error: createError } = await (
+        supabase as unknown as {
+          rpc: (name: string, args: Record<string, unknown>) => Promise<{ error: Error | null }>;
+        }
+      ).rpc("create_field_deployment", {
+        _company_id: activeCompanyId,
+        _reference: createForm.reference,
+        _project_name: createForm.projectName,
+        _vehicle_id: createForm.vehicleId,
+        _device_id: createForm.deviceId,
+        _sim_id: null,
+        _technician_user_id: createForm.technicianId || null,
+        _scheduled_at: createForm.scheduledAt
+          ? new Date(createForm.scheduledAt).toISOString()
+          : null,
+        _appointment_end_at: null,
+        _site_name: createForm.siteName || null,
+        _notes: createForm.notes || null,
+      });
+      if (createError) throw createError;
+      setCreateForm({
+        reference: "",
+        projectName: "",
+        vehicleId: "",
+        deviceId: "",
+        technicianId: "",
+        scheduledAt: "",
+        siteName: "",
+        notes: "",
+      });
+      setShowCreate(false);
+      setSaving("saved");
+      await load();
+    } catch (err) {
+      setSaving("error");
+      console.warn("[Field deployment] governed create failed", {
+        message: err instanceof Error ? err.message : "unknown",
+      });
+      setError("The deployment could not be created. Check asset availability and try again.");
     }
   };
 
@@ -525,28 +605,207 @@ function FieldDeploymentPage() {
         </div>
       </section>
 
-      <section className="grid gap-3 md:grid-cols-4">
+      <section className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
         <SummaryCard
-          label="Open jobs"
-          value={jobs.filter((job) => !["completed", "cancelled"].includes(job.status)).length}
+          label="Planned"
+          value={jobs.filter((job) => job.workflow_stage === "planned").length}
         />
         <SummaryCard
-          label="Awaiting supervisor"
-          value={jobs.filter((job) => job.status === "awaiting_supervisor").length}
+          label="Scheduled today"
+          value={jobs.filter((job) => job.scheduled_at?.slice(0, 10) === today).length}
         />
         <SummaryCard
-          label="Issued assets"
+          label="In progress"
           value={
-            devices.filter((device) => device.inventory_state === "issued_to_technician").length +
-            sims.filter((sim) => sim.inventory_state === "issued").length
+            jobs.filter((job) =>
+              [
+                "en_route",
+                "on_site",
+                "installation_started",
+                "hardware_installed",
+                "connectivity_verified",
+                "gps_verified",
+                "telemetry_verified",
+                "qa_review",
+              ].includes(job.workflow_stage),
+            ).length
           }
         />
         <SummaryCard
-          label="Critical blockers"
-          value={criticalFailures.length}
-          tone={criticalFailures.length ? "error" : "success"}
+          label="Completed today"
+          value={completedJobs.filter((job) => job.completed_at?.slice(0, 10) === today).length}
+        />
+        <SummaryCard
+          label="Failed"
+          value={jobs.filter((job) => job.workflow_stage === "failed").length}
+          tone={jobs.some((job) => job.workflow_stage === "failed") ? "error" : "success"}
+        />
+        <SummaryCard
+          label="Revisit required"
+          value={jobs.filter((job) => job.workflow_stage === "revisit_required").length}
+        />
+        <SummaryCard
+          label="Awaiting activation"
+          value={jobs.filter((job) => job.workflow_stage === "qa_review").length}
+        />
+        <SummaryCard
+          label="Device issues"
+          value={
+            supportCases.filter((item) => !["resolved", "closed"].includes(item.status)).length
+          }
+        />
+        <SummaryCard
+          label="Average fitment time"
+          value={
+            completedDurations.length
+              ? `${Math.round(completedDurations.reduce((sum, value) => sum + value, 0) / completedDurations.length)} min`
+              : "No completed data"
+          }
+        />
+        <SummaryCard
+          label="First-time success"
+          value={
+            completedJobs.length
+              ? `${Math.round((firstTimeCompleted / completedJobs.length) * 100)}%`
+              : "No completed data"
+          }
         />
       </section>
+
+      {canManage ? (
+        <Card className="p-4">
+          <div className="flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 className="font-semibold">Deployment planning</h2>
+              <p className="text-sm text-muted-foreground">
+                Schedule a physical device, vehicle, site, and assigned company technician.
+              </p>
+            </div>
+            <Button
+              variant={showCreate ? "outline" : "default"}
+              onClick={() => setShowCreate(!showCreate)}
+            >
+              {showCreate ? "Close" : "Create deployment"}
+            </Button>
+          </div>
+          {showCreate ? (
+            <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              <Field label="Reference">
+                <Input
+                  aria-label="Deployment reference"
+                  value={createForm.reference}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, reference: event.target.value })
+                  }
+                />
+              </Field>
+              <Field label="Project">
+                <Input
+                  aria-label="Deployment project"
+                  value={createForm.projectName}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, projectName: event.target.value })
+                  }
+                />
+              </Field>
+              <Field label="Site">
+                <Input
+                  aria-label="Deployment site"
+                  value={createForm.siteName}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, siteName: event.target.value })
+                  }
+                />
+              </Field>
+              <Field label="Vehicle">
+                <select
+                  aria-label="Deployment vehicle"
+                  className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+                  value={createForm.vehicleId}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, vehicleId: event.target.value })
+                  }
+                >
+                  <option value="">Select vehicle</option>
+                  {vehicles.map((vehicle) => (
+                    <option key={vehicle.id} value={vehicle.id}>
+                      {vehicle.registration}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Physical device">
+                <select
+                  aria-label="Deployment physical device"
+                  className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+                  value={createForm.deviceId}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, deviceId: event.target.value })
+                  }
+                >
+                  <option value="">Select device</option>
+                  {devices
+                    .filter((device) => !device.simulated && !device.reserved_for_fitment_job_id)
+                    .map((device) => (
+                      <option key={device.id} value={device.id}>
+                        {device.hardware_model} · {maskIdentifier(device.serial_number)}
+                      </option>
+                    ))}
+                </select>
+              </Field>
+              <Field label="Technician">
+                <select
+                  aria-label="Deployment technician"
+                  className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+                  value={createForm.technicianId}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, technicianId: event.target.value })
+                  }
+                >
+                  <option value="">Assign later</option>
+                  {members.map((member) => (
+                    <option key={member.user_id} value={member.user_id}>
+                      Company member {member.user_id.slice(0, 8)}
+                    </option>
+                  ))}
+                </select>
+              </Field>
+              <Field label="Scheduled start">
+                <Input
+                  aria-label="Deployment scheduled start"
+                  type="datetime-local"
+                  value={createForm.scheduledAt}
+                  onChange={(event) =>
+                    setCreateForm({ ...createForm, scheduledAt: event.target.value })
+                  }
+                />
+              </Field>
+              <Field label="Installer notes">
+                <Input
+                  aria-label="Deployment installer notes"
+                  value={createForm.notes}
+                  onChange={(event) => setCreateForm({ ...createForm, notes: event.target.value })}
+                />
+              </Field>
+              <div className="flex items-end">
+                <Button
+                  className="w-full"
+                  disabled={
+                    saving === "saving" ||
+                    !createForm.reference.trim() ||
+                    !createForm.projectName.trim() ||
+                    !createForm.vehicleId ||
+                    !createForm.deviceId
+                  }
+                  onClick={() => void createDeployment()}
+                >
+                  {saving === "saving" ? "Creating…" : "Create deployment"}
+                </Button>
+              </div>
+            </div>
+          ) : null}
+        </Card>
+      ) : null}
 
       <section className="grid gap-4 xl:grid-cols-[minmax(260px,360px)_1fr]">
         <Card className="p-3">
@@ -556,9 +815,30 @@ function FieldDeploymentPage() {
               Refresh
             </Button>
           </div>
-          {jobs.length ? (
+          <div className="mb-3 grid gap-2">
+            <Input
+              aria-label="Search deployments"
+              placeholder="Search reference, project, or site"
+              value={search}
+              onChange={(event) => setSearch(event.target.value)}
+            />
+            <select
+              aria-label="Filter deployment status"
+              className="h-9 rounded-md border bg-background px-3 text-sm"
+              value={statusFilter}
+              onChange={(event) => setStatusFilter(event.target.value)}
+            >
+              <option value="all">All workflow stages</option>
+              {[...new Set(jobs.map((job) => job.workflow_stage))].map((stage) => (
+                <option key={stage} value={stage}>
+                  {stage.replaceAll("_", " ")}
+                </option>
+              ))}
+            </select>
+          </div>
+          {filteredJobs.length ? (
             <div className="space-y-2">
-              {jobs.map((job) => (
+              {filteredJobs.map((job) => (
                 <button
                   key={job.id}
                   type="button"
@@ -571,7 +851,7 @@ function FieldDeploymentPage() {
                 >
                   <div className="flex items-center justify-between gap-2">
                     <span className="min-w-0 truncate font-medium">{job.reference}</span>
-                    <StatusBadge status={job.status} />
+                    <StatusBadge status={job.workflow_stage} />
                   </div>
                   <div className="mt-2 grid gap-1 text-xs text-muted-foreground">
                     <span className="truncate">Vehicle {job.vehicle_id.slice(0, 8)}</span>
@@ -584,7 +864,13 @@ function FieldDeploymentPage() {
           ) : (
             <EmptyState
               title="No fitment jobs"
-              description="Create jobs through the Phase 12 fitment job model. Production tenants are not auto-seeded."
+              description={
+                jobs.length
+                  ? "No deployments match the current search and filters."
+                  : canManage
+                    ? "Create the first governed deployment for a physical device and vehicle."
+                    : "No deployments are currently assigned to this workspace."
+              }
               icon={ClipboardCheck}
             />
           )}
@@ -620,6 +906,7 @@ function FieldDeploymentPage() {
               tab={tab}
               job={selectedJob}
               device={selectedDevice}
+              vehicle={selectedVehicle}
               sim={selectedSim}
               checklist={selectedChecklist}
               tests={selectedTests}
@@ -629,10 +916,13 @@ function FieldDeploymentPage() {
               supportCases={selectedSupport}
               audit={audit}
               canManage={canManage}
+              canWork={canWork}
               criticalFailures={criticalFailures.length}
               checklistPassed={checklistPassed}
               diagnosticCopy={diagnosticCopy}
               onTransition={transitionJob}
+              onReload={load}
+              companyId={activeCompanyId!}
             />
           )}
         </div>
@@ -647,7 +937,7 @@ function SummaryCard({
   tone = "info",
 }: {
   label: string;
-  value: number;
+  value: number | string;
   tone?: "info" | "success" | "error";
 }) {
   return (
@@ -688,6 +978,7 @@ function TabPanel(props: {
   tab: TabId;
   job: FitmentJobRow;
   device: DeviceRow | null;
+  vehicle: VehicleRow | null;
   sim: SimRow | null;
   checklist: ChecklistRow[];
   tests: TestRow[];
@@ -697,15 +988,19 @@ function TabPanel(props: {
   supportCases: SupportCaseRow[];
   audit: AuditRow[];
   canManage: boolean;
+  canWork: boolean;
   criticalFailures: number;
   checklistPassed: number;
   diagnosticCopy: ReturnType<typeof supportDiagnosticCopy>;
-  onTransition: (nextStatus: FitmentStatus) => void;
+  onTransition: (nextStage: string, reason?: string) => void;
+  onReload: () => Promise<void>;
+  companyId: string;
 }) {
   const {
     tab,
     job,
     device,
+    vehicle,
     sim,
     checklist,
     tests,
@@ -715,18 +1010,174 @@ function TabPanel(props: {
     supportCases,
     audit,
     canManage,
+    canWork,
     criticalFailures,
     checklistPassed,
     diagnosticCopy,
     onTransition,
+    onReload,
+    companyId,
   } = props;
 
+  const [captureError, setCaptureError] = useState<string | null>(null);
+  const [captureBusy, setCaptureBusy] = useState(false);
+  const [testForm, setTestForm] = useState({
+    category: "power",
+    result: "not_run",
+    measuredValue: "",
+    unit: "V",
+    notes: "",
+    controlledStaging: false,
+    telemetryCount: "",
+    distanceMeters: "",
+    confirmPhysicalRoadTest: false,
+  });
+
+  const saveChecklistStep = async (step: ChecklistRow, status: ChecklistStepStatus) => {
+    if (!canWork) return;
+    setCaptureBusy(true);
+    setCaptureError(null);
+    const { error } = await supabase
+      .from("fitment_job_checklist_steps")
+      .update({ status, technician_notes: "Recorded in the authenticated field workspace" })
+      .eq("id", step.id)
+      .eq("company_id", companyId);
+    setCaptureBusy(false);
+    if (error) setCaptureError(error.message);
+    else await onReload();
+  };
+
+  const recordTest = async () => {
+    if (!canWork) return;
+    setCaptureBusy(true);
+    setCaptureError(null);
+    const measured = testForm.measuredValue.trim() ? Number(testForm.measuredValue) : null;
+    const { error } = await supabase.from("fitment_test_results").insert({
+      company_id: companyId,
+      fitment_job_id: job.id,
+      test_category: testForm.category,
+      test_type: `${testForm.category}_field_check`,
+      measured_value: measured,
+      unit: testForm.unit || null,
+      result: testForm.result as FitmentTestResult,
+      source: "manual_measurement",
+      critical: ["power", "ignition", "gnss", "gsm", "connectivity"].includes(testForm.category),
+      notes: testForm.controlledStaging
+        ? `CONTROLLED STAGING EVIDENCE — physical hardware unavailable; not production commissioning proof. ${testForm.notes}`.trim()
+        : testForm.notes || null,
+      metadata: {
+        controlled_staging: testForm.controlledStaging,
+        hardware_available: !testForm.controlledStaging,
+      },
+    });
+    setCaptureBusy(false);
+    if (error) setCaptureError(error.message);
+    else await onReload();
+  };
+
+  const recordRoadTest = async (controlledStaging: boolean) => {
+    if (!canWork) return;
+    setCaptureBusy(true);
+    setCaptureError(null);
+    const startedAt = new Date(Date.now() - 15 * 60_000).toISOString();
+    const { error } = await supabase.from("fitment_road_tests").insert({
+      company_id: companyId,
+      fitment_job_id: job.id,
+      started_at: startedAt,
+      ended_at: new Date().toISOString(),
+      distance_meters: controlledStaging ? null : Number(testForm.distanceMeters),
+      duration_seconds: 900,
+      accepted_telemetry_count: controlledStaging ? 0 : Number(testForm.telemetryCount),
+      gps_quality: controlledStaging ? "unknown" : "acceptable",
+      network_drop_count: 0,
+      reconnect_count: 0,
+      result: controlledStaging ? "not_run" : "passed",
+      source: controlledStaging ? "simulated_validation" : "manual_field_test",
+      technician_conclusion: controlledStaging
+        ? "CONTROLLED STAGING EVIDENCE — physical road test and hardware telemetry unavailable; activation is not eligible."
+        : "Authenticated technician recorded the completed manual field road test.",
+    });
+    setCaptureBusy(false);
+    if (error) setCaptureError(error.message);
+    else await onReload();
+  };
+
+  const uploadEvidence = async (file: File) => {
+    if (!canWork) return;
+    setCaptureBusy(true);
+    setCaptureError(null);
+    const safeName = file.name.replace(/[^a-zA-Z0-9._-]/g, "-");
+    const digest = await crypto.subtle.digest("SHA-256", await file.arrayBuffer());
+    const fingerprint = Array.from(new Uint8Array(digest))
+      .map((byte) => byte.toString(16).padStart(2, "0"))
+      .join("");
+    const path = `${companyId}/${job.id}/${fingerprint}-${safeName}`;
+    const uploaded = await supabase.storage.from("fitment-evidence").upload(path, file, {
+      contentType: file.type || "application/octet-stream",
+      upsert: false,
+    });
+    if (uploaded.error) {
+      const existing = await supabase
+        .from("fitment_evidence")
+        .select("id")
+        .eq("company_id", companyId)
+        .eq("fitment_job_id", job.id)
+        .eq("storage_path", path)
+        .maybeSingle();
+      if (existing.data) {
+        setCaptureBusy(false);
+        await onReload();
+        return;
+      }
+      if (!/already exists|duplicate/i.test(uploaded.error.message)) {
+        setCaptureBusy(false);
+        setCaptureError(uploaded.error.message);
+        return;
+      }
+    }
+    const { error } = await supabase.from("fitment_evidence").insert({
+      company_id: companyId,
+      fitment_job_id: job.id,
+      evidence_type: "technician_declaration",
+      storage_path: path,
+      notes: "Captured in the authenticated field workspace",
+      metadata: { original_name: file.name, content_type: file.type || null },
+    });
+    setCaptureBusy(false);
+    if (error) setCaptureError(error.message);
+    else await onReload();
+  };
+
   if (tab === "jobs") {
+    const nextStage: Record<string, [string, string] | undefined> = {
+      planned: ["scheduled", "Schedule"],
+      scheduled: ["technician_assigned", "Confirm technician"],
+      technician_assigned: ["en_route", "Mark en route"],
+      en_route: ["on_site", "Mark on site"],
+      on_site: ["installation_started", "Start installation"],
+      installation_started: ["hardware_installed", "Confirm hardware installed"],
+      hardware_installed: ["connectivity_verified", "Verify connectivity"],
+      connectivity_verified: ["gps_verified", "Verify GPS"],
+      gps_verified: ["telemetry_verified", "Verify telemetry"],
+      telemetry_verified: ["qa_review", "Submit for QA review"],
+      qa_review: ["activated", "Activate"],
+      activated: ["completed", "Complete and hand over"],
+      revisit_required: ["technician_assigned", "Reschedule revisit"],
+    };
+    const primary = nextStage[job.workflow_stage];
     return (
       <Card className="p-4">
         <SectionTitle icon={Truck} title={job.reference} />
         <div className="mt-4 grid gap-3 md:grid-cols-3">
-          <Fact label="Status" value={job.status.replaceAll("_", " ")} />
+          <Fact label="Workflow stage" value={job.workflow_stage.replaceAll("_", " ")} />
+          <Fact
+            label="Evidence boundary"
+            value={
+              job.controlled_staging
+                ? "CONTROLLED STAGING — physical activation not claimed"
+                : "Physical commissioning"
+            }
+          />
           <Fact
             label="Scheduled"
             value={job.scheduled_at ? new Date(job.scheduled_at).toLocaleString() : "not scheduled"}
@@ -750,39 +1201,38 @@ function TabPanel(props: {
           />
         </div>
         <div className="mt-4 flex flex-wrap gap-2">
-          {job.status === "planned" && canManage ? (
-            <Button size="sm" onClick={() => onTransition("assigned")}>
-              Assign
+          {primary && (!["activated", "completed"].includes(primary[0]) || canManage) ? (
+            <Button size="sm" onClick={() => onTransition(primary[0])}>
+              {primary[1]}
             </Button>
           ) : null}
-          {job.status === "assigned" ? (
-            <Button size="sm" onClick={() => onTransition("in_progress")}>
-              Start
-            </Button>
-          ) : null}
-          {job.status === "in_progress" ? (
-            <Button size="sm" variant="outline" onClick={() => onTransition("blocked")}>
+          {!["completed", "cancelled", "removed", "replaced"].includes(job.workflow_stage) ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() =>
+                onTransition("blocked", "Operational blocker recorded in field workspace")
+              }
+            >
               Block
             </Button>
           ) : null}
-          {job.status === "in_progress" ? (
-            <Button size="sm" onClick={() => onTransition("awaiting_supervisor")}>
-              Submit
+          {["blocked", "failed"].includes(job.workflow_stage) ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onTransition("revisit_required", "Follow-up field visit is required")}
+            >
+              Require revisit
             </Button>
           ) : null}
-          {job.status === "awaiting_supervisor" && canManage ? (
-            <Button size="sm" onClick={() => onTransition("approved")}>
-              Approve
-            </Button>
-          ) : null}
-          {job.status === "awaiting_supervisor" && canManage ? (
-            <Button size="sm" variant="outline" onClick={() => onTransition("rejected")}>
-              Reject
-            </Button>
-          ) : null}
-          {job.status === "approved" && canManage ? (
-            <Button size="sm" onClick={() => onTransition("completed")}>
-              Complete physical fitment
+          {job.workflow_stage === "activated" && canManage ? (
+            <Button
+              size="sm"
+              variant="outline"
+              onClick={() => onTransition("removed", "Hardware removal recorded by field manager")}
+            >
+              Remove device
             </Button>
           ) : null}
         </div>
@@ -806,6 +1256,12 @@ function TabPanel(props: {
           Weak-connectivity UX preserves normal form state during refreshes and surfaces retryable
           errors. Full offline queueing is not claimed in Phase 12.
         </p>
+        {canWork ? (
+          <p className="mt-3 rounded-md border border-status-info/30 bg-status-info/10 p-3 text-sm">
+            Use Checklist, Tests, and Supervisor evidence to capture work. Every save is confirmed
+            by the server before the job refreshes.
+          </p>
+        ) : null}
       </Card>
     );
   }
@@ -818,9 +1274,14 @@ function TabPanel(props: {
           <InventoryCard
             title="Device"
             lines={[
+              device?.hardware_model ?? "Model not assigned",
+              device ? `Serial ${maskIdentifier(device.serial_number)}` : "Serial not assigned",
               device?.inventory_state ?? "not assigned",
               device?.simulated ? "SIMULATOR - not physical" : "Physical device candidate",
               `Firmware ${device?.firmware_version ?? "not set"}`,
+              vehicle
+                ? `Assigned vehicle ${vehicle.registration}`
+                : "Vehicle relationship not assigned",
             ]}
           />
           <InventoryCard
@@ -862,6 +1323,30 @@ function TabPanel(props: {
                 {step.supervisor_comment ? (
                   <p className="mt-2 text-xs text-muted-foreground">{step.supervisor_comment}</p>
                 ) : null}
+                {canWork &&
+                !["qa_review", "activated", "completed"].includes(job.workflow_stage) ? (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {step.status !== "passed" ? (
+                      <Button
+                        size="sm"
+                        disabled={captureBusy}
+                        onClick={() => void saveChecklistStep(step, "passed")}
+                      >
+                        Pass step
+                      </Button>
+                    ) : null}
+                    {step.status !== "blocked" ? (
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        disabled={captureBusy}
+                        onClick={() => void saveChecklistStep(step, "blocked")}
+                      >
+                        Mark blocked
+                      </Button>
+                    ) : null}
+                  </div>
+                ) : null}
               </div>
             ))
           ) : (
@@ -880,6 +1365,149 @@ function TabPanel(props: {
     return (
       <Card className="p-4">
         <SectionTitle icon={Zap} title="Power, ignition, GNSS, GSM, CAN/J1939, and road test" />
+        {canWork ? (
+          <div className="mt-4 grid gap-3 rounded-md border p-3 sm:grid-cols-2 lg:grid-cols-3">
+            <Field label="Test category">
+              <select
+                aria-label="Test category"
+                className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+                value={testForm.category}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, category: event.target.value }))
+                }
+              >
+                {["power", "ignition", "gnss", "gsm", "connectivity", "telemetry", "can_j1939"].map(
+                  (value) => (
+                    <option key={value} value={value}>
+                      {value.replaceAll("_", " ")}
+                    </option>
+                  ),
+                )}
+              </select>
+            </Field>
+            <Field label="Result">
+              <select
+                aria-label="Test result"
+                className="h-9 w-full rounded-md border bg-background px-3 text-sm"
+                value={testForm.result}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, result: event.target.value }))
+                }
+              >
+                {["not_run", "passed", "failed", "warning"].map((value) => (
+                  <option key={value} value={value}>
+                    {value.replaceAll("_", " ")}
+                  </option>
+                ))}
+              </select>
+            </Field>
+            <Field label="Measured value">
+              <Input
+                aria-label="Test measured value"
+                inputMode="decimal"
+                value={testForm.measuredValue}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, measuredValue: event.target.value }))
+                }
+              />
+            </Field>
+            <Field label="Unit">
+              <Input
+                aria-label="Test unit"
+                value={testForm.unit}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, unit: event.target.value }))
+                }
+              />
+            </Field>
+            <Field label="Technician notes">
+              <Input
+                aria-label="Test technician notes"
+                value={testForm.notes}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, notes: event.target.value }))
+                }
+              />
+            </Field>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                aria-label="Controlled staging hardware unavailable"
+                type="checkbox"
+                checked={testForm.controlledStaging}
+                onChange={(event) =>
+                  setTestForm((current) => ({
+                    ...current,
+                    controlledStaging: event.target.checked,
+                  }))
+                }
+              />
+              Controlled staging; hardware unavailable
+            </label>
+            {testForm.controlledStaging ? (
+              <p className="sm:col-span-2 lg:col-span-3 rounded-md bg-status-warning/10 p-2 text-xs text-status-warning">
+                This evidence is labelled non-production and must not be represented as physical
+                commissioning proof.
+              </p>
+            ) : null}
+            <Button disabled={captureBusy} onClick={() => void recordTest()}>
+              Record immutable test
+            </Button>
+            <Button
+              variant="outline"
+              disabled={captureBusy}
+              onClick={() => void recordRoadTest(true)}
+            >
+              Record hardware-unavailable road test
+            </Button>
+            <Field label="Accepted telemetry points">
+              <Input
+                aria-label="Accepted telemetry points"
+                inputMode="numeric"
+                value={testForm.telemetryCount}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, telemetryCount: event.target.value }))
+                }
+              />
+            </Field>
+            <Field label="Road-test distance (metres)">
+              <Input
+                aria-label="Road test distance metres"
+                inputMode="decimal"
+                value={testForm.distanceMeters}
+                onChange={(event) =>
+                  setTestForm((current) => ({ ...current, distanceMeters: event.target.value }))
+                }
+              />
+            </Field>
+            <label className="flex items-center gap-2 text-sm">
+              <input
+                aria-label="Confirm physical road test"
+                type="checkbox"
+                checked={testForm.confirmPhysicalRoadTest}
+                onChange={(event) =>
+                  setTestForm((current) => ({
+                    ...current,
+                    confirmPhysicalRoadTest: event.target.checked,
+                  }))
+                }
+              />
+              I performed this physical road test and entered observed values
+            </label>
+            <Button
+              variant="outline"
+              disabled={
+                captureBusy ||
+                testForm.controlledStaging ||
+                !testForm.confirmPhysicalRoadTest ||
+                Number(testForm.telemetryCount) <= 0 ||
+                Number(testForm.distanceMeters) <= 0
+              }
+              onClick={() => void recordRoadTest(false)}
+            >
+              Record completed physical road test
+            </Button>
+          </div>
+        ) : null}
         <div className="mt-4 grid gap-3 md:grid-cols-2">
           {tests.map((test) => (
             <div key={test.id} className="rounded-md border p-3">
@@ -892,6 +1520,11 @@ function TabPanel(props: {
                   <div className="mt-1 text-xs text-muted-foreground">
                     {labelFitmentSource(test.source)} measurement
                   </div>
+                  {test.notes?.includes("CONTROLLED STAGING EVIDENCE") ? (
+                    <div className="mt-1 text-xs font-medium text-status-warning">
+                      Controlled staging — hardware unavailable
+                    </div>
+                  ) : null}
                 </div>
                 <StatusBadge status={test.result} />
               </div>
@@ -914,6 +1547,11 @@ function TabPanel(props: {
                 accepted points, {roadTest.network_drop_count} drops, {roadTest.reconnect_count}{" "}
                 reconnects
               </div>
+              {roadTest.technician_conclusion?.includes("CONTROLLED STAGING EVIDENCE") ? (
+                <div className="mt-2 text-xs font-medium text-status-warning">
+                  Hardware unavailable — not activation eligible
+                </div>
+              ) : null}
             </div>
           ) : null}
         </div>
@@ -925,6 +1563,25 @@ function TabPanel(props: {
     return (
       <Card className="p-4">
         <SectionTitle icon={ShieldCheck} title="Supervisor review" />
+        {canWork ? (
+          <div className="mt-4 rounded-md border p-3">
+            <Label htmlFor={`evidence-${job.id}`}>Installation evidence file</Label>
+            <Input
+              id={`evidence-${job.id}`}
+              className="mt-2"
+              type="file"
+              accept="image/*,.pdf,text/plain"
+              disabled={captureBusy}
+              onChange={(event) => {
+                const file = event.target.files?.[0];
+                if (file) void uploadEvidence(file);
+              }}
+            />
+            <p className="mt-2 text-xs text-muted-foreground">
+              Files are uploaded to private company/job-scoped storage before metadata is recorded.
+            </p>
+          </div>
+        ) : null}
         <div className="mt-4 grid gap-3 md:grid-cols-3">
           <Fact label="Checklist" value={`${checklistPassed}/${checklist.length || 14} passed`} />
           <Fact label="Critical failures" value={String(criticalFailures)} />
@@ -947,6 +1604,7 @@ function TabPanel(props: {
           Evidence uses private company-scoped storage metadata. Raw storage paths are not shown in
           this list.
         </p>
+        {captureError ? <p className="mt-3 text-sm text-status-error">{captureError}</p> : null}
       </Card>
     );
   }
@@ -1067,6 +1725,15 @@ function Fact({ label, value }: { label: string; value: string }) {
     <div className="rounded-md border bg-muted/20 p-3">
       <div className="text-xs font-medium uppercase text-muted-foreground">{label}</div>
       <div className="mt-1 break-words text-sm font-medium">{value}</div>
+    </div>
+  );
+}
+
+function Field({ label, children }: { label: string; children: React.ReactNode }) {
+  return (
+    <div className="space-y-1.5">
+      <Label>{label}</Label>
+      {children}
     </div>
   );
 }

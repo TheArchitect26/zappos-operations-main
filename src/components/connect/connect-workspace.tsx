@@ -112,7 +112,7 @@ export function ConnectWorkspace({ roles }: { companyId: string; roles: readonly
       {section === "Inbox" && <InboxView />}
       {section === "Conversations" && <ConversationView />}
       {section === "Team Channels" && <ChannelsView />}
-      {section === "Tasks" && <TaskView viewer={viewer} />}
+      {section === "Tasks" && <TaskView />}
       {section === "Approvals" && <ApprovalView />}
       {section === "Escalations" && <EscalationView />}
       {section === "Shift Handovers" && <HandoverView percentage={handover.percentage} />}
@@ -126,6 +126,7 @@ export function ConnectWorkspace({ roles }: { companyId: string; roles: readonly
 }
 
 function InboxView() {
+  const [filter, setFilter] = useState("High priority");
   return (
     <div className="grid gap-4 lg:grid-cols-[240px_1fr]">
       <Card className="p-4">
@@ -137,7 +138,10 @@ function InboxView() {
           {inboxFilters.map((x) => (
             <button
               key={x}
-              className="block min-h-9 w-full rounded px-2 text-left text-sm hover:bg-muted"
+              type="button"
+              aria-pressed={filter === x}
+              onClick={() => setFilter(x)}
+              className="block min-h-9 w-full rounded px-2 text-left text-sm hover:bg-muted aria-pressed:bg-muted aria-pressed:font-medium"
             >
               {x}
             </button>
@@ -147,7 +151,7 @@ function InboxView() {
       <Card className="p-5">
         <div className="flex items-center justify-between">
           <div>
-            <Badge>High priority</Badge>
+            <Badge>{filter}</Badge>
             <h3 className="mt-2 font-semibold">Operations handover requires acknowledgement</h3>
             <p className="text-sm text-muted-foreground">
               Internal · Assigned to Fleet Control · Waiting for reply
@@ -225,7 +229,7 @@ function ChannelsView() {
     </Card>
   );
 }
-function TaskView({ viewer }: { viewer: boolean }) {
+function TaskView() {
   return (
     <Card className="p-5">
       <h2 className="font-semibold">
@@ -247,9 +251,9 @@ function TaskView({ viewer }: { viewer: boolean }) {
           </div>
         ))}
       </div>
-      <Button className="mt-4" disabled={viewer}>
-        Create task
-      </Button>
+      <p className="mt-4 text-sm text-muted-foreground">
+        Task creation is managed in the owning operations workspace.
+      </p>
     </Card>
   );
 }
