@@ -1045,8 +1045,8 @@ export function BrainFoundationWorkspace({
             <h3 className="font-semibold">Experimental labs</h3>
             <p className="mt-1 text-sm text-muted-foreground">
               Causal Intelligence, Shadow ML, Model Experiment Lab, Experience Memory, Forecasting,
-              and Knowledge Acquisition remain experimental or future. Phase 23A does not execute
-              models, call providers, or expose production controls.
+              and Knowledge Acquisition are not enabled in this workspace. This foundation does not
+              execute models, call providers, or expose production controls.
             </p>
           </div>
         </div>

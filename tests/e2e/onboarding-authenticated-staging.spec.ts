@@ -18,6 +18,7 @@ test.describe("new-user authentication and workspace staging journey", () => {
     const [local, domain] = baseEmail.split("@");
     const email = `${local}+onboarding-${runId}@${domain}`;
     const workspace = `ZappOS onboarding evidence ${runId}`;
+    const updatedPassword = `${password}R`;
     const admin = createClient(supabaseUrl, serviceKey, { auth: { persistSession: false } });
     let signupStatus = 0;
 
@@ -31,18 +32,26 @@ test.describe("new-user authentication and workspace staging journey", () => {
     await page.getByLabel("Email").fill(email);
     await page.getByLabel("Password").fill(password);
     await page.getByRole("button", { name: /create account/i }).click();
-    await expect(page.getByText("Confirm your email")).toBeVisible();
-    expect(signupStatus).toBe(200);
+    await expect.poll(() => signupStatus).toBe(200);
 
-    const generated = await admin.auth.admin.generateLink({
-      type: "magiclink",
-      email,
-      options: { redirectTo: `${baseURL}/auth/callback` },
-    });
-    expect(generated.error).toBeNull();
-    expect(generated.data.properties?.action_link).toBeTruthy();
-
-    await page.goto(generated.data.properties.action_link);
+    // Supabase projects may either require email confirmation or return an
+    // immediately confirmed session. Exercise the real callback only when the
+    // provider presents the confirmation state; both paths must reach the same
+    // governed onboarding destination.
+    const confirmationVisible = await page
+      .getByText("Confirm your email")
+      .isVisible({ timeout: 5_000 })
+      .catch(() => false);
+    if (confirmationVisible) {
+      const generated = await admin.auth.admin.generateLink({
+        type: "magiclink",
+        email,
+        options: { redirectTo: `${baseURL}/auth/callback` },
+      });
+      expect(generated.error).toBeNull();
+      expect(generated.data.properties?.action_link).toBeTruthy();
+      await page.goto(generated.data.properties.action_link);
+    }
     await expect(page).toHaveURL(/\/onboarding$/, { timeout: 20_000 });
     await expect(page.getByText("Set up your company workspace")).toBeVisible();
     await page.getByLabel("Company name").fill(workspace);
@@ -60,6 +69,32 @@ test.describe("new-user authentication and workspace staging journey", () => {
     await page.goto("/auth");
     await page.getByLabel("Email").fill(email);
     await page.getByLabel("Password").fill(password);
+    await page.getByRole("button", { name: /^sign in$/i }).click();
+    await expect(page).toHaveURL(/\/dashboard$/, { timeout: 20_000 });
+
+    await page.goto("/auth/reset-password");
+    const resetForm = page.locator("form");
+    await expect(resetForm).toBeVisible();
+    expect(await resetForm.evaluate((node: HTMLFormElement) => node.checkValidity())).toBe(false);
+    await page.getByLabel("New password").fill(updatedPassword);
+    expect(await resetForm.evaluate((node: HTMLFormElement) => node.checkValidity())).toBe(true);
+    const [passwordResponse] = await Promise.all([
+      page.waitForResponse(
+        (response) =>
+          response.url().includes("/auth/v1/user") && response.request().method() === "PUT",
+      ),
+      page.getByRole("button", { name: /update password/i }).click(),
+    ]);
+    expect(passwordResponse.status()).toBe(200);
+    await expect(page).toHaveURL(/\/dashboard$/, { timeout: 20_000 });
+
+    await page.evaluate(() => {
+      const key = Object.keys(localStorage).find((candidate) => candidate.includes("auth-token"));
+      if (key) localStorage.removeItem(key);
+    });
+    await page.goto("/auth");
+    await page.getByLabel("Email").fill(email);
+    await page.getByLabel("Password").fill(updatedPassword);
     await page.getByRole("button", { name: /^sign in$/i }).click();
     await expect(page).toHaveURL(/\/dashboard$/, { timeout: 20_000 });
 

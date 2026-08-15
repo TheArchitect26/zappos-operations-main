@@ -3,8 +3,7 @@ import "maplibre-gl/dist/maplibre-gl.css";
 import { MapLibreProvider } from "./maplibre-provider";
 import type { ObservedTraceLine, VehicleMarker, ZappMapProvider } from "./types";
 
-const DEFAULT_STYLE =
-  import.meta.env.VITE_MAP_STYLE_URL || "https://demotiles.maplibre.org/style.json";
+const APPROVED_STYLE = import.meta.env.VITE_MAP_STYLE_URL;
 
 export function TrackingMap({
   markers,
@@ -24,11 +23,15 @@ export function TrackingMap({
     let cancelled = false;
     const controller = new AbortController();
     if (!containerRef.current) return;
+    if (!APPROVED_STYLE) {
+      setError("No approved map provider is configured for this environment.");
+      return;
+    }
     const provider = new MapLibreProvider();
     providerRef.current = provider;
     provider
       .initialize(containerRef.current, {
-        styleUrl: DEFAULT_STYLE,
+        styleUrl: APPROVED_STYLE,
         center: [-98.5795, 39.8283],
         zoom: 3,
         signal: controller.signal,
@@ -76,10 +79,6 @@ export function TrackingMap({
           Loading live map
         </div>
       ) : null}
-      <div className="absolute bottom-2 left-2 max-w-[calc(100%-1rem)] rounded bg-background/90 px-2 py-1 text-[11px] text-muted-foreground shadow">
-        Development style uses public MapLibre demo tiles. Configure `VITE_MAP_STYLE_URL` for
-        production.
-      </div>
     </div>
   );
 }

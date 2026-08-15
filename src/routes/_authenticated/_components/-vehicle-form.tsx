@@ -44,7 +44,15 @@ export function VehicleForm({ initialData, onSubmit, loading }: VehicleFormProps
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    await onSubmit(data);
+    await onSubmit({
+      ...data,
+      make: data.make || null,
+      model: data.model || null,
+      vin: data.vin || null,
+      licence_expiry: data.licence_expiry || null,
+      insurance_expiry: data.insurance_expiry || null,
+      notes: data.notes || null,
+    });
   };
 
   return (

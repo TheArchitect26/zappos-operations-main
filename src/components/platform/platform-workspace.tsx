@@ -65,6 +65,13 @@ const INTERNAL_ROLES = [
 
 const db = () => supabase as unknown as PlatformDb;
 const rpc = () => supabase as unknown as PlatformRpc;
+const PLATFORM_ORDER_COLUMNS: Record<string, string> = {
+  platform_device_health_snapshots: "observed_at",
+  platform_telemetry_events: "received_at",
+  platform_subscriptions: "started_at",
+  platform_pilot_installations: "installed_at",
+  platform_edge_sync_states: "last_sync_at",
+};
 const value = (item: unknown) => (typeof item === "string" ? item : "—");
 const words = (item: string) =>
   item.replaceAll("_", " ").replace(/\b\w/g, (letter) => letter.toUpperCase());
@@ -143,7 +150,7 @@ export function PlatformWorkspace({
               .from(table)
               .select("*")
               .eq("company_id", companyId)
-              .order("created_at", { ascending: false })
+              .order(PLATFORM_ORDER_COLUMNS[table] ?? "created_at", { ascending: false })
               .limit(100),
           ),
         ),
@@ -367,8 +374,8 @@ export function PlatformWorkspace({
           <Card className="p-5">
             <h2 className="font-semibold">Device registry</h2>
             <p className="mt-1 text-sm text-muted-foreground">
-              Zapp Box P1, home, pocket, mesh, CPE, and future industrial devices use immutable
-              serial identities and referenced credentials.
+              Registered Zapp device models use immutable serial identities and referenced
+              credentials.
             </p>
             {canManageDevices ? (
               <div className="mt-4 space-y-3">
@@ -584,7 +591,7 @@ export function PlatformWorkspace({
             </h2>
             <p className="mt-1 text-sm text-muted-foreground">
               BOM, PCB revisions, batches, serialisation, QA, warranty and RMA records provide
-              hardware traceability for Zapp Box, routers, UPS units, and future equipment.
+              hardware traceability for registered Zapp Box, router, and UPS equipment.
             </p>
           </Card>
         </section>

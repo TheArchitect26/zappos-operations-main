@@ -14,7 +14,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 
-export const Route = createFileRoute("/_authenticated/customer-portal")({
+export const Route = createFileRoute("/_authenticated/portal-management")({
   component: PortalManagement,
 });
 

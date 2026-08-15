@@ -625,6 +625,7 @@ function CommandCentre() {
             size="sm"
             variant="ghost"
             aria-label={`Move ${title} up`}
+            disabled={widgetOrder.indexOf(name) <= 0}
             onClick={() => moveWidget(name, -1)}
           >
             ↑
@@ -633,6 +634,7 @@ function CommandCentre() {
             size="sm"
             variant="ghost"
             aria-label={`Move ${title} down`}
+            disabled={widgetOrder.indexOf(name) >= widgetOrder.length - 1}
             onClick={() => moveWidget(name, 1)}
           >
             ↓

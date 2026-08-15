@@ -524,7 +524,7 @@ function DeviceRegistry({
               <p className="truncate font-medium">{maskIdentifier(device.serial_number)}</p>
               <p className="truncate text-xs text-muted-foreground">
                 {device.device_type} ·{" "}
-                {device.simulated ? "SIMULATED DEVICE" : "future hardware record"}
+                {device.simulated ? "SIMULATED DEVICE" : "REGISTERED HARDWARE DEVICE"}
               </p>
             </div>
             <Field

@@ -67,7 +67,7 @@ const sources = [
     type: "Shipment",
     title: "reference",
     status: "status",
-    metadata: "pickup_address,delivery_address",
+    metadata: "pickup_location,dropoff_location",
     path: "/operations",
     time: "updated_at",
   },
@@ -353,6 +353,19 @@ function EntityContextPanel({
   onNavigate: (path: string) => void;
 }) {
   const timeline = item ? unifiedTimeline([item]) : [];
+  const quickActionPath = (action: string) => {
+    if (!item) return "/dashboard";
+    if (/ZIP|explain|evidence/i.test(action)) return "/intelligence";
+    if (/tracking|telemetry|trips|fuel|health/i.test(action)) return "/tracking";
+    if (/maintenance/i.test(action)) return "/maintenance";
+    if (/incident/i.test(action)) return "/incidents";
+    if (/document/i.test(action)) return "/documents";
+    if (/message|support/i.test(action)) return "/connect";
+    if (/portal/i.test(action)) return "/portal-management";
+    if (/driver|assignment|booking|quote/i.test(action)) return "/operations";
+    if (/approval/i.test(action)) return "/connect";
+    return item.path;
+  };
   return (
     <Sheet open={!!item} onOpenChange={onOpenChange}>
       <SheetContent className="w-full overflow-y-auto sm:max-w-xl">
@@ -384,11 +397,7 @@ function EntityContextPanel({
                       key={action}
                       size="sm"
                       variant="outline"
-                      onClick={() =>
-                        action === "Open" || action.startsWith("View")
-                          ? onNavigate(item.path)
-                          : undefined
-                      }
+                      onClick={() => onNavigate(quickActionPath(action))}
                     >
                       {action}
                     </Button>

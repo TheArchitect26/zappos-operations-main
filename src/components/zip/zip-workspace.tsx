@@ -583,7 +583,7 @@ export function ZipWorkspace({
               <div>
                 <h2 className="font-semibold">Production provider calls are disabled</h2>
                 <p className="text-sm text-muted-foreground">
-                  Every future provider request is permission-checked, classified, redacted,
+                  Every provider request is permission-checked, classified, redacted,
                   prompt-governed, safety-validated, and audited. Direct module-to-provider calls
                   are prohibited.
                 </p>

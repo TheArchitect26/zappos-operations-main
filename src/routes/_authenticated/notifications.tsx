@@ -180,6 +180,13 @@ function NotificationsPage() {
                 <p className="mt-1 text-sm text-muted-foreground">
                   {new Date(item.created_at).toLocaleString()} · {item.status}
                 </p>
+                {item.channel || item.provider_state ? (
+                  <p className="mt-1 text-xs text-muted-foreground">
+                    Channel: {item.channel ?? "not selected"} · Provider:{" "}
+                    {item.provider_state ?? "unknown"}
+                  </p>
+                ) : null}
+                {item.detail ? <p className="mt-2 text-sm">{item.detail}</p> : null}
                 {item.source === "brain" && (
                   <p className="mt-2 text-xs text-muted-foreground">
                     Brain notifications are read-only.

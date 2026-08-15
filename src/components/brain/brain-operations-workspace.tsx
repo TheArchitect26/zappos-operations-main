@@ -39,6 +39,9 @@ const DATASETS = [
   ["changes", "brain_change_records"],
   ["identities", "brain_service_identities"],
 ] as const;
+const ORDER_COLUMNS: Record<string, string> = {
+  brain_operational_metrics: "recorded_at",
+};
 
 const TABS = [
   ["overview", "Runtime Overview"],
@@ -187,7 +190,7 @@ export function BrainOperationsWorkspace({
           .from(table)
           .select("*")
           .eq("company_id", companyId)
-          .order("created_at", { ascending: false })
+          .order(ORDER_COLUMNS[table] ?? "created_at", { ascending: false })
           .limit(100);
         return {
           key,

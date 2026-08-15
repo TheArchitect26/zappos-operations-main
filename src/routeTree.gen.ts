@@ -47,6 +47,7 @@ import { Route as AuthenticatedSecurityRouteImport } from './routes/_authenticat
 import { Route as AuthenticatedRouteIntelligenceRouteImport } from './routes/_authenticated/route-intelligence'
 import { Route as AuthenticatedReliabilityRouteImport } from './routes/_authenticated/reliability'
 import { Route as AuthenticatedProcurementRouteImport } from './routes/_authenticated/procurement'
+import { Route as AuthenticatedPortalManagementRouteImport } from './routes/_authenticated/portal-management'
 import { Route as AuthenticatedPlatformRouteImport } from './routes/_authenticated/platform'
 import { Route as AuthenticatedOperationsIntelligenceRouteImport } from './routes/_authenticated/operations-intelligence'
 import { Route as AuthenticatedOperationsControlRouteImport } from './routes/_authenticated/operations-control'
@@ -70,7 +71,6 @@ import { Route as AuthenticatedDocumentsRouteImport } from './routes/_authentica
 import { Route as AuthenticatedDispatchRouteImport } from './routes/_authenticated/dispatch'
 import { Route as AuthenticatedDashboardRouteImport } from './routes/_authenticated/dashboard'
 import { Route as AuthenticatedCustomersRouteImport } from './routes/_authenticated/customers'
-import { Route as AuthenticatedCustomerPortalRouteImport } from './routes/_authenticated/customer-portal'
 import { Route as AuthenticatedCrmRouteImport } from './routes/_authenticated/crm'
 import { Route as AuthenticatedConnectRouteImport } from './routes/_authenticated/connect'
 import { Route as AuthenticatedComplianceRouteImport } from './routes/_authenticated/compliance'
@@ -355,6 +355,12 @@ const AuthenticatedProcurementRoute =
     path: '/procurement',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedPortalManagementRoute =
+  AuthenticatedPortalManagementRouteImport.update({
+    id: '/portal-management',
+    path: '/portal-management',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedPlatformRoute = AuthenticatedPlatformRouteImport.update({
   id: '/platform',
   path: '/platform',
@@ -480,12 +486,6 @@ const AuthenticatedCustomersRoute = AuthenticatedCustomersRouteImport.update({
   path: '/customers',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedCustomerPortalRoute =
-  AuthenticatedCustomerPortalRouteImport.update({
-    id: '/customer-portal',
-    path: '/customer-portal',
-    getParentRoute: () => AuthenticatedRouteRoute,
-  } as any)
 const AuthenticatedCrmRoute = AuthenticatedCrmRouteImport.update({
   id: '/crm',
   path: '/crm',
@@ -991,7 +991,7 @@ const AuthenticatedMobileDriverIssuesRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/customer-portal': typeof AuthenticatedCustomerPortalRoute
+  '/customer-portal': typeof CustomerPortalRouteWithChildren
   '/forgot-password': typeof ForgotPasswordRoute
   '/onboarding': typeof OnboardingRoute
   '/brain': typeof AuthenticatedBrainRouteWithChildren
@@ -1023,6 +1023,7 @@ export interface FileRoutesByFullPath {
   '/operations-control': typeof AuthenticatedOperationsControlRoute
   '/operations-intelligence': typeof AuthenticatedOperationsIntelligenceRoute
   '/platform': typeof AuthenticatedPlatformRoute
+  '/portal-management': typeof AuthenticatedPortalManagementRoute
   '/procurement': typeof AuthenticatedProcurementRoute
   '/reliability': typeof AuthenticatedReliabilityRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
@@ -1146,7 +1147,6 @@ export interface FileRoutesByTo {
   '/compliance': typeof AuthenticatedComplianceRoute
   '/connect': typeof AuthenticatedConnectRoute
   '/crm': typeof AuthenticatedCrmRoute
-  '/customer-portal': typeof CustomerPortalIndexRoute
   '/customers': typeof AuthenticatedCustomersRoute
   '/dashboard': typeof AuthenticatedDashboardRoute
   '/dispatch': typeof AuthenticatedDispatchRouteWithChildren
@@ -1168,6 +1168,7 @@ export interface FileRoutesByTo {
   '/operations-control': typeof AuthenticatedOperationsControlRoute
   '/operations-intelligence': typeof AuthenticatedOperationsIntelligenceRoute
   '/platform': typeof AuthenticatedPlatformRoute
+  '/portal-management': typeof AuthenticatedPortalManagementRoute
   '/procurement': typeof AuthenticatedProcurementRoute
   '/reliability': typeof AuthenticatedReliabilityRoute
   '/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
@@ -1199,6 +1200,7 @@ export interface FileRoutesByTo {
   '/customer-portal/shipments': typeof CustomerPortalShipmentsRouteWithChildren
   '/customer-portal/tracking': typeof CustomerPortalTrackingRoute
   '/share/$token': typeof ShareTokenRoute
+  '/customer-portal': typeof CustomerPortalIndexRoute
   '/brain/evaluation': typeof AuthenticatedBrainEvaluationRoute
   '/brain/operations': typeof AuthenticatedBrainOperationsRoute
   '/dispatch/eta': typeof AuthenticatedDispatchEtaRoute
@@ -1293,7 +1295,6 @@ export interface FileRoutesById {
   '/_authenticated/compliance': typeof AuthenticatedComplianceRoute
   '/_authenticated/connect': typeof AuthenticatedConnectRoute
   '/_authenticated/crm': typeof AuthenticatedCrmRoute
-  '/_authenticated/customer-portal': typeof AuthenticatedCustomerPortalRoute
   '/_authenticated/customers': typeof AuthenticatedCustomersRoute
   '/_authenticated/dashboard': typeof AuthenticatedDashboardRoute
   '/_authenticated/dispatch': typeof AuthenticatedDispatchRouteWithChildren
@@ -1317,6 +1318,7 @@ export interface FileRoutesById {
   '/_authenticated/operations-control': typeof AuthenticatedOperationsControlRoute
   '/_authenticated/operations-intelligence': typeof AuthenticatedOperationsIntelligenceRoute
   '/_authenticated/platform': typeof AuthenticatedPlatformRoute
+  '/_authenticated/portal-management': typeof AuthenticatedPortalManagementRoute
   '/_authenticated/procurement': typeof AuthenticatedProcurementRoute
   '/_authenticated/reliability': typeof AuthenticatedReliabilityRoute
   '/_authenticated/route-intelligence': typeof AuthenticatedRouteIntelligenceRoute
@@ -1466,6 +1468,7 @@ export interface FileRouteTypes {
     | '/operations-control'
     | '/operations-intelligence'
     | '/platform'
+    | '/portal-management'
     | '/procurement'
     | '/reliability'
     | '/route-intelligence'
@@ -1589,7 +1592,6 @@ export interface FileRouteTypes {
     | '/compliance'
     | '/connect'
     | '/crm'
-    | '/customer-portal'
     | '/customers'
     | '/dashboard'
     | '/dispatch'
@@ -1611,6 +1613,7 @@ export interface FileRouteTypes {
     | '/operations-control'
     | '/operations-intelligence'
     | '/platform'
+    | '/portal-management'
     | '/procurement'
     | '/reliability'
     | '/route-intelligence'
@@ -1642,6 +1645,7 @@ export interface FileRouteTypes {
     | '/customer-portal/shipments'
     | '/customer-portal/tracking'
     | '/share/$token'
+    | '/customer-portal'
     | '/brain/evaluation'
     | '/brain/operations'
     | '/dispatch/eta'
@@ -1735,7 +1739,6 @@ export interface FileRouteTypes {
     | '/_authenticated/compliance'
     | '/_authenticated/connect'
     | '/_authenticated/crm'
-    | '/_authenticated/customer-portal'
     | '/_authenticated/customers'
     | '/_authenticated/dashboard'
     | '/_authenticated/dispatch'
@@ -1759,6 +1762,7 @@ export interface FileRouteTypes {
     | '/_authenticated/operations-control'
     | '/_authenticated/operations-intelligence'
     | '/_authenticated/platform'
+    | '/_authenticated/portal-management'
     | '/_authenticated/procurement'
     | '/_authenticated/reliability'
     | '/_authenticated/route-intelligence'
@@ -2152,6 +2156,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedProcurementRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/portal-management': {
+      id: '/_authenticated/portal-management'
+      path: '/portal-management'
+      fullPath: '/portal-management'
+      preLoaderRoute: typeof AuthenticatedPortalManagementRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/platform': {
       id: '/_authenticated/platform'
       path: '/platform'
@@ -2311,13 +2322,6 @@ declare module '@tanstack/react-router' {
       path: '/customers'
       fullPath: '/customers'
       preLoaderRoute: typeof AuthenticatedCustomersRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/customer-portal': {
-      id: '/_authenticated/customer-portal'
-      path: '/customer-portal'
-      fullPath: '/customer-portal'
-      preLoaderRoute: typeof AuthenticatedCustomerPortalRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/crm': {
@@ -3204,7 +3208,6 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedComplianceRoute: typeof AuthenticatedComplianceRoute
   AuthenticatedConnectRoute: typeof AuthenticatedConnectRoute
   AuthenticatedCrmRoute: typeof AuthenticatedCrmRoute
-  AuthenticatedCustomerPortalRoute: typeof AuthenticatedCustomerPortalRoute
   AuthenticatedCustomersRoute: typeof AuthenticatedCustomersRoute
   AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRoute
   AuthenticatedDispatchRoute: typeof AuthenticatedDispatchRouteWithChildren
@@ -3228,6 +3231,7 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedOperationsControlRoute: typeof AuthenticatedOperationsControlRoute
   AuthenticatedOperationsIntelligenceRoute: typeof AuthenticatedOperationsIntelligenceRoute
   AuthenticatedPlatformRoute: typeof AuthenticatedPlatformRoute
+  AuthenticatedPortalManagementRoute: typeof AuthenticatedPortalManagementRoute
   AuthenticatedProcurementRoute: typeof AuthenticatedProcurementRoute
   AuthenticatedReliabilityRoute: typeof AuthenticatedReliabilityRoute
   AuthenticatedRouteIntelligenceRoute: typeof AuthenticatedRouteIntelligenceRoute
@@ -3247,7 +3251,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedComplianceRoute: AuthenticatedComplianceRoute,
   AuthenticatedConnectRoute: AuthenticatedConnectRoute,
   AuthenticatedCrmRoute: AuthenticatedCrmRoute,
-  AuthenticatedCustomerPortalRoute: AuthenticatedCustomerPortalRoute,
   AuthenticatedCustomersRoute: AuthenticatedCustomersRoute,
   AuthenticatedDashboardRoute: AuthenticatedDashboardRoute,
   AuthenticatedDispatchRoute: AuthenticatedDispatchRouteWithChildren,
@@ -3273,6 +3276,7 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedOperationsIntelligenceRoute:
     AuthenticatedOperationsIntelligenceRoute,
   AuthenticatedPlatformRoute: AuthenticatedPlatformRoute,
+  AuthenticatedPortalManagementRoute: AuthenticatedPortalManagementRoute,
   AuthenticatedProcurementRoute: AuthenticatedProcurementRoute,
   AuthenticatedReliabilityRoute: AuthenticatedReliabilityRoute,
   AuthenticatedRouteIntelligenceRoute: AuthenticatedRouteIntelligenceRoute,
